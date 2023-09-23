@@ -1,5 +1,6 @@
 import React from 'react';
-import logo from '../img/uthh.png'
+import james from '../img/james.jpg';
+import isai from '../img/isai.jpg'
 
 const Desarrolladores = () => {
   return (
@@ -18,10 +19,10 @@ const Desarrolladores = () => {
                                     <div className='card-body'>
                                         <div className='text-center position-relative'>
                                             <div className='position-absolute top-0 start-0'>
-                                                <span className='badge bg-success'>Dev</span>
+                                                <span className='badge bg-success'>Desarrollador</span>
                                             </div>
                                             <a>
-                                                <img src={logo} className='mb-3 img' />
+                                                <img src={isai} className='mb-3 img' />
                                             </a>
                                         </div>
                                         <h2 className='fs-6 mb-0'>
@@ -50,7 +51,7 @@ const Desarrolladores = () => {
                                                 <span className='badge bg-success'>Tester</span>
                                             </div>
                                             <a>
-                                                <img src={logo} className='mb-3 img' />
+                                                <img src={james} className='mb-3 img' />
                                             </a>
                                         </div>
                                         <h2 className='fs-6 mb-0'>
