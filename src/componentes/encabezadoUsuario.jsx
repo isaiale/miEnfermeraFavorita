@@ -11,7 +11,7 @@ const EncabezadoUser = () => {
                 <div className="d-flex flex-column-reverse flex-lg-row align-items-lg-center">
                     <div className="w-100">
                         <div className="mt-1">
-                            <p className="text-center custom-text">¡Descubre nuestros productos que tenemos a la venta!</p>
+                            <p className="text-center custom-text">Mi Enfermera Favorita, una empresa especializada en productos y servicios relacionados con la enfermería.</p>
                             <div className="text-center mt-3">
                                 <Link className="btn fs-4" style={{background: '#0a7fad', color:'white'}} to="/avisoPrivacidad">Aviso de Privacidad</Link>
                             </div>
