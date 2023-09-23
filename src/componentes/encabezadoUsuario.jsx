@@ -13,7 +13,7 @@ const EncabezadoUser = () => {
                         <div className="mt-5">
                             <p className="text-center custom-text">¡Descubre nuestros productos que tenemos a la venta!</p>
                             <div className="text-center mt-3">
-                                <Link className="btn" style={{background: '#0aad0a', color:'white'}} to="/avisoPrivacidad">Aviso de Privacidad</Link>
+                                <Link className="btn fs-4" style={{background: '#0a7fad', color:'white'}} to="/avisoPrivacidad">Aviso de Privacidad</Link>
                             </div>
                         </div>
                     </div>

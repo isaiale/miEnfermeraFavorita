@@ -2,7 +2,7 @@
     --primary-100: #86efac;
     --primary-200: #f0fdf5;
     --primary-300: #19725D;
-    --primary-400: #436e53;
+    --primary-400: #6e4367;
     --primary-500: #40584a;
     --accent-100: #f5be0b;
     --accent-200: #fef1c7;
@@ -90,3 +90,7 @@
     border-radius: 5px;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);    
   }
+
+.color{
+    color: #09b6fa;
+}

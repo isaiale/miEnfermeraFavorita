@@ -9,7 +9,7 @@ const Desarrolladores = () => {
                 <div className='container'>
                     <div className='row'>
                         <div className='col-10 mb-3'>
-                            <h3 className='mb-0'>Imformacion</h3>
+                            <h3 className='mb-0'>Informacion</h3>
                         </div>
                     </div>
                     <div className='row g-4 row-cols-lg-5 row-cols-2 row-cols-md-3 mb-4'>
