@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from '../img/uthh.png'
+import logo from '../img/logo.jpg'
 import "../css/navbar.css"
 import "../css/colores.css"
 
@@ -28,7 +28,7 @@ const NavbarUsuario = () => {
                                 <Link className="nav-link fs-5" to="/avisoPrivacidad">Aviso de Privacidad</Link>
                             </li>
                             <li className="nav-item me-3">
-                                <Link className="nav-link fs-5" to="/desarrolladores">Desarrollador</Link>
+                                <Link className="nav-link fs-5" to="/desarrolladores">Acerca de</Link>
                             </li>
                         </ul>
                     </div>

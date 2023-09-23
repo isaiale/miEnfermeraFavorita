@@ -5,7 +5,7 @@ function AvisoPrivacidad() {
     <div className="App">
       <div>
         <div className="text-center"><h2>AVISO DE PRIVACIDAD</h2></div>
-        <div  className="ms-5 me-5 fs-5">
+        <div  className="ms-2 me-2 mb-4 fs-5">
 
           <h3 className="text-center">Empresa: Mi Enfermera Favorita</h3>
           <p className="ms-5 me-5 ">
@@ -131,13 +131,13 @@ function AvisoPrivacidad() {
             preferencias pueden cambiar con el tiempo. Si en algún momento desea dejar de
             recibir mensajes promocionales de nuestra parte, puede hacerlo de las siguientes
             maneras:<br /><br />
-            <span className="text-dark fs-5">1. Opción de Cancelación de Suscripción:</span>
+            <span className="text-dark fs-5">1. Opción de Cancelación de Suscripción: </span>
 
              Cada mensaje promocional que reciba
             de nosotros contendrá un enlace o una opción para cancelar su suscripción.
             Haga clic en esta opción para dejar de recibir mensajes promocionales en el
             futuro.<br /><br />
-            <span className="text-dark fs-5">2. Contacto Directo:</span>
+            <span className="text-dark fs-5">2. Contacto Directo: </span>
 
              También puede ponerse en contacto con nosotros a través
             de 771 722 8532 o mienfermerafavorita@gmail.com. Indique su deseo de
