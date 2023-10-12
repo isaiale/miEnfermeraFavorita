@@ -54,6 +54,7 @@ class Encriptacion extends Component {
           />
         </div>
         <div className="mb-3">
+        <h3>Desplazamiento</h3>
           <input
             type="number"
             className="form-control"
@@ -62,8 +63,8 @@ class Encriptacion extends Component {
             onChange={this.handleShiftChange}
           />
         </div>
-        <button className="btn btn-primary" onClick={this.encryptCesar}>
-          Cifrar
+        <button className="btn btn-success" onClick={this.encryptCesar}>
+          Cifrar Texto
         </button>
         <p className="mt-3">Cifrado: {this.state.ciphertext}</p>
       </div>
