@@ -30,6 +30,9 @@ const NavbarUsuario = () => {
                             <li className="nav-item me-3">
                                 <Link className="nav-link fs-5" to="/desarrolladores">Acerca de</Link>
                             </li>
+                            <li className="nav-item me-3">
+                                <Link className="nav-link fs-5" to="/navegacionCifrados">Cifrado</Link>
+                            </li>                            
                         </ul>
                     </div>
                 </div>

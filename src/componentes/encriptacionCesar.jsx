@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function CaesarCipher() {
+function CifradoCesar() {
   const [text, setText] = useState('');
   const [shift, setShift] = useState(4);
   const [result, setResult] = useState('');
@@ -78,4 +78,4 @@ function CaesarCipher() {
   );
 }
 
-export default CaesarCipher;
+export default CifradoCesar;
