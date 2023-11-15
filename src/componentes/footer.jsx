@@ -63,6 +63,7 @@ const Footer = () => {
       <div className="bg-secondary d-flex justify-content-center  py-2 ">
         <p className="mb-0" style={{marginLeft:'50px', marginRight:'20px'}}>© 2023 Empresa. Todos los derechos reservados.</p>
         <Link className='text-white' style={{marginLeft:'50px', marginRight:'20px'}} to="/politicaDeCookies" >Politicas de cookies</Link>
+        <Link className='text-white' style={{marginLeft:'10px', marginRight:'20px'}} to="/terminosYcondiciones" >Terminos y condiciones</Link>
         <Link className='me-5 text-white' style={{ marginRight:'20px'}} to="/avisoPrivacidad" >Política de Privacidad</Link>
       </div>
     </footer>

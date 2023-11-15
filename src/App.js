@@ -13,6 +13,7 @@ import login from './vistas/usuario/login';
 import registroUser from './vistas/usuario/registroUser';
 import CarritoCompra from './vistas/usuario/carritoDeCompras';
 import PoliticaDeCookies from './vistas/usuario/politicaDeCookies';
+import TerminosYCondiciones from './vistas/usuario/terminosYCondiciones';
 import Error404 from './componentes/error404';
 
 import { AuthContextProvider } from './autenticar/AuthProvider';
@@ -30,6 +31,7 @@ function App() {
             <Route path="registroUsuario" Component={registroUser}></Route>
             <Route path="carritoDeCompras" Component={CarritoCompra}></Route>
             <Route path="politicaDeCookies" Component={PoliticaDeCookies}></Route>
+            <Route path="terminosYcondiciones" Component={TerminosYCondiciones}></Route>
 
             <Route path='avisoPrivacidad' Component={avisoPrivacidad}></Route>
             <Route path='desarrolladores' Component={desarrolladores}></Route>
