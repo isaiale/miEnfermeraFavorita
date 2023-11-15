@@ -4,16 +4,16 @@ function AvisoPrivacidad() {
   return (
     <div className="App">
       <div>
-        <div className="text-center"><h2>AVISO DE PRIVACIDAD</h2></div>
+        <div className="text-center"><h2>POLITICA DE PRIVACIDAD</h2></div>
         <div  className="ms-2 me-2 mb-4 fs-5">
 
-          <h3 className="text-center">Empresa: Mi Enfermera Favorita</h3>
+          <h3 className="text-center">Mi Enfermera Favorita</h3>
           <p className="ms-5 me-5 ">
             Domicilio: Dalilaa Del Angel, mejor conocido como Mi Enfermera Favorita, con
             domicilio en calle C. San Luis Potosi #30, colonia Tahuizan, ciudad Huejutla de Reyes,
             municipio o delegación Huejutla de Reyes, c.p. 43000, en la entidad de Hidalgo, país
-            Mexico, y portal de internet
-            https://web.facebook.com/profile.php?id=100084107476329&sk=about, es el
+            Mexico, y portal de internet <a href="https://web.facebook.com/profile.php?id=100084107476329&sk=about">mi enfermera favorita</a>
+            , es el
             responsable del uso y protección de sus datos personales, y al respecto le
             informamos lo siguiente:
           </p>
@@ -147,7 +147,7 @@ function AvisoPrivacidad() {
             posible que aún reciba comunicaciones relacionadas con transacciones, como
             confirmaciones de pedidos y actualizaciones de cuenta.
           </p>
-          <h3 className="ms-5 me-5">Última actualización: <span className="text-dark fs-5"> 22/09/2023</span></h3>
+          <h3 className="ms-5 me-5">Última actualización: <span className="text-dark fs-5"> 14/11/2023</span></h3>
 
 
         </div>
