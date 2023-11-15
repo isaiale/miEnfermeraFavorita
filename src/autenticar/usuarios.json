@@ -1,0 +1,32 @@
+{
+    "usuarios": [
+      {
+        "id": 1,
+        "nombre": "Juan",
+        "apellido": "Santiago",
+        "usuario": "Santi31",
+        "correo": "usuario@example.com",
+        "contrasena": "1234",
+        "roles": "usuario"
+      },
+      {
+        "id": 2,
+        "nombre": "Pedro",
+        "apellido": "Flores",
+        "usuario": "PedroFlores22",
+        "correo": "admin@example.com",
+        "contrasena": "contrasena_admin",
+        "roles": "administrador"
+      },
+      {
+        "id": 3,
+        "nombre": "María",
+        "apellido": "de la Cruz",
+        "usuario": "MariCruz22",          
+        "correo": "gerente@example.com",
+        "contrasena": "contrasena_gerente",
+        "roles": "gerente"
+      }
+    ]
+  }
+  

@@ -1,0 +1,30 @@
+.border-3d {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 5px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+.titulocarritocompra{
+    font-size: 20px;
+    color:black;
+    font-family: 'Jost', sans-serif;
+    text-align:center;
+}
+.tituloContenidocarrito{
+    font-size: 15px;
+    color:rgb(77, 72, 72);    
+    font-family: 'Jost', sans-serif;
+}
+.bg-100{
+    background: #daa232;
+}
+.colorRojoTexto{
+    font-size: 15px;
+    color:red;    
+    font-family: 'Jost', sans-serif;
+    margin-left: 20px;
+    text-align: justify 
+}
+.justificarTexto{
+    justify-content: left;
+    text-align: left;
+}

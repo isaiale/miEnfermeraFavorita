@@ -1,0 +1,129 @@
+.wrapper{
+    margin-left: -20px;
+    width: 250px;
+}
+.wrapper ul{
+    margin-left: -12px;
+    list-style: none;
+}
+.wrapper ul li{
+    width: 55px;
+    height: 50px;
+    margin: 1px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 100%;
+    border: 3px solid white;
+    float: left;
+    transition: all 0.5s ease;
+}
+.wrapper ul li .fa{
+    color: white;
+    margin-top: 7px;
+    transition: all 0.5s ease;
+}
+.wrapper ul li:hover.facebook{
+    border: 5px solid #3b5998;
+    box-shadow: 0 0 15px #3b5998;
+    transition: all 0.5s ease;
+}
+.wrapper ul li:hover .fa-facebook{
+    color: #3b5998;
+    text-shadow: 0 0 15px #3b5998;
+    transition: all 0.5s ease;
+}
+.wrapper ul li:hover.twitter{
+    border: 5px solid #00aced;
+    box-shadow: 0 0 15px #00aced;
+    transition: all 0.5s ease;
+}
+.wrapper ul li:hover .fa-twitter{
+    color: #00aced;
+    text-shadow: 0 0 15px #00aced;
+    transition: all 0.5s ease;
+}
+.wrapper ul li:hover.instagram{
+    border: 5px solid #bc2a8d;
+    box-shadow: 0 0 15px #bc2a8d;
+    transition: all 0.5s ease;
+}
+.wrapper ul li:hover .fa-instagram{
+    color: #bc2a8d;
+    text-shadow: 0 0 15px #bc2a8d;
+    transition: all 0.5s ease;
+}
+.wrapper ul li:hover.whatsapp{
+    border: 5px solid #4dc247;
+    box-shadow: 0 0 15px #4dc247;
+    transition: all 0.5s ease;
+}
+.wrapper ul li:hover .fa-whatsapp{
+    color: #4dc247;
+    text-shadow: 0 0 15px #4dc247;
+    transition: all 0.5s ease;
+}
+.wrapper ul li:hover.google{
+    border: 5px solid #DB4437;
+    box-shadow: 0 0 15px #DB4437;
+    transition: all 0.5s ease;
+}
+.wrapper ul li:hover .fa-google{
+    color: #DB4437;
+    text-shadow: 0 0 15px #DB4437;
+    transition: all 0.5s ease;
+}
+.wrapper ul li:hover.linkedin{
+    border: 5px solid #0077B5;
+    box-shadow: 0 0 15px #0077B5;
+    transition: all 0.5s ease;
+}
+.wrapper ul li:hover .fa-linkedin{
+    color: #0077B5;
+    text-shadow: 0 0 15px #0077B5;
+    transition: all 0.5s ease;
+}
+.wrapper ul li:hover.snapchat{
+    border: 5px solid #FFFC00;
+    box-shadow: 0 0 15px #FFFC00;
+    transition: all 0.5s ease;
+}
+.wrapper ul li:hover .fa-snapchat{
+    color: #FFFC00;
+    text-shadow: 0 0 15px #FFFC00;
+    transition: all 0.5s ease;
+}
+.wrapper ul li:hover.telegram{
+    border: 5px solid #0088cc;
+    box-shadow: 0 0 15px #0088cc;
+    transition: all 0.5s ease;
+}
+.wrapper ul li:hover .fa-telegram{
+    color: #0088cc;
+    text-shadow: 0 0 15px #0088cc;
+    transition: all 0.5s ease;
+}
+
+@media screen and (max-width: 760px) {
+    .wrapper{
+        width: 300px;
+    }
+    .wrapper ul li {
+        margin-top: 10px;
+    }
+    .wrapper ul li.google{
+        margin-left: 1px;
+    }
+}
+@media screen and (max-width: 340px) {
+    .wrapper{
+        width: 150px;
+    }
+    .wrapper ul li {
+        margin-top: 15px;
+    }
+    .wrapper ul li.google{
+        margin-left: 1px;
+    }
+}
+
+

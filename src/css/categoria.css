@@ -1,0 +1,29 @@
+.link-no-underline {
+  text-decoration: none;
+  /* Elimina el subrayado del enlace */
+  color: inherit;
+  /* Mantiene el color del texto original */
+}
+
+/* Agrega un padding a los lados del Carousel */
+.custom-carousel {
+  padding: 0 15px;
+}
+
+@media screen and (max-width: 447px) {
+  .desdription {
+    margin-left: 0px;
+    text-align: center;
+    width: 70px;
+  }
+
+  .desdription h6 span {
+    margin-top: 10px;
+  }
+
+  .desdription h6 span.letra {
+    text-align: center;
+    font-size: 11px;
+    display:block;
+  }
+}

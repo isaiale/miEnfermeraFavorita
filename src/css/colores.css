@@ -1,8 +1,8 @@
-:root {
+/*:root {
     --primary-100: #86efac;
     --primary-200: #f0fdf5;
     --primary-300: #19725D;
-    --primary-400: #6e4367;
+    --primary-400: #f9f9f9;
     --primary-500: #40584a;
     --accent-100: #f5be0b;
     --accent-200: #fef1c7;
@@ -11,16 +11,17 @@
     --bg-100: #fafaf9;
     --bg-200: #f5f5f4;
     --bg-300: #E0E2E5;
-}
+} */
+
 .isai {
         --primary-100:#005B99;
     --primary-200:#4e88ca;
     --primary-300:#b7e9ff;
     --accent-100:#FFD700;
-    --accent-200:#e9aa2b;
+    --accent-200:#daa232;
     --text-100:#333333;
-    --text-200:#5c5c5c;
-    --bg-100:#F5F5F5;
+    --text-200:#0171fa;
+    --bg-100:#e36db4;
     --bg-200:#ebebeb;
     --bg-300:#c2c2c2;
       
@@ -93,4 +94,28 @@
 
 .color{
     color: #09b6fa;
+}
+.custom-button {
+    background-color:var(--accent-200)!important; 
+    color:var( --text-100)!important; 
+  }
+.bg-cielo {
+  background-color: #e36db4; /* o cualquier otro código de color que prefieras */
+  color:white;
+}
+
+
+/*stylo de navbar usuarios*/
+.botonLogin{
+    margin-top: -7px;
+}
+.botonLogin .color .btn{
+    color: black;
+    margin-top: 7px;
+    transition: all 0.5s ease;
+}
+.botonLogin .color button:hover{
+    background-color: #e36db4;
+    color: white;
+    transition: all 0.5s ease;
 }

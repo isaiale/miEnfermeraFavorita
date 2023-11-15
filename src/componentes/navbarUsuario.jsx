@@ -1,44 +1,99 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import logo from '../img/logo.jpg'
-import "../css/navbar.css"
-import "../css/colores.css"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Navbar, Nav, Container, Image, Button, Dropdown } from 'react-bootstrap';
+import logo from '../img/logo.jpg';
+import logoUser from '../img/uthh.png';
+import { AuthContext } from '../autenticar/AuthProvider';
+import '../css/colores.css';
 
 
-const NavbarUsuario = () => {
+function NavbarUsuario() {
+    // Estado para el nombre de usuario
+    const { isAuthenticated, logout, user } = useContext(AuthContext);
+    const history = useNavigate();
+
+    // Función para cerrar sesión
+    const cerrarSesion = () => {
+        logout();
+        history('/');
+
+    };
+
 
     return (
-        <div>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-primary-400">
-                <div className="container">
-                    <a className="navbar-brand " href="#" >
-                        <img src={logo} width="50" height="50" className="rounded-circle me-2" />
-                        Mi Enfermera Favorita
-                    </a>
+        <Navbar className='navbar-dark-text' style={{ fontSize: '15px', color: 'black' }} bg="light" expand="lg">
+            <Container>
+                {/* Logo a la izquierda */}
+                <Navbar.Brand>
+                    <Image src={logo} className='rounded-circle' alt="" width="70" height="70" style={{margin:'-12px'}}/>
+                </Navbar.Brand>
 
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse justify-content-end me-3" id="navbarNav">
-                        <ul className="navbar-nav">
-                        <li className="nav-item me-3">
-                                <Link className="nav-link fs-5" to="/">inicio</Link>
-                            </li>
-                            <li className="nav-item me-3">
-                                <Link className="nav-link fs-5" to="/avisoPrivacidad">Aviso de Privacidad</Link>
-                            </li>
-                            <li className="nav-item me-3">
-                                <Link className="nav-link fs-5" to="/desarrolladores">Acerca de</Link>
-                            </li>
-                            <li className="nav-item me-3">
-                                <Link className="nav-link fs-5" to="/navegacionCifrados">Cifrado</Link>
-                            </li>                            
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    )
+                {/* Espacio entre elementos */}
+                <Nav className="ms-auto me-4">
+                    &nbsp;
+                </Nav>
+
+                {/* Navegaciones */}
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="me-auto ">
+                        <Nav.Link href="/" >INICIO</Nav.Link>
+                        <Dropdown as={Nav.Item}>
+                            <Dropdown.Toggle as={Nav.Link} id="uniformes-dropdown">
+                                UNIFORMES
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item href="/productos">FILIPINAS</Dropdown.Item>
+                                <Dropdown.Item href="#zapatos">CALZADO</Dropdown.Item>
+                                <Dropdown.Item href="#chalecos">CHALECOS</Dropdown.Item>
+                                <Dropdown.Item href="#batas">BATAS</Dropdown.Item>
+                                <Dropdown.Item href="#otros">SACOS</Dropdown.Item>
+                                <Dropdown.Item href="#otros">PANTALONES</Dropdown.Item>
+                                <Dropdown.Item href="#otros">SUÉTERES</Dropdown.Item>
+                                <Dropdown.Item href="#otros">SCRUBS</Dropdown.Item>
+
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        <Nav.Link href="#about">ACCESORIOS</Nav.Link>
+                        <Nav.Link href="#services">RESERVAR</Nav.Link>
+                        <Nav.Link href="#services">CONTACTO</Nav.Link>
+                    </Nav>
+                    <Nav.Link href="/carritoDeCompras" className='fs-5 me-3'> <i className='fa fa-shopping-cart ' style={{fontSize:'25px'}} ></i></Nav.Link>
+
+                    <Dropdown>
+                        {isAuthenticated !== null ? (
+                            isAuthenticated ? (
+                                <>
+                                    <Dropdown.Toggle as={Button} variant="light" id="dropdown-basic">
+                                        <Image src={logoUser} className='rounded-circle' alt="" width="50" height="50" />
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item href="#perfil">Perfil</Dropdown.Item>
+                                        <Dropdown.Item href="#compras">Compras</Dropdown.Item>
+                                        <Dropdown.Item onClick={cerrarSesion}>Cerrar sesión</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </>
+                            ) : (
+                                <>
+                                    <Nav className="me-auto">
+                                        <Nav.Link href="/registroUsuario"> REGISTRO</Nav.Link>
+                                        <div className='botonLogin'>
+                                            <Link className='color' to="/login">
+                                                <button className='btn rounded-pill' id="login-button" >
+                                                    INICIAR SESIÓN
+                                                </button>
+                                            </Link>
+                                        </div>
+                                    </Nav>
+                                </>
+                            )
+                        ) : null}
+                    </Dropdown>
+                </Navbar.Collapse>
+            </Container>
+        </Navbar>
+    );
 }
-export default NavbarUsuario;
 
+export default NavbarUsuario;

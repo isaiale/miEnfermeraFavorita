@@ -1,0 +1,48 @@
+{
+    "carrito": [
+      {
+        "producto": {
+          "id": 1,
+          "nombre": "Producto A",
+          "descripcion": "Descripción del Producto A",
+          "imagen": "url_de_la_imagen_producto_a",
+          "precio_unitario": 19.99
+        },
+        "cantidad": 2,
+        "precio_total": 39.98
+      },
+      {
+        "producto": {
+          "id": 2,
+          "nombre": "Producto B",
+          "descripcion": "Descripción del Producto B",
+          "imagen": "url_de_la_imagen_producto_b",
+          "precio_unitario": 29.99
+        },
+        "cantidad": 1,
+        "precio_total": 29.99
+      }
+    ],
+    "resumen_pedido": {
+      "subtotal": 69.97,
+      "impuestos": 5.60,
+      "costos_envio": 0.00,
+      "total": 75.57
+    },
+    "cliente": {
+      "nombre": "Nombre del Cliente",
+      "direccion_envio": "Dirección de Envío del Cliente",
+      "otros_detalles": "Otros detalles del cliente si es necesario"
+    },
+    "descuentos": [
+      {
+        "codigo": "DESC10",
+        "monto": 7.00
+      }
+    ],
+    "informacion_adicional": {
+      "tiempo_envio": "2-4 días hábiles",
+      "politica_cambio": "10 días habiles para cambio"
+    }
+  }
+  

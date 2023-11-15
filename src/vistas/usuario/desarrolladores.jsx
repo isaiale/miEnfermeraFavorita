@@ -1,7 +1,7 @@
 import React from 'react';
-import Desarrolladores from '../componentes/desarrolladores';
-import NavbarUsuario from '../componentes/navbarUsuario';
-import Footer from "../componentes/footer";
+import Desarrolladores from '../../componentes/desarrolladores';
+import NavbarUsuario from '../../componentes/navbarUsuario';
+import Footer from "../../componentes/footer";
 
 
 const desarrolladores = () => {
