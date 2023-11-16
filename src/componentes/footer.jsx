@@ -46,7 +46,7 @@ const Footer = () => {
             <div className='wrapper'>
               <ul>
                 <li className='facebook'><a href='#'><i className='fa fa-facebook fa-2x' aria-hidden='true'></i></a></li>
-                <li className='whatsapp'><a href='#'><i className='fa fa-whatsapp fa-2x' aria-hidden='true'></i></a></li>                
+                <li className='whatsapp'><a href='#'><i className='fa fa-whatsapp fa-2x' aria-hidden='true'></i></a></li>
                 <li className='twitter'><a href='#'><i className='fa fa-twitter fa-2x' aria-hidden='true'></i></a></li>
                 <li className='telegram'><a href='#'><i className='fa fa-telegram fa-2x' aria-hidden='true'></i></a></li>
                 <li className='instagram'><a href='#'><i className='fa fa-instagram fa-2x' aria-hidden='true'></i></a></li>
@@ -60,11 +60,13 @@ const Footer = () => {
       </Container>
 
       {/* Derechos reservados */}
-      <div className="bg-secondary d-flex justify-content-center  py-2 ">
-        <p className="mb-0" style={{marginLeft:'50px', marginRight:'20px'}}>© 2023 Empresa. Todos los derechos reservados.</p>
-        <Link className='text-white' style={{marginLeft:'50px', marginRight:'20px'}} to="/politicaDeCookies" >Politicas de cookies</Link>
-        <Link className='text-white' style={{marginLeft:'10px', marginRight:'20px'}} to="/terminosYcondiciones" >Terminos y condiciones</Link>
-        <Link className='me-5 text-white' style={{ marginRight:'20px'}} to="/avisoPrivacidad" >Política de Privacidad</Link>
+      <div className="bg-secondary d-flex justify-content-between align-items-center py-2 text-white">
+        <p className="ms-4 m-0">© 2023 Empresa. Todos los derechos reservados.</p>
+        <div className="d-flex me-4">
+          <Link className='text-white ms-3' to="/politicaDeCookies">Políticas de cookies</Link>
+          <Link className='text-white ms-3' to="/terminosYcondiciones">Términos y condiciones</Link>
+          <Link className='text-white ms-3' to="/avisoPrivacidad">Política de Privacidad</Link>
+        </div>
       </div>
     </footer>
   );

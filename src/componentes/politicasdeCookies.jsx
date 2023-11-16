@@ -2,11 +2,9 @@ import React from 'react'
 
 const PoliticasdeCookies = () => {
   return (
-    <div className="container mt-5">
-      <h1 className="mb-4">Política de Cookies</h1>
-
-      <p className="mb-4">
-        {/*<strong>Última actualización:</strong> 15 de noviembre de 2023*/}
+    <div className="m-3 me-4 ms-4">
+      <h3 className="mb-2 text-center">Política de Cookies</h3>
+      <p className="mb-2">
         En esta web se utilizan cookies de terceros y propias para conseguir que tengas una mejor experiencia de navegación, puedas compartir contenido en redes sociales y para que podamos obtener estadísticas de los usuarios.
 
         Puedes evitar la descarga de cookies a través de la configuración de tu navegador, evitando que las cookies se almacenen en su dispositivo.
@@ -19,17 +17,17 @@ const PoliticasdeCookies = () => {
 
       </p>
 
-      <section>
-        <h2>Entidad Responsable</h2>
-        <p>
-          {/*<strong>Interpretación</strong>*/}
-          La entidad responsable de la recogida, procesamiento y utilización de tus datos personales, en el sentido establecido por la Ley de Protección de Datos Personales es la página Mi Enfermera Favorita, propiedad de Dra. Dalila Hernández del Ángel – Tahuizan, calle San Luis Potosí 30, 43000, Huejutla de Reyes, Hidalgo.        </p>
 
-        {/* Agregar más texto según sea necesario */}
+
+      <section className="mt-3">
+        <h4 className="mb-2 text-center">Entidad Responsable</h4>
+        <p>
+          La entidad responsable de la recogida, procesamiento y utilización de tus datos personales, en el sentido establecido por la Ley de Protección de Datos Personales es la página Mi Enfermera Favorita, propiedad de Dra. Dalila Hernández del Ángel – Tahuizan, calle San Luis Potosí 30, 43000, Huejutla de Reyes, Hidalgo.
+        </p>
       </section>
 
       <section>
-        <h2>¿Qué son las cookies?</h2>
+        <h4 className="mb-2 text-center">¿Qué son las cookies?</h4>
         <p>
           Las cookies son un conjunto de datos que un servidor deposita en el navegador del usuario para recoger la información de registro estándar de Internet y la información del comportamiento de los visitantes en un sitio web. Es decir, se trata de pequeños archivos de texto que quedan almacenados en el disco duro del ordenador y que sirven para identificar al usuario cuando se conecta nuevamente al sitio web. Su objetivo es registrar la visita del usuario y guardar cierta información. Su uso es común y frecuente en la web ya que permite a las páginas funcionar de manera más eficiente y conseguir una mayor personalización y análisis sobre el comportamiento del usuario.
         </p>
@@ -38,7 +36,7 @@ const PoliticasdeCookies = () => {
       </section>
 
       <section>
-        <h2>¿Qué tipos de cookies existen?</h2>
+        <h4 className="mb-2 text-center">¿Qué tipos de cookies existen?</h4>
         <p>
           Las cookies utilizadas en nuestro sitio web, son de sesión y de terceros, y nos permiten almacenar y acceder a información relativa al idioma, el tipo de navegador utilizado, y otras características generales predefinidas por el usuario, así como, seguir y analizar la actividad que lleva a cabo, con el objeto de introducir mejoras y prestar nuestros servicios de una manera más eficiente y personalizada.
           Las cookies, en función de su permanencia, pueden dividirse en cookies de sesión o permanentes. Las que expiran cuando el usuario cierra el navegador. Las que expiran en función de cuando se cumpla el objetivo para el que sirven (por ejemplo, para que el usuario se mantenga identificado en los servicios de Dra. Dalila Hernández del Ángel) o bien cuando se borran manualmente.
@@ -82,32 +80,28 @@ const PoliticasdeCookies = () => {
           <br />
           Además de la publicidad gestionada por las webs de Dra. Dalila Hernández del Ángel en sus servicios, las webs de Dra. Dalila Hernández del Ángel ofrecen a sus anunciantes la opción de servir anuncios a través de terceros (“Ad-Servers”). De este modo, estos terceros pueden almacenar cookies enviadas desde los servicios de Dra. Dalila Hernández del Ángel procedentes de los navegadores de los usuarios, así como acceder a los datos que en ellas se guardan.
           Las empresas que generan estas cookies tienen sus propias políticas de privacidad. En la actualidad, las webs de Dra. Dalila Hernández del Ángel utilizan la plataforma Doubleclick (Google) para gestionar estos servicios. Para más información, acuda a
-          http://www.google.es/policies/privacy/ads/#toc-doubleclick y a http://www.google.es/policies/privacy/ads/.
+          <a href='http://www.google.es/policies/privacy/ads/#toc-doubleclick'> http://www.google.es/policies/privacy/ads/#toc-doubleclick</a> y a <a href='http://www.google.es/policies/privacy/ads/.'>http://www.google.es/policies/privacy/ads/.</a>
 
         </p>
-        {/* Agregar más texto según sea necesario */}
       </section>
-
-      {/* Agregar más secciones según sea necesario */}
-
       <section>
-        <h2>¿Cómo puedo deshabilitar las cookies en mi navegador?</h2>
+        <h4 className="mb-2 text-center">¿Cómo puedo deshabilitar las cookies en mi navegador?</h4>
         <p>
           Se pueden configurar los diferentes navegadores para avisar al usuario de la recepción de cookies y, si se desea, impedir su instalación en el equipo. Asimismo, el usuario puede revisar en su navegador qué cookies tiene instaladas y cuál es el plazo de caducidad de las mismas, pudiendo eliminarlas.
-          Para ampliar esta información consulte las instrucciones y manuales de su navegador:
-          Para más información sobre la administración de las cookies en Google Chrome: https://support.google.com/chrome/answer/95647?hl=es
-          Para más información sobre la administración de las cookies en Internet Explorer: http://windows.microsoft.com/es-es/windows-vista/cookies-frequently-asked-questions
-          Para más información sobre la administración de las cookies en Mozilla Firefox: http://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-que-los-sitios-we
-          Para más información sobre la administración de las cookies en Safari: http://www.apple.com/es/privacy/use-of-cookies/
-          Para más información sobre la administración de las cookies en Opera: http://help.opera.com/Windows/11.50/es-ES/cookies.html
-          Si desea dejar de ser seguido por Google Analytics visite: http://tools.google.com/dlpage/gaoptout
+          Para ampliar esta información consulte las instrucciones y manuales de su navegador: <br></br>
+          Para más información sobre la administración de las cookies en Google Chrome: <a href='https://support.google.com/chrome/answer/95647?hl=es'> Ver más </a><br></br>
+          Para más información sobre la administración de las cookies en Internet Explorer: <a href='http://windows.microsoft.com/es-es/windows-vista/cookies-frequently-asked-questions'> Ver más</a> <br></br>
+          Para más información sobre la administración de las cookies en Mozilla Firefox:<a href='http://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-que-los-sitios-we'>Ver más</a> <br></br>
+          Para más información sobre la administración de las cookies en Safari: <a href='http://www.apple.com/es/privacy/use-of-cookies/'> Ver más</a> <br></br>
+          Para más información sobre la administración de las cookies en Opera: <a href='http://help.opera.com/Windows/11.50/es-ES/cookies.html'> Ver más</a><br></br>
+          Si desea dejar de ser seguido por Google Analytics visite: <a href='http://tools.google.com/dlpage/gaoptout'> Ver más</a><br></br>
 
         </p>
       </section>
       <section>
-        <h2>Para saber más sobre las cookies</h2>
+        <h4 className="mb-2 text-center">Para saber más sobre las cookies</h4>
         <p>
-          Puede obtener más información sobre la publicidad online basada en el comportamiento y la privacidad online en el siguiente enlace: http://www.youronlinechoices.com/es/
+          Puede obtener más información sobre la publicidad online basada en el comportamiento y la privacidad online en el siguiente enlace: <a href='http://www.youronlinechoices.com/es/'>http://www.youronlinechoices.com/es/</a>
         </p>
       </section>
     </div>

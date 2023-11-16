@@ -12,7 +12,7 @@ function CarritoDeCompra() {
 
     return (
         <div className="m-3 mt-2 mb-2">
-            <h3 className='text-white text-center bg-100'>Carrito de Compra</h3>
+            <h4 className='text-dark text-center'>Carrito de Compra</h4>
             <div className="justify-content-between row">
                 <div className="col-md-9">
                     {carrito.carrito.map((item) => (
