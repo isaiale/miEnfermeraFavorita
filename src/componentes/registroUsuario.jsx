@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 function RegistroUsuario() {
     const [nombre, setNombre] = useState('');
@@ -22,9 +23,6 @@ function RegistroUsuario() {
             setError('Por favor, completa todos los campos.');
             return;
         }
-
-        // Aquí puedes agregar la lógica de registro
-        // Si la validación falla, puedes establecer un mensaje de error.
     };
 
     return (
@@ -32,10 +30,12 @@ function RegistroUsuario() {
             <div className="row justify-content-center m-3">
                 <div className="col-md-5 border">
                     <Form onSubmit={handleSubmit}>
-                        <h2 className="mb-4 text-center">Registro</h2>
-
-                        {error && <p className="text-danger">{error}</p>}
-
+                        <h2 className="m-2 text-center">Registro</h2>
+                        {error &&
+                            <div className=''>
+                                <p className="mt-1 mb-1 alert alert-danger ">{error}</p>
+                            </div>
+                        }
                         <Form.Group className="mb-3" controlId="nombre">
                             <Form.Label>Nombre</Form.Label>
                             <Form.Control
@@ -69,7 +69,7 @@ function RegistroUsuario() {
                             />
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="correo">
+                        <Form.Group className="" controlId="correo">
                             <Form.Label>Correo Electrónico</Form.Label>
                             <Form.Control
                                 type="email"
@@ -78,27 +78,27 @@ function RegistroUsuario() {
                                 onChange={(e) => setCorreo(e.target.value)}
                                 required
                             />
+                            <Form.Label className='mt-3'>Contraseña</Form.Label>
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="password">
-                            <Form.Label>Contraseña</Form.Label>
+                        <Form.Group className="input-group mb-3" controlId="password">
                             <Form.Control
                                 type={showPassword ? 'text' : 'password'}
                                 placeholder="Ingresa tu contraseña"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
+                                classname='input-group'
                             />
-                            <Form.Text
-                                className="text-muted"
+                            <button type="button"
+                                className="btn btn-outline-secondary"
                                 onClick={handleShowPassword}
-                                style={{ cursor: 'pointer' }}
                             >
-                                {showPassword ? 'Ocultar contraseña' : 'Ver contraseña'}
-                            </Form.Text>
+                                {showPassword ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
+                            </button>
                         </Form.Group>
                         <div className="text-center m-3 d-grid mx-auto">
-                            <button className='btn' style={{ color: 'white', background:'#daa232' }} type="submit">
+                            <button className='btn' style={{ color: 'white', background: '#daa232' }} type="submit">
                                 Registrarse
                             </button>
                         </div>

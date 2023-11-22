@@ -3,7 +3,7 @@
       {
         "producto": {
           "id": 1,
-          "nombre": "Producto A",
+          "nombre": "Filipinas",
           "descripcion": "Descripción del Producto A",
           "imagen": "url_de_la_imagen_producto_a",
           "precio_unitario": 19.99
@@ -14,7 +14,7 @@
       {
         "producto": {
           "id": 2,
-          "nombre": "Producto B",
+          "nombre": "Pantalon",
           "descripcion": "Descripción del Producto B",
           "imagen": "url_de_la_imagen_producto_b",
           "precio_unitario": 29.99

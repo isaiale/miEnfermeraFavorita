@@ -9,11 +9,8 @@ import '../css/colores.css';
 
 
 function NavbarUsuario() {
-    // Estado para el nombre de usuario
-    const { isAuthenticated, logout, user } = useContext(AuthContext);
+    const { isAuthenticated, logout } = useContext(AuthContext);
     const history = useNavigate();
-
-    // Función para cerrar sesión
     const cerrarSesion = () => {
         logout();
         history('/');
@@ -69,9 +66,9 @@ function NavbarUsuario() {
                                         <Image src={logoUser} className='rounded-circle' alt="" width="50" height="50" />
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#perfil">Perfil</Dropdown.Item>
-                                        <Dropdown.Item href="#compras">Compras</Dropdown.Item>
-                                        <Dropdown.Item onClick={cerrarSesion}>Cerrar sesión</Dropdown.Item>
+                                        <Dropdown.Item href="#perfil">PERFIL</Dropdown.Item>
+                                        <Dropdown.Item href="#compras">COMPRAS</Dropdown.Item>
+                                        <Dropdown.Item className='text-danger' onClick={cerrarSesion}>CERRAR SESIÓN</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </>
                             ) : (

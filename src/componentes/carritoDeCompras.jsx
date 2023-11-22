@@ -29,13 +29,20 @@ function CarritoDeCompra() {
                     <div className='border-3d'>
                         <div className='m-1'>
                             <h3 className='titulocarritocompra'>Resumen de pedido</h3>
-                            <div className='tituloContenidocarrito'>
-                                <p>Subtotal: <span className=''> ${resumenPedido.subtotal.toFixed(2)}</span></p>
-                                <p>Impuestos: <span className=''> ${resumenPedido.impuestos.toFixed(2)}</span> </p>
-                                <p>Costos de Envío: <span className=''> ${resumenPedido.costos_envio.toFixed(2)}</span></p>
-                                <p>Total: <span className=''> ${resumenPedido.total.toFixed(2)}</span> </p>
+                            <div className='tituloContenidocarrito d-flex justify-content-between me-2 ms-2'>
+                                <div>
+                                    <p>Subtotal:</p>
+                                    <p>Impuestos:</p>
+                                    <p>Costos de Envío:</p>
+                                    <p>Total:</p>
+                                </div>
+                                <div>
+                                    <p>${resumenPedido.subtotal.toFixed(2)}</p>
+                                    <p>${resumenPedido.impuestos.toFixed(2)}</p>
+                                    <p>${resumenPedido.costos_envio.toFixed(2)}</p>
+                                    <p style={{color:'blue'}}>${resumenPedido.total.toFixed(2)}</p>
+                                </div>
                             </div>
-
                         </div>
                         <div className='m-1'>
                             <h3 className='titulocarritocompra'>Descuentos</h3>

@@ -1,7 +1,7 @@
 .border-3d {
     border: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 5px;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0rem 1rem 0rem rgba(0, 0, 0, 0.15);
 }
 .titulocarritocompra{
     font-size: 20px;
