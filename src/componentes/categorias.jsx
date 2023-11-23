@@ -8,7 +8,7 @@ import '../css/categoria.css';
 
 const categoriaProducto = [
   {
-    image: batas,
+    image: logo,
     description: 'BATAS',
     to: '/productos',
   },
@@ -18,7 +18,7 @@ const categoriaProducto = [
     to: '/zapatos',
   },
   {
-    image: chalecos,
+    image: logo,
     description: 'CHALECOS',
     to: '/chalecos',
   },

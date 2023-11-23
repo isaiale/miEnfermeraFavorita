@@ -7,7 +7,6 @@ import logoUser from '../img/uthh.png';
 import { AuthContext } from '../autenticar/AuthProvider';
 import '../css/colores.css';
 
-
 function NavbarUsuario() {
     const { isAuthenticated, logout } = useContext(AuthContext);
     const history = useNavigate();
@@ -16,7 +15,6 @@ function NavbarUsuario() {
         history('/');
 
     };
-
 
     return (
         <Navbar className='navbar-dark-text' style={{ fontSize: '15px', color: 'black' }} bg="light" expand="lg">
@@ -52,9 +50,9 @@ function NavbarUsuario() {
 
                             </Dropdown.Menu>
                         </Dropdown>
-                        <Nav.Link href="#about">ACCESORIOS</Nav.Link>
-                        <Nav.Link href="#services">RESERVAR</Nav.Link>
-                        <Nav.Link href="#services">CONTACTO</Nav.Link>
+                        <Nav.Link href="/accesorioss">ACCESORIOS</Nav.Link>
+                        <Nav.Link href="/reservarA">RESERVAR</Nav.Link>
+                        <Nav.Link href="/contacto">CONTACTO</Nav.Link>
                     </Nav>
                     <Nav.Link href="/carritoDeCompras" className='fs-5 me-3'> <i className='fa fa-shopping-cart ' style={{fontSize:'25px'}} ></i></Nav.Link>
 
