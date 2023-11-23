@@ -17,7 +17,7 @@ function NavbarUsuario() {
     };
 
     return (
-        <Navbar className='navbar-dark-text' style={{ fontSize: '15px', color: 'black' }} bg="light" expand="lg">
+        <Navbar className='navbar-dark-text' style={{ fontSize: '15px', color: 'black', background:'#6fd2ee' }}  expand="lg">
             <Container>
                 {/* Logo a la izquierda */}
                 <Navbar.Brand>
@@ -52,7 +52,7 @@ function NavbarUsuario() {
                         </Dropdown>
                         <Nav.Link href="/accesorioss">ACCESORIOS</Nav.Link>
                         <Nav.Link href="/reservarA">RESERVAR</Nav.Link>
-                        <Nav.Link href="/contacto">CONTACTO</Nav.Link>
+                        {/**<Nav.Link href="/contacto">CONTACTO</Nav.Link> */}
                     </Nav>
                     <Nav.Link href="/carritoDeCompras" className='fs-5 me-3'> <i className='fa fa-shopping-cart ' style={{fontSize:'25px'}} ></i></Nav.Link>
 
