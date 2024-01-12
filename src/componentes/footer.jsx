@@ -27,7 +27,7 @@ const Footer = () => {
               <li>Zapatos</li>
               <li>Atuendos</li>
               <li>Chalecos</li>
-              <li>Vatas</li>
+              <li>Batas</li>
               <li>Otros</li>
             </ul>
           </Col>
