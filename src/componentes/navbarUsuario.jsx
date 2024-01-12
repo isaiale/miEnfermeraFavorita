@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container, Image, Button, Dropdown } from 'react-bootstrap';
-import logo from '../img/isai.jpg';
-//import logo from '../img/logo.jpg';
+//import logo from '../img/isai.jpg';
+import logo from '../img/logo.jpg';
 import logoUser from '../img/uthh.png';
 import { AuthContext } from '../autenticar/AuthProvider';
 import '../css/colores.css';

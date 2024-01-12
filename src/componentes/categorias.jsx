@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Card, Row, Col, Carousel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import logo from '../img/Logo de mi enfermera favorita.jpg';
-import batas from '../img/batas.png';
-import chalecos from '../img/chaleco.png';
 import '../css/categoria.css';
 
 const categoriaProducto = [
@@ -14,7 +12,7 @@ const categoriaProducto = [
   },
   {
     image: logo,
-    description: 'Calzados',
+    description: 'Calzado',
     to: '/zapatos',
   },
   {

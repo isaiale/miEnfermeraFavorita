@@ -1,0 +1,38 @@
+.opiniones .caja-contenedor{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.opiniones .caja-contenedor .caja{
+    background: white;
+    margin: 1rem;
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+    border: .1rem solid rgba(0, 0, 0, .2);
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);    
+    flex: 1 1 20rem;
+    border-radius: .5rem;
+}
+.opiniones .caja-contenedor .caja .user img{
+    border-radius: 50%;
+    object-fit: cover;
+    height: 5rem;
+    width: 5rem;
+}
+.opiniones .caja-contenedor .caja .user h3{
+    color: black;
+    font-size: 1.5rem;  
+    flex: 6rem;  
+}
+/*.opiniones .caja-contenedor .caja .user .estrellas i{
+    color: yellow;
+    font-size: 1rem;
+}*/
+.opiniones .caja-contenedor .caja .comentarios{
+    color: #666;
+    font-size: 1rem;
+    text-align: start;
+    /*padding: 1rem;*/
+}

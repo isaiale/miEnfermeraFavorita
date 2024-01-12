@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import {Card, Container, Row, Col} from 'react-bootstrap';
+import { Card, Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import imagenProducto from '../img/imagenProductoAtuendo.jpg';
+import imagenProducto2 from '../img/batas.png';
+import imagenProducto3 from '../img/imagenProductoAtuendo2.jpg';
 import '../css/colores.css';
 
 const products = [
@@ -8,7 +10,8 @@ const products = [
     id: 1,
     name: 'Producto 1',
     category: 'Filipina',
-    price: '$10.99',
+    descripcion: 'buen tipo de producto',
+    price: '10.99',
     imageUrl: imagenProducto,
     sizes: ['S', 'M', 'L', 'XL'],
     colors: ['Azul', 'Rojo', 'Verde'],
@@ -18,8 +21,9 @@ const products = [
     id: 2,
     name: 'Producto 2',
     category: 'Filipina',
-    price: '$15.99',
-    imageUrl: imagenProducto,
+    descripcion: 'buen tipo de producto',
+    price: '15.99',
+    imageUrl: imagenProducto2,
     sizes: ['M', 'L'],
     colors: ['Azul', 'Rojo'],
     descuento: "no aplica",
@@ -28,8 +32,9 @@ const products = [
     id: 3,
     name: 'Producto 3',
     category: 'Filipina',
-    price: '$15.99',
-    imageUrl: imagenProducto,
+    descripcion: 'buen tipo de producto',
+    price: '15.99',
+    imageUrl: imagenProducto3,
     sizes: ['S', 'M', 'L', 'XL'],
     colors: ['Azul', 'Verde'],
     descuento: "10%",
@@ -38,7 +43,8 @@ const products = [
     id: 4,
     name: 'Producto 4',
     category: 'Filipina',
-    price: '$15.99',
+    descripcion: 'buen tipo de producto',
+    price: '15.99',
     imageUrl: imagenProducto,
     sizes: ['S', 'L', 'XL'],
     colors: ['Rojo', 'Verde'],
@@ -47,25 +53,63 @@ const products = [
 ];
 
 function ProductCard({ product }) {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShow = () => setShowModal(true);
+  const handleClose = () => setShowModal(false);
+
   return (
     <Col xs={6} lg={3}>
-      <Card className="mb-4">
+      <Card className="mb-4 text-center">
         {product.descuento !== "no aplica" && (
           <div className='position-absolute top-0 start-0'>
             <span className='badge bg-danger'>{product.descuento}</span>
           </div>
         )}
-        <Card.Img variant="top" src={product.imageUrl} />
+        <img variant="top" src={product.imageUrl} className='card-img-top' height='250px' />
         <Card.Body>
-          <Card.Title>{product.name}</Card.Title>
-          <Card.Text>Categoría: {product.category}</Card.Text>
-          <Card.Text>color: {product.colors}</Card.Text>
-          <Card.Text>tallas: {product.sizes}</Card.Text>
-          <Card.Text className="fs-5" style={{ color: '#0171fa' }}>
+          <h5 className="card-title mb-0">{product.name}</h5>
+          {/*<Card.Text>color: {product.colors}</Card.Text>
+          <Card.Text>tallas: {product.sizes}</Card.Text>*/}
+          <p className="card-text lead fw-bold">
             {product.price}
-          </Card.Text>
-          <button className='btn' style={{ color: 'white', background: '#daa232' }}>Ver más</button>
+          </p>
+          <button className='btn' style={{ color: 'white', background: '#daa232' }} onClick={handleShow}>
+            Ver más
+          </button>
         </Card.Body>
+
+        {/* Modal */}
+        <Modal show={showModal} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>{product.name}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="col-md-6">
+              <img src={product.imageUrl} height='400px' width='400px' />
+            </div>
+            <div className="col-md-5">
+              <h4 className="text-uppercase text-black">{product.category}</h4>
+              <h1 className="display-5">{product.title}</h1>
+              <h3 className="display-6 fw-bold my-4">${product.price}.</h3>
+              <p className="lead">{product.descripcion}</p>
+              <div className="d-grid mx-auto">
+                <Button variant='' style={{ color: 'white', background: '#daa232' }} className="mb-2">
+                  Comprar
+                </Button>
+                <button className='btn btn-outline-dark'>
+                  Agregar al carrito
+                </button>
+              </div>
+
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Cerrar
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </Card>
     </Col>
   );
