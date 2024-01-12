@@ -12,9 +12,9 @@
 
 @media screen and (max-width: 447px) {
   .desdription {
-    margin-left: 0px;
+    margin-left: 0;
     text-align: center;
-    width: 70px;
+    width: 100%; /* Cambié el valor para ocupar el ancho completo */
   }
 
   .desdription h6 span {
@@ -23,7 +23,7 @@
 
   .desdription h6 span.letra {
     text-align: center;
-    font-size: 11px;
-    display:block;
+    font-size: 10px;
+    display: block;
   }
 }

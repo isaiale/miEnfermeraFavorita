@@ -9,42 +9,42 @@ import '../css/categoria.css';
 const categoriaProducto = [
   {
     image: logo,
-    description: 'BATAS',
+    description: 'Batas',
     to: '/productos',
   },
   {
     image: logo,
-    description: 'CALZADOS',
+    description: 'Calzados',
     to: '/zapatos',
   },
   {
     image: logo,
-    description: 'CHALECOS',
+    description: 'Chalecos',
     to: '/chalecos',
   },
   {
     image: logo,
-    description: 'FILIPINAS',
+    description: 'Filipinas',
     to: '/filipina',
   },
   {
     image: logo,
-    description: 'SACOS',
+    description: 'Sacos',
     to: '/sacos',
   },
   {
     image: logo,
-    description: 'PANTALONES',
+    description: 'Pantalones',
     to: '/pantalones',
   },
   {
     image: logo,
-    description: 'SUETERES',
+    description: 'Sueter',
     to: '/sueteres',
   },
   {
     image: logo,
-    description: 'SCRUBS',
+    description: 'Scrubs',
     to: '/scrubs',
   },
 ];
