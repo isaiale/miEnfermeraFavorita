@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container, Image, Button, Dropdown } from 'react-bootstrap';
@@ -17,7 +16,7 @@ function NavbarUsuario() {
     };
 
     return (
-        <Navbar className='navbar-dark-text' style={{ fontSize: '15px', color: 'black', background:'#6fd2ee' }}  expand="lg">
+        <Navbar className='navbar-dark-text' style={{ fontSize: '15px', color: 'black' }} bg="light" expand="lg">
             <Container>
                 {/* Logo a la izquierda */}
                 <Navbar.Brand>
