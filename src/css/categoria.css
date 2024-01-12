@@ -27,3 +27,20 @@
     display: block;
   }
 }
+@media screen and (max-width: 320px) {
+  .desdription {
+    margin-left: 0;
+    text-align: center;
+    width: 100%; /* Cambié el valor para ocupar el ancho completo */
+  }
+
+  .desdription h6 span {
+    margin-top: 10px;
+  }
+
+  .desdription h6 span.letra {
+    text-align: center;
+    font-size: 9.5px;
+    display: block;
+  }
+}
