@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container, Image, Button, Dropdown } from 'react-bootstrap';
-import logo from '../img/logo.jpg';
+import logo from '../img/isai.jpg';
+//import logo from '../img/logo.jpg';
 import logoUser from '../img/uthh.png';
 import { AuthContext } from '../autenticar/AuthProvider';
 import '../css/colores.css';
@@ -19,7 +20,7 @@ function NavbarUsuario() {
         <Navbar className='navbar-dark-text' style={{ fontSize: '15px', color: 'black' }} bg="light" expand="lg">
             <Container>
                 {/* Logo a la izquierda */}
-                <Navbar.Brand>
+                <Navbar.Brand className='espacioImg'>
                     <Image src={logo} className='rounded-circle' alt="" width="70" height="70" style={{margin:'-12px'}}/>
                 </Navbar.Brand>
 

@@ -119,3 +119,9 @@
     color: white;
     transition: all 0.5s ease;
 }
+
+@media screen and (max-width: 580px) {
+    .espacioImg {
+      margin-left: 30px;
+    }
+  }
