@@ -1,18 +1,19 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container, Image, Button, Dropdown } from 'react-bootstrap';
-//import logo from '../img/isai.jpg';
 import logo from '../img/logo.jpg';
-import logoUser from '../img/uthh.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AuthContext } from '../autenticar/AuthProvider';
 import '../css/colores.css';
+import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 function NavbarUsuario() {
-    const { isAuthenticated, logout } = useContext(AuthContext);
+    const { isAuthenticated, logout, user } = useContext(AuthContext);
     const history = useNavigate();
+
     const cerrarSesion = () => {
         logout();
-        history('/');
+        history('/login');
 
     };
 
@@ -33,46 +34,45 @@ function NavbarUsuario() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto ">
-                        <Nav.Link href="/" >INICIO</Nav.Link>
+                        <Nav.Link as={Link} to="/" >INICIO</Nav.Link>
                         <Dropdown as={Nav.Item}>
                             <Dropdown.Toggle as={Nav.Link} id="uniformes-dropdown">
                                 UNIFORMES
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-                                <Dropdown.Item href="/productos">FILIPINAS</Dropdown.Item>
-                                <Dropdown.Item href="#zapatos">CALZADO</Dropdown.Item>
-                                <Dropdown.Item href="#chalecos">CHALECOS</Dropdown.Item>
-                                <Dropdown.Item href="#batas">BATAS</Dropdown.Item>
-                                <Dropdown.Item href="#otros">SACOS</Dropdown.Item>
-                                <Dropdown.Item href="#otros">PANTALONES</Dropdown.Item>
-                                <Dropdown.Item href="#otros">SUÉTERES</Dropdown.Item>
-                                <Dropdown.Item href="#otros">SCRUBS</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="/productos">FILIPINAS</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="#zapatos">CALZADO</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="#chalecos">CHALECOS</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="#batas">BATAS</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="#otros">SACOS</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="#otros">PANTALONES</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="#otros">SUÉTERES</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="#otros">SCRUBS</Dropdown.Item>
 
                             </Dropdown.Menu>
                         </Dropdown>
-                        <Nav.Link href="/accesorioss">ACCESORIOS</Nav.Link>
-                        <Nav.Link href="/reservarA">RESERVAR</Nav.Link>
-                        {/**<Nav.Link href="/contacto">CONTACTO</Nav.Link> */}
+                        <Nav.Link as={Link} to="/accesorioss">ACCESORIOS</Nav.Link>
+                        <Nav.Link as={Link} to="/reservarA">RESERVAR</Nav.Link>
                     </Nav>
-                    <Nav.Link href="/carritoDeCompras" className='fs-5 me-3'> <i className='fa fa-shopping-cart ' style={{fontSize:'25px'}} ></i></Nav.Link>
+                    <Nav.Link as={Link} to="/carritoDeCompras" className='fs-5 me-3'> <i className='fa fa-shopping-cart ' style={{fontSize:'25px'}} ></i></Nav.Link>
 
                     <Dropdown>
                         {isAuthenticated !== null ? (
                             isAuthenticated ? (
                                 <>
                                     <Dropdown.Toggle as={Button} variant="light" id="dropdown-basic">
-                                        <Image src={logoUser} className='rounded-circle' alt="" width="50" height="50" />
+                                    <i className=''>Bienvenido, {user.nombre} </i>
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#perfil">PERFIL</Dropdown.Item>
-                                        <Dropdown.Item href="#compras">COMPRAS</Dropdown.Item>
-                                        <Dropdown.Item className='text-danger' onClick={cerrarSesion}>CERRAR SESIÓN</Dropdown.Item>
+                                        <Dropdown.Item as={Link} to="#perfil"><i className='fa fa-user'></i> PERFIL </Dropdown.Item>
+                                        <Dropdown.Item as={Link} to="#compras"><i className="fa fa-shopping-bag"></i> COMPRAS</Dropdown.Item>
+                                        <Dropdown.Item className='text-danger' onClick={cerrarSesion}><FontAwesomeIcon icon={faRightFromBracket} /> CERRAR SESIÓN</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </>
                             ) : (
                                 <>
                                     <Nav className="me-auto">
-                                        <Nav.Link href="/registroUsuario"> REGISTRO</Nav.Link>
+                                        <Nav.Link as={Link} to="/registroUsuario"> REGISTRO</Nav.Link>
                                         <div className='botonLogin'>
                                             <Link className='color' to="/login">
                                                 <button className='btn rounded-pill' id="login-button" >

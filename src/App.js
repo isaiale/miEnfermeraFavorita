@@ -1,56 +1,53 @@
 import React from 'react';
-import { Routes, BrowserRouter, Route } from 'react-router-dom';
-import { inicioUsuario } from './vistas/usuario/inicioUsuario';
-import { avisoPrivacidad } from './vistas/usuario/avisoPrivacidad';
-import desarrolladores from './vistas/usuario/desarrolladores';
-import { navegacionCifrado } from './vistas/usuario/navegacionCifrado';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import InicioUsuario from './vistas/usuario/inicioUsuario';
+import AvisoPrivacida from './vistas/usuario/avisoPrivacidad';
 import ReservarA from './vistas/usuario/Reservar';
-
-import EscitalaCifrado from './componentes/cifradoEscitalo';
-import CifradoCesar from './componentes/encriptacionCesar';
-
+import { LoginUser } from './vistas/usuario/LoginUser';
 import { Producto } from './vistas/usuario/productos';
-import login from './vistas/usuario/login';
-import registroUser from './vistas/usuario/registroUser';
+import RegistroUser from './vistas/usuario/registroUser';
 import CarritoCompra from './vistas/usuario/carritoDeCompras';
 import PoliticaDeCookies from './vistas/usuario/politicaDeCookies';
 import TerminosYCondiciones from './vistas/usuario/terminosYCondiciones';
 import Error404 from './componentes/error404';
 import { Accesorioss } from './vistas/usuario/accesorios';
 import { Contactos } from './vistas/usuario/contacto';
+import RecuperarPasswordd from './vistas/usuario/RecuperarPassword';
+
+import { InicioAdmin } from './vistas/administrador/InicioAdmin';
+
+import InicioGerente from './vistas/gerente/InicioGerente';
 
 import { AuthContextProvider } from './autenticar/AuthProvider';
 
 
-function App() {
+export default function App() {
   return (
     <div>
       <AuthContextProvider>
         <BrowserRouter>
           <Routes>
-            <Route path='/' Component={inicioUsuario}></Route>
-            <Route path="productos" Component={Producto}></Route>
-            <Route path="login" Component={login}></Route>
-            <Route path="registroUsuario" Component={registroUser}></Route>
-            <Route path="carritoDeCompras" Component={CarritoCompra}></Route>
-            <Route path="politicaDeCookies" Component={PoliticaDeCookies}></Route>
-            <Route path="terminosYcondiciones" Component={TerminosYCondiciones}></Route>                        
-            <Route path="accesorioss" Component={Accesorioss}></Route>
-            <Route path="contacto" Component={Contactos}></Route>   
-            <Route path="reservarA" Component={ReservarA}></Route>            
-
-            <Route path='avisoPrivacidad' Component={avisoPrivacidad}></Route>
-            <Route path='desarrolladores' Component={desarrolladores}></Route>
-            <Route path='navegacionCifrados' Component={navegacionCifrado}></Route>
-
-            <Route path='escitala' Component={EscitalaCifrado}></Route>
-            <Route path='cesar' Component={CifradoCesar}></Route>
+            <Route path='/' element={<InicioUsuario />}></Route>
+            <Route path="productos"  element={<Producto />}></Route>
+            <Route path="login" element={<LoginUser/>}></Route>
+            <Route path="registroUsuario"  element={<RegistroUser />}></Route>
+            <Route path="carritoDeCompras"  element={<CarritoCompra />}></Route>
+            <Route path="politicaDeCookies"  element={<PoliticaDeCookies />}></Route>
+            <Route path="terminosYcondiciones" element={<TerminosYCondiciones />}></Route>                        
+            <Route path="accesorioss" element={<Accesorioss />}></Route>
+            <Route path="contacto" element={<Contactos />}></Route>   
+            <Route path="reservarA" element={<ReservarA />}></Route>            
+            <Route path='avisoPrivacidad' element={<AvisoPrivacida />}></Route>
+            <Route path='inicioAdmin' element={<InicioAdmin />}></Route>
+            <Route path='inicioGerente' element={<InicioGerente/>}></Route>
+            <Route path="recuperarPassword" element={<RecuperarPasswordd />}></Route>
+            
             <Route path="*" element={<Error404 />} />
           </Routes>
         </BrowserRouter>
       </AuthContextProvider>
+
     </div>
   );
 }
-
-export default App;

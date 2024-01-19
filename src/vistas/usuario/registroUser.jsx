@@ -4,7 +4,7 @@ import Footer from '../../componentes/footer';
 import RegistroUsuario from '../../componentes/registroUsuario';
 
 
-const registroUser = () => {
+const RegistroUser = () => {
     return (
         <div>
             <NavbarUsuario />
@@ -14,4 +14,4 @@ const registroUser = () => {
     )
 }
 
-export default registroUser
+export default RegistroUser

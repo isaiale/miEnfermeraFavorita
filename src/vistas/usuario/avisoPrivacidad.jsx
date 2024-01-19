@@ -3,13 +3,14 @@ import React from 'react';
 import NavbarUsuario from "../../componentes/navbarUsuario";
 import Footer from "../../componentes/footer";
 
-export const avisoPrivacidad = () => {
+const AvisoPrivacida = ()=> {
+
   return (
     <div>
         <NavbarUsuario/>
         <AvisoPrivacidad/>
         <Footer/>
-
     </div>
   )
 }
+export default AvisoPrivacida

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import imagenProducto from '../img/imagenProductoAtuendo.jpg';
 import imagenProducto2 from '../img/batas.png';
 import imagenProducto3 from '../img/imagenProductoAtuendo2.jpg';
 import '../css/colores.css';
+
 
 const products = [
   {
@@ -117,14 +118,25 @@ function ProductCard({ product }) {
 
 function Productos() {
   const [selectedSize, setSelectedSize] = useState(''); // Estado para la talla seleccionada
+  const [selectedDescuento, setSelectedDescuento] = useState(''); // Estado para descuento
+  const [uniqueDescuentos, setUniqueDescuentos] = useState([]); //Para que no se repitan los datos de descuento
   const [selectedColor, setSelectedColor] = useState(''); // Estado para el color seleccionado
   const [priceRange, setPriceRange] = useState([0, 50]); // Rango de precios
   const minPrice = 0;
   const maxPrice = 50;
 
+  useEffect(() => {
+    // Extraer descuentos únicos de los productos
+    const descuentos = new Set(products.map((product) => product.descuento));
+    setUniqueDescuentos(['', ...Array.from(descuentos)]);
+  }, []);
+
   // Función para aplicar filtros de talla y color
   const filteredProducts = products.filter((product) => {
     if (selectedSize && !product.sizes.includes(selectedSize)) {
+      return false;
+    }
+    if (selectedDescuento && !product.descuento.includes(selectedDescuento)) {
       return false;
     }
     if (selectedColor && !product.colors.includes(selectedColor)) {
@@ -168,6 +180,20 @@ function Productos() {
               <option value="Azul">Azul</option>
               <option value="Rojo">Rojo</option>
               <option value="Verde">Verde</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <h5>Filtrar por Descuento</h5>
+            <select
+              className="form-select"
+              onChange={(e) => setSelectedDescuento(e.target.value)}
+              value={selectedDescuento}
+            >
+              {uniqueDescuentos.map((descuento, index) => (
+                <option key={index} value={descuento}>
+                  {descuento === '' ? 'Todos' : descuento}
+                </option>
+              ))}
             </select>
           </div>
           <div className="mb-4">

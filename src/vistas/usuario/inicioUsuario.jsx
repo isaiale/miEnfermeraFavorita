@@ -7,18 +7,17 @@ import UniformesDestacados from '../../componentes/vistaDeUniformesInicio';
 import ComentariosClientes from '../../componentes/ComentariosClientes';
 import ProductosCalzado from '../../componentes/productosCalzado';
 
-export const inicioUsuario = () => {
+function InicioUsuario() {
   return (
     <div>
       <NavbarUsuario />
       <Slider />
-      {/**<EncabezadoUser /> */}
       <CategoriasAtuendos />  
       <ProductosCalzado />
       <UniformesDestacados />
       <ComentariosClientes/>
       <Footer />
-
     </div>
-  )
+  );
 }
+export default InicioUsuario;

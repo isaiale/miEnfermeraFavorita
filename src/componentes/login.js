@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from 'react-router-dom';
-import { UrlUsuarios } from '../autenticar/urlUsuarios';
+import { UrlUsuarios } from '../url/urlSitioWeb';
 import { AuthContext } from '../autenticar/AuthProvider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -37,12 +37,12 @@ function Login() {
                     setError('');
                     login(user);
                     // Redirigir según el rol del usuario
-                    if (user.rol[0].rol.includes("user")) {
-                        history('/');
-                    } else if (user.rol.includes("admin")) {
-                        history('/navbarAdmin');
-                    } else if (user.rol.includes("gerente")) {
-                        history('/navbarGerente');
+                    if (user.rol.some((r) => r.rol.includes("user"))) {
+                        history('/');                        
+                    } else if (user.rol.some((r) => r.rol.includes("admin"))) {
+                        history('/inicioAdmin');
+                    } else if (user.rol.some((r) => r.rol.includes("gerente"))) {
+                        history('/inicioGerente');
                     }
                 } else {
                     setError('Credenciales incorrectas. Verifica tu correo y contraseña.');
@@ -50,7 +50,7 @@ function Login() {
             })
 
 
-        };
+    };
 
     return (
         <div className="container">
@@ -67,17 +67,15 @@ function Login() {
 
                         <Form.Group className="" controlId="email">
                             <Form.Label>Correo Electrónico</Form.Label>
-                            <Form.Control
-                                type="email"
-                                placeholder="Ingresa tu correo electrónico"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                            />
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1"><i className="fa fa-envelope"></i></span>
+                                <input type="email" className="form-control" placeholder="Ingresa tu correo electrónico" aria-describedby="basic-addon1" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            </div>
                             <Form.Label className='mt-3'>Contraseña</Form.Label>
                         </Form.Group>
 
                         <Form.Group className="input-group mb-3" controlId="password">
+                            <span class="input-group-text" id="basic-addon1"><i className="fa fa-lock"></i></span>
                             <Form.Control
                                 type={showPassword ? 'text' : 'password'}
                                 placeholder="Ingresa tu contraseña"
@@ -99,7 +97,7 @@ function Login() {
                             </button>
                         </div>
                         <div className='text-center m-2'>
-                            <Link className="link-primary">
+                            <Link className="link-primary " to="/recuperarPassword">
                                 ¿Olvidaste tu contraseña?
                             </Link>
                         </div>
