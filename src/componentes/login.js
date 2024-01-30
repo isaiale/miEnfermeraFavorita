@@ -1,54 +1,77 @@
 import React, { useState, useContext } from 'react';
 import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from 'react-router-dom';
-import { UrlUsuarios } from '../url/urlSitioWeb';
+import { UrlLoginUsuarios } from '../url/urlSitioWeb';
 import { AuthContext } from '../autenticar/AuthProvider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import ToastMessage from '../utilidad/Toast'; // Toast 
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState('');
     const { login } = useContext(AuthContext);
-
+    const [showToast, setShowToast] = useState(false);
+    const [message, setMessage] = useState('');
+    const [toastColor, setToastColor] = useState('');
     const history = useNavigate();
 
     const handleShowPassword = () => {
         setShowPassword(!showPassword);
     };
 
-    const handleSubmit = (e) => {
+    const showToastMessage = (message, toastColor) => {
+        setMessage(message);
+        setToastColor(toastColor);
+        setShowToast(true);
+
+        // Oculta el Toast después de 5 segundos
+        setTimeout(() => {
+            setShowToast(false);
+        }, 5000);
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!email || !password) {
-            setError('Por favor, completa todos los campos.');
+            showToastMessage('Por favor, completa los campos.', 'error');
             return;
         }
 
-        // Verificar las credenciales del usuario en los datos importados
-        fetch(UrlUsuarios)
+        // Verificar las credenciales del usuario en los datos importados     
+        fetch(UrlLoginUsuarios, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                correo: email,
+                contraseña: password,
+            }),
+        })
             .then(response => response.json())
             .then(data => {
-                const user = data.find((u) => u.correo === email && u.contraseña === password);
-                if (user) {
-                    // Usuario autenticado con éxito
-                    setError('');
-                    login(user);
-                    // Redirigir según el rol del usuario
-                    if (user.rol.some((r) => r.rol.includes("user"))) {
-                        history('/');                        
-                    } else if (user.rol.some((r) => r.rol.includes("admin"))) {
-                        history('/inicioAdmin');
-                    } else if (user.rol.some((r) => r.rol.includes("gerente"))) {
-                        history('/inicioGerente');
+                if (data._id) {
+                    if (data.estado === "ACTIVO") {
+                        login(data);
+                        if (data.rol === "User") {
+                            history('/');
+                        } else if (data.rol === "Admin") {
+                            history('/inicioAdmin');
+                        } else if (data.rol === "Gerente") {
+                            history('/inicioGerente');
+                        }
+                    } else {
+                        showToastMessage('Tu cuenta está inactiva. Por favor, contacta al administrador.', 'error');
                     }
                 } else {
-                    setError('Credenciales incorrectas. Verifica tu correo y contraseña.');
+                    showToastMessage('Credenciales incorrectas. Verifica tu correo y contraseña.', 'error');
                 }
             })
-
+            .catch((err) => console.log(err));
+            
 
     };
 
@@ -57,13 +80,13 @@ function Login() {
             <div className="row justify-content-center m-3">
                 <div className="col-md-5 border">
                     <Form onSubmit={handleSubmit}>
+                        <ToastMessage
+                            showToast={showToast}
+                            message={message}
+                            onClose={() => setShowToast(false)}
+                            toastColor={toastColor}
+                        />
                         <h2 className="m-2 text-center">Inicio de Sesión</h2>
-
-                        {error &&
-                            <div className=''>
-                                <p className="mt-1 mb-1 alert alert-danger ">{error}</p>
-                            </div>
-                        }
 
                         <Form.Group className="" controlId="email">
                             <Form.Label>Correo Electrónico</Form.Label>

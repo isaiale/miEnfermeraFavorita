@@ -46,6 +46,15 @@ const accesoriosEnfermeria = [
   },
 ];
 
+const csp = ` 
+  default-src 'self'; 
+  script-src 'self' 'unsafe-inline'; 
+  style-src 'self' 'unsafe-inline'; 
+  img-src 'self' data:; 
+  font-src 'self' data:; 
+`;
+
+
 function AccesorioEnfermeriaCard({ accesorio }) {
   return (
     <Col xs={6} lg={3}>
@@ -98,6 +107,8 @@ function Accesorios() {
 
   return (
     <Container>
+      
+
       <Row>
         <Col lg={3}>
           <div className="mb-4">

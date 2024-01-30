@@ -14,12 +14,17 @@ import Error404 from './componentes/error404';
 import { Accesorioss } from './vistas/usuario/accesorios';
 import { Contactos } from './vistas/usuario/contacto';
 import RecuperarPasswordd from './vistas/usuario/RecuperarPassword';
+import VistaBusquedaSimple from './vistas/usuario/VistaBusquedaSimple';
+import VistaBusquedaAvanzada from './vistas/usuario/VistaBusquedaAvanzada';
+import Prueba from './vistas/usuario/prueba';
 
 import { InicioAdmin } from './vistas/administrador/InicioAdmin';
 
 import InicioGerente from './vistas/gerente/InicioGerente';
 
 import { AuthContextProvider } from './autenticar/AuthProvider';
+import { Ayuda } from './vistas/usuario/ayuda';
+
 
 
 export default function App() {
@@ -36,12 +41,16 @@ export default function App() {
             <Route path="politicaDeCookies"  element={<PoliticaDeCookies />}></Route>
             <Route path="terminosYcondiciones" element={<TerminosYCondiciones />}></Route>                        
             <Route path="accesorioss" element={<Accesorioss />}></Route>
-            <Route path="contacto" element={<Contactos />}></Route>   
+            <Route path="contacto" element={<Contactos />}></Route>
+            <Route path="ayuda" element={<Ayuda/>}></Route>     
             <Route path="reservarA" element={<ReservarA />}></Route>            
             <Route path='avisoPrivacidad' element={<AvisoPrivacida />}></Route>
             <Route path='inicioAdmin' element={<InicioAdmin />}></Route>
             <Route path='inicioGerente' element={<InicioGerente/>}></Route>
             <Route path="recuperarPassword" element={<RecuperarPasswordd />}></Route>
+            <Route path="busquedasimple" element={<VistaBusquedaSimple />}></Route>
+            <Route path="busquedaAvanzada" element={<VistaBusquedaAvanzada />}></Route>
+            <Route path="prueba" element={<Prueba />}></Route>
             
             <Route path="*" element={<Error404 />} />
           </Routes>

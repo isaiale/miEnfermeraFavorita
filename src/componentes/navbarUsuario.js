@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Navbar, Nav, Container, Image, Button, Dropdown } from 'react-bootstrap';
+import { Navbar, Nav, Container, Image, Button, Dropdown, Form } from 'react-bootstrap';
 import logo from '../img/logo.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AuthContext } from '../autenticar/AuthProvider';
@@ -18,11 +18,11 @@ function NavbarUsuario() {
     };
 
     return (
-        <Navbar className='navbar-dark-text' style={{ fontSize: '15px', color: 'black' }} bg="light" expand="lg">
+        <Navbar className='navbar-dark-text' style={{ fontSize: '15px', color: 'black' }} bg="light" expand="lg" >
             <Container>
                 {/* Logo a la izquierda */}
                 <Navbar.Brand className='espacioImg'>
-                    <Image src={logo} className='rounded-circle' alt="" width="70" height="70" style={{margin:'-12px'}}/>
+                    <Image src={logo} className='rounded-circle' alt="" width="70" height="70" style={{ margin: '-12px' }} />
                 </Navbar.Brand>
 
                 {/* Espacio entre elementos */}
@@ -52,16 +52,29 @@ function NavbarUsuario() {
                             </Dropdown.Menu>
                         </Dropdown>
                         <Nav.Link as={Link} to="/accesorioss">ACCESORIOS</Nav.Link>
+                        {/* <Nav.Link as={Link} to="/prueba">prueba</Nav.Link> */}
                         <Nav.Link as={Link} to="/reservarA">RESERVAR</Nav.Link>
+                        <Dropdown as={Nav.Item}>
+                            <Dropdown.Toggle as={Nav.Link} id="buscar-dropdown">
+                                BUSCAR
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item as={Link} to="/busquedasimple">Busqueda Simple</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="/busquedaAvanzada">Busqueda Avanzada</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="/contacto">Contacto</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="/ayuda">Ayuda</Dropdown.Item>
+                                
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </Nav>
-                    <Nav.Link as={Link} to="/carritoDeCompras" className='fs-5 me-3'> <i className='fa fa-shopping-cart ' style={{fontSize:'25px'}} ></i></Nav.Link>
+                    <Nav.Link as={Link} to="/carritoDeCompras" className='fs-5 me-3'> <i className='fa fa-shopping-cart ' style={{ fontSize: '25px' }} ></i></Nav.Link>
 
                     <Dropdown>
                         {isAuthenticated !== null ? (
                             isAuthenticated ? (
                                 <>
                                     <Dropdown.Toggle as={Button} variant="light" id="dropdown-basic">
-                                    <i className=''>Bienvenido, {user.nombre} </i>
+                                        <i className=''>Bienvenido, {user.nombre} </i>
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
                                         <Dropdown.Item as={Link} to="#perfil"><i className='fa fa-user'></i> PERFIL </Dropdown.Item>
