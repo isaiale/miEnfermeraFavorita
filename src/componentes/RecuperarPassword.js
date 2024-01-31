@@ -108,7 +108,7 @@ const PasswordResetFlow = () => {
   const renderProgressCircle = (circleStep) => {
     return (
       <div style={{
-        color: step >= circleStep ? 'green' : 'gray',
+        color: step >= circleStep ? 'white' : 'gray',
         width: '30px',
         height: '30px',
         borderRadius: '50%',
@@ -116,7 +116,7 @@ const PasswordResetFlow = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        //backgroundColor: step >= circleStep ? 'rgba(0, 128, 0, 0.2)' : 'transparent',
+        backgroundColor: step >= circleStep ? 'green' : 'transparent',
         border: `2px solid ${step >= circleStep ? 'green' : 'gray'}`,
       }}>
         <i className="fa fa-check"></i>

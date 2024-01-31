@@ -39,29 +39,29 @@ function RegistroUsuario() {
 
         // Validaciones iniciales
         if (!nombre || !apellido || !correo || !telefono || !password) {
-            showToastMessage('Por favor, completa todos los campos.', 'info');
+            showToastMessage('Por favor, completa todos los campos.', 'error');
             return;
         }
 
-        if (!nombre || !/^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]{2,}$/.test(nombre)) {
-            showToastMessage('El nombre debe contener más de 2 letras.', 'info');
+        if (!nombre || !/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]{2,}$/.test(nombre)) {
+            showToastMessage('El nombre debe contener más de 2 letras.', 'error');
             return;
         }
 
 
-        if (!/^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]{2,}$/.test(apellido)) {
-            showToastMessage('El apellido debe contener más de 2 letras.', 'info');
+        if (!apellido || !/^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]{2,}$/.test(apellido)) {
+            showToastMessage('El apellido debe contener más de 2 letras.', 'error');
             return;
         }
 
         const correoRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!correoRegex.test(correo)) {
-            showToastMessage('Por favor, introduce una dirección de correo electrónico válida.', 'info');
+            showToastMessage('Por favor, introduce una dirección de correo electrónico válida.', 'error');
             return;
         }
 
         if (telefono.length === 9 || !/[0-9]/.test(telefono) || !/\d/.test(telefono)) {
-            showToastMessage('El numero debe tener 10 números.', 'info');
+            showToastMessage('El numero debe tener 10 números.', 'error');
             return;
         }
 
@@ -95,7 +95,7 @@ function RegistroUsuario() {
             }
 
 
-            showToastMessage(errorMensaje, 'info');
+            showToastMessage(errorMensaje, 'error');
 
             return;
         }
@@ -126,14 +126,18 @@ function RegistroUsuario() {
                 }),
             });
             // Limpiar campos y establecer mensajes de éxito si es necesario
+            alert('Registro exitoso. Se enviará un correo a para activar tu cuenta.');
             setNombre('');
             setApellido('');
             setTelefono('');
             setCorreo('');
             setPassword('');
             // Redirigir al usuario a la página de éxito
-            showToastMessage(`Registro exitoso. Se enviará un correo a ${correo} para activar tu cuenta.`, 'success');
+
             history('/login');
+
+            // Puedes agregar aquí un mensaje adicional o realizar acciones adicionales después del registro exitoso
+            showToastMessage('¡Bienvenido! Gracias por registrarte.', 'success');
         } catch (error) {
             console.error('Error al agregar datos:', error);
             showToastMessage('Error al agregar datos!', 'error');
@@ -194,7 +198,14 @@ function RegistroUsuario() {
                                         placeholder="Ingresa tu número"
                                         aria-describedby="basic-addon1"
                                         value={telefono}
-                                        onChange={(e) => setTelefono(e.target.value)} />
+                                        onChange={(e) => {
+                                            const input = e.target.value;
+                                            // Verificar que solo sean números y que la longitud sea igual a 10
+                                            if (/^[0-9]{0,10}$/.test(input)) {
+                                                setTelefono(input);
+                                            }
+                                        }}
+                                    />
                                 </div>
                             </Form.Group>
 

@@ -6,8 +6,8 @@
 }
 .opiniones .caja-contenedor .caja{
     background: white;
-    margin: 1rem;
-    padding: 1rem;
+    margin: .5rem;
+    padding: .3rem;
     text-align: center;
     position: relative;
     border: .1rem solid rgba(0, 0, 0, .2);
@@ -18,8 +18,9 @@
 .opiniones .caja-contenedor .caja .user img{
     border-radius: 50%;
     object-fit: cover;
-    height: 5rem;
-    width: 5rem;
+    height: 4rem;
+    width: 4rem;
+    padding: .2rem;
 }
 .opiniones .caja-contenedor .caja .user h3{
     color: black;
@@ -32,7 +33,7 @@
 }*/
 .opiniones .caja-contenedor .caja .comentarios{
     color: #666;
-    font-size: 1rem;
+    font-size: .9rem;
     text-align: start;
-    /*padding: 1rem;*/
+    padding: .5rem;
 }

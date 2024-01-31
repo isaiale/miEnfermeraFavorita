@@ -80,7 +80,7 @@ const UniformesDestacados = () => {
               {products.slice(index * 3, index * 3 + 3).map((product) => (
                 <Col key={product.id} xs={4} md={4}>
                   <Card className="mb-4">
-                    <Card.Img variant="top" src={product.imageUrl} />
+                    <img variant="top" className='product--image' src={product.imageUrl} />
                     <Card.Body>
                       <div className='descripcionLetra'>
                         <h1 className='tipoLetra'>{product.categoriaUniformes} {product.name}</h1>
