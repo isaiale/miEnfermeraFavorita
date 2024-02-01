@@ -15,6 +15,7 @@ function Login() {
     const [showToast, setShowToast] = useState(false);
     const [message, setMessage] = useState('');
     const [toastColor, setToastColor] = useState('');
+    const [showError, setShowError] = useState(false);
     const history = useNavigate();
 
     const handleShowPassword = () => {
@@ -35,8 +36,10 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        setShowError(false);
+
         if (!email || !password) {
-            showToastMessage('Por favor, completa los campos.', 'error');
+            setShowError(true);
             return;
         }
 
@@ -71,7 +74,7 @@ function Login() {
                 }
             })
             .catch((err) => console.log(err));
-            
+
 
     };
 
@@ -92,34 +95,53 @@ function Login() {
                             <Form.Label>Correo Electrónico</Form.Label>
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1"><i className="fa fa-envelope"></i></span>
-                                <input type="email" className="form-control" placeholder="Ingresa tu correo electrónico" aria-describedby="basic-addon1" value={email} onChange={(e) => setEmail(e.target.value)} />
+                                <input type="email" 
+                                className={`form-control ${showError && !email ? 'is-invalid' : ''}`} 
+                                placeholder="Ingresa tu correo electrónico" 
+                                aria-describedby="basic-addon1" value={email} 
+                                onChange={(e) => setEmail(e.target.value)} />
                             </div>
-                            <Form.Label className='mt-3'>Contraseña</Form.Label>
+                            {showError && !email && (
+                                <Form.Text className="text-danger">
+                                    Ingrese su correo.
+                                </Form.Text>
+                            )}
                         </Form.Group>
 
-                        <Form.Group className="input-group mb-3" controlId="password">
-                            <span class="input-group-text" id="basic-addon1"><i className="fa fa-lock"></i></span>
-                            <Form.Control
-                                type={showPassword ? 'text' : 'password'}
-                                placeholder="Ingresa tu contraseña"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                                classname='input-group'
-                            />
-                            <button type="button"
-                                className="btn btn-outline-secondary"
-                                onClick={handleShowPassword}
-                            >
-                                {showPassword ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
-                            </button>
+                        <Form.Group className="input-group mb-1" controlId="password">
+                            <Form.Label className='mt-1'>Contraseña</Form.Label>
+                            <div className="input-group">
+                                <span class="input-group-text" id="basic-addon1"><i className="fa fa-lock"></i></span>
+                                <Form.Control
+                                    type={showPassword ? 'text' : 'password'}
+                                    placeholder="Ingresa tu contraseña"
+                                    aria-describedby="basic-addon1"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className={`form-control ${showError && !password ? 'is-invalid' : ''}`}
+                                />
+                                <button type="button"
+                                    className="btn btn-outline-secondary"
+                                    onClick={handleShowPassword}
+                                >
+                                    {showPassword ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
+                                </button>
+                            </div>
+                            {showError && !password && (
+                                <Form.Text className="text-danger">
+                                    Ingrese una contraseña.
+                                </Form.Text>
+                            )}
                         </Form.Group>
-                        <div className="text-center mt-3 d-grid mx-auto">
-                            <button className='btn' style={{ color: 'white', background: '#daa232' }} type="submit">
-                                Iniciar Sesión
-                            </button>
+                        <div>
+                            <div className="text-center m-2 mb-2 d-grid mx-auto">
+                                <button className='btn' style={{ color: 'white', background: '#daa232' }} type="submit">
+                                    Iniciar Sesión
+                                </button>
+                            </div>
                         </div>
-                        <div className='text-center m-2'>
+
+                        <div className='text-center m-2 mb-3'>
                             <Link className="link-primary " to="/recuperarPassword">
                                 ¿Olvidaste tu contraseña?
                             </Link>

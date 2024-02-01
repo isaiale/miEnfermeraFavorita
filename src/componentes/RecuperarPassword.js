@@ -17,6 +17,7 @@ const PasswordResetFlow = () => {
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState('');
   const [toastColor, setToastColor] = useState('');
+  const [showError, setShowError] = useState(false);
 
   const isPasswordValid = (password) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
@@ -42,6 +43,11 @@ const PasswordResetFlow = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!email) {
+      setShowError(true);
+      return;
+    }
+
     try {
       if (step === 1) {
         // Enviar correo
@@ -54,11 +60,10 @@ const PasswordResetFlow = () => {
         });
 
         if (response.ok) {
-          setError('');
           setStep(2);
         } else {
           const data = await response.json();
-          showToastMessage(data.message,'error');
+          showToastMessage(data.message, 'error');
         }
       } else if (step === 2) {
         // Verificar código de verificación
@@ -79,7 +84,7 @@ const PasswordResetFlow = () => {
       } else if (step === 3) {
         // Validar contraseña antes de enviar la solicitud
         if (!isPasswordValid(newPassword)) {
-          showToastMessage('La contraseña no cumple con los requisitos de seguridad.','warning');
+          showToastMessage('La contraseña no cumple con los requisitos de seguridad.', 'warning');
           return;
         }
 
@@ -94,7 +99,7 @@ const PasswordResetFlow = () => {
 
         if (response.ok) {
           history('/login');
-          showToastMessage('Contraseña restablecida correctamente!','success');
+          showToastMessage('Contraseña restablecida correctamente!', 'success');
         } else {
           const data = await response.json();
           setError(data.message);
@@ -135,7 +140,13 @@ const PasswordResetFlow = () => {
               placeholder="Correo electrónico"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className={`${showError && !email ? 'is-invalid' : ''}`}
             />
+            {showError && !email && (
+              <Form.Text className="text-danger">
+                Ingrese su correo.
+              </Form.Text>
+            )}
           </Form.Group>
         </>
       );
@@ -197,11 +208,14 @@ const PasswordResetFlow = () => {
               {renderProgressCircle(3)}
             </div>
             {renderStepContent()}
-            <div className="text-center mt-3 d-grid mx-auto mb-3">
-              <button className="btn" style={{ color: 'white', background: '#daa232' }} type="submit">
-                {step === 1 ? 'Enviar Correo' : step === 2 ? 'Verificar Código' : 'Restablecer Contraseña'}
-              </button>
+            <div>
+              <div className="text-center mt-3 d-grid mx-auto mb-3">
+                <button className="btn" style={{ color: 'white', background: '#daa232' }} type="submit">
+                  {step === 1 ? 'Enviar Correo' : step === 2 ? 'Verificar Código' : 'Restablecer Contraseña'}
+                </button>
+              </div>
             </div>
+
           </Form>
         </div>
       </div>
