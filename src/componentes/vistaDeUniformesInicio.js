@@ -1,10 +1,7 @@
 import React from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Carousel from 'react-bootstrap/Carousel';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+import { Card, Button } from 'react-bootstrap';
 import imgUnifrmes from '../img/imagenProductoAtuendo.jpg';
 import imgUnifrmes2 from '../img/imagenProductoAtuendo2.jpg';
 import imgUnifrmes3 from '../img/imagenProductoAtuendoss.jpg';
@@ -69,36 +66,46 @@ const products = [
   }
 ];
 
+const responsive = {
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 5,
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 800 },
+    items: 4,
+  },
+  tablet: {
+    breakpoint: { max: 800, min: 464 },
+    items: 2,
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 2,
+  },
+};
+
 const UniformesDestacados = () => {
   return (
-    <Container>
+    <div>
       <h4 className="text-center my-4">Los mejores uniformes</h4>
-      <Carousel interval={null} indicators={true}>
-        {Array.from({ length: Math.ceil(products.length / 3) }).map((_, index) => (
-          <Carousel.Item key={index}>
-            <Row>
-              {products.slice(index * 3, index * 3 + 3).map((product) => (
-                <Col key={product.id} xs={4} md={4}>
-                  <Card className="mb-4">
-                    <img variant="top" className='product--image' src={product.imageUrl} />
-                    <Card.Body>
-                      <div className='descripcionLetra'>
-                        <h1 className='tipoLetra'>{product.categoriaUniformes} {product.name}</h1>
-                        <p className="fw-bold precio">${product.price}</p>
-                        <div className='d-grid mx-auto'>
-                          <button className='btn' style={{ color: 'white', background: '#daa232' }}>Ver más</button>
-                        </div>
-                        
-                      </div>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          </Carousel.Item>
+      <Carousel responsive={responsive} infinite={true} autoPlaySpeed={1000} transitionDuration={500}>
+        {products.map((product) => (
+          <Card key={product.id} className="mb-4 me-2 ms-2">
+            <img variant="top" className='card-img-top' height='250px' src={product.imageUrl} alt={product.name} />
+            <Card.Body>
+              <div className='descripcionLetra'>
+                <h1 className='tipoLetra '>{product.categoriaUniformes} {product.name}</h1>
+                <p className="lead">${product.price}</p>
+                <div className='d-grid mx-auto'>
+                  <Button className='btn' style={{ color: 'white', background: '#daa232' }}>Ver más</Button>
+                </div>
+              </div>
+            </Card.Body>
+          </Card>
         ))}
       </Carousel>
-    </Container>
+    </div>
   );
 };
 

@@ -5,7 +5,6 @@ import imagenProducto2 from '../img/batas.png';
 import imagenProducto3 from '../img/imagenProductoAtuendo2.jpg';
 import '../css/colores.css';
 
-
 const products = [
   {
     id: 1,
@@ -67,7 +66,7 @@ function ProductCard({ product }) {
             <span className='badge bg-danger'>{product.descuento}</span>
           </div>
         )}
-        <img variant="top" src={product.imageUrl} className='card-img-top' height='250px' />
+        <img variant="top" src={product.imageUrl} className='card-img-top' height='250px'/>
         <Card.Body>
           <h5 className="card-title mb-0">{product.name}</h5>
           {/*<Card.Text>color: {product.colors}</Card.Text>
