@@ -10,7 +10,9 @@ import RegistroUser from './vistas/usuario/registroUser';
 import CarritoCompra from './vistas/usuario/carritoDeCompras';
 import PoliticaDeCookies from './vistas/usuario/politicaDeCookies';
 import TerminosYCondiciones from './vistas/usuario/terminosYCondiciones';
-import Error404 from './componentes/error404';
+import Error404 from './errores/error404';
+import { Error_verificacion } from './errores/error_verificacion';
+import Verificacion_correcta from './errores/verificacion_correcta';
 import { Accesorioss } from './vistas/usuario/accesorios';
 import { Contactos } from './vistas/usuario/contacto';
 import RecuperarPasswordd from './vistas/usuario/RecuperarPassword';
@@ -52,7 +54,9 @@ export default function App() {
             <Route path="busquedaAvanzada" element={<VistaBusquedaAvanzada />}></Route>
             <Route path="prueba" element={<Prueba />}></Route>
             
-            <Route path="*" element={<Error404 />} />
+            <Route path="*" element={<Error404 />} /> 
+            <Route path="error-verificacion" element={<Error_verificacion />} /> 
+            <Route path="verificacion-correcta" element={<Verificacion_correcta />} />                                  
           </Routes>
         </BrowserRouter>
       </AuthContextProvider>
