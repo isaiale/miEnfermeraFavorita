@@ -345,7 +345,7 @@ function RegistroUsuario() {
                                     Acepta el captcha.
                                 </Form.Text>)}
 
-                            <div className=''>
+                            <div className='col-md-3 offset-md-3'>
                                 <div className="text-center m-3 mb-3 d-grid mx-auto">
                                     <button className='btn' style={{ color: 'white', background: '#daa232' }} type="submit">
                                         Registrarse
