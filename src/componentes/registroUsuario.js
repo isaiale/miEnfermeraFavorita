@@ -19,7 +19,7 @@ function RegistroUsuario() {
     const [message, setMessage] = useState('');
     const [toastColor, setToastColor] = useState('');
     const [showError, setShowError] = useState(false);
-
+    const [checkbox, setCheckbox] = useState(false);
     const [captchaValido, cambiarCaptchaValido] = useState(null);
     const captcha = useRef(null);
 
@@ -29,7 +29,6 @@ function RegistroUsuario() {
             cambiarCaptchaValido(true);
         }
     }
-
 
     const handleShowPassword = () => {
         setShowPassword(!showPassword);
@@ -81,8 +80,6 @@ function RegistroUsuario() {
         return errorMensaje;
     };
 
-
-
     const isValidEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
@@ -93,7 +90,7 @@ function RegistroUsuario() {
 
         setShowError(false);
 
-        if (!nombre || !apellido || !correo || !telefono || !password || !captchaValido) {
+        if (!nombre || !apellido || !correo || !telefono || !password || !checkbox || !captchaValido) {
             setShowError(true);
             return;
         }
@@ -326,14 +323,23 @@ function RegistroUsuario() {
                                         {getPasswordErrorMessage()}
                                     </Form.Text>
                                 )}
+                            </Form.Group >
+
+                            <Form.Group controlId='terminos'>
+                                <input type="checkbox" checked={checkbox} onChange={(e) => setCheckbox(e.target.checked)} />
+                                <Form.Label className='ms-2'>Acepto los<a className='ms-1' href='https://mi-enfermera-favorita.vercel.app/terminosYcondiciones'>Términos y Condiciones.</a></Form.Label>
                             </Form.Group>
+                            {showError && !checkbox && (
+                                <Form.Text className="text-danger">
+                                    Debes aceptar los términos y condiciones.
+                                </Form.Text>
+                            )}
                             <ReCAPTCHA
                                 className='justify-content-center mt-2'
                                 ref={captcha}
                                 sitekey="6Le-PmwpAAAAAInOld5TUzpt83IsG2Wc77QNX8TP"
                                 onChange={onChange}
                             />
-
                             {showError && !captchaValido && (
                                 <Form.Text className="text-danger">
                                     Acepta el captcha.
