@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { RecuperarPasswordEmail, VerificarCodigo, NuevaPassword } from '../url/urlSitioWeb';
 import ToastMessage from '../utilidad/Toast'; // Toast 
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const PasswordResetFlow = () => {
   const [email, setEmail] = useState('');
@@ -19,9 +20,42 @@ const PasswordResetFlow = () => {
   const [toastColor, setToastColor] = useState('');
   const [showError, setShowError] = useState(false);
 
-  const isPasswordValid = (password) => {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
-    return passwordRegex.test(password);
+  const password = newPassword;
+
+  const passwordValidation = () => {
+    return (
+      password.length >= 8 &&
+      /[a-z]/.test(password) &&
+      /[A-Z]/.test(password) &&
+      /\d/.test(password) &&
+      /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    );
+  };
+
+  const getPasswordErrorMessage = () => {
+    let errorMensaje = 'La contraseña debe tener al menos:';
+
+    if (password.length < 8) {
+      errorMensaje += ' 8 caracteres.';
+    }
+
+    if (!/[a-z]/.test(password)) {
+      errorMensaje += ' Una letra minúscula.';
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      errorMensaje += ' Una letra mayúscula.';
+    }
+
+    if (!/\d/.test(password)) {
+      errorMensaje += ' Un número.';
+    }
+
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      errorMensaje += ' Un carácter especial (@#$%^&*).';
+    }
+
+    return errorMensaje;
   };
 
   const handlePasswordVisibilityToggle = () => {
@@ -82,12 +116,6 @@ const PasswordResetFlow = () => {
           showToastMessage(data.message);
         }
       } else if (step === 3) {
-        // Validar contraseña antes de enviar la solicitud
-        if (!isPasswordValid(newPassword)) {
-          showToastMessage('La contraseña no cumple con los requisitos de seguridad.', 'warning');
-          return;
-        }
-
         // Restablecer contraseña
         const response = await fetch(NuevaPassword, {
           method: 'POST',
@@ -168,21 +196,35 @@ const PasswordResetFlow = () => {
       return (
         <>
           <p>Ingresa tu nueva contraseña</p>
-          <Form.Group controlId="newPassword">
-            <Form.Control
-              type={showPassword ? "text" : "password"}
-              placeholder="Nueva contraseña"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <Button
-              variant="light"
-              className="mt-2"
-              onClick={handlePasswordVisibilityToggle}
-            >
-              {showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-            </Button>
-          </Form.Group>
+          <div className="input-group">
+            <Form.Group className="input-group" controlId="newPassword">
+              <span className="input-group-text" id="basic-addon1"><i className="fa fa-lock"></i></span>
+              <Form.Control
+                className={`form-control ${showError && !newPassword ? 'is-invalid' : ''}`}
+                type={showPassword ? "text" : "password"}
+                placeholder="Nueva contraseña"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+              <button type="button"
+                className="btn btn-outline-secondary"
+                onClick={handlePasswordVisibilityToggle}
+              >
+                {showPassword ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
+              </button>
+
+            </Form.Group>
+            {showError && !newPassword && (
+              <Form.Text className="text-danger">
+                Ingrese una contraseña.
+              </Form.Text>
+            )}
+            {newPassword && !passwordValidation() && (
+              <Form.Text className="text-danger">
+                {getPasswordErrorMessage()}
+              </Form.Text>
+            )}
+          </div>
         </>
       );
     }

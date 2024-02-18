@@ -1,19 +1,17 @@
-import React from "react";
-import Sidebar from "../../componentesE/sidebarE";
 import DashBoarAdmin from "../../componentesE/DashBoarAdmin";
-import Home from "../../componentesE/Home";
+import Sidebar from "../../componentesE/sidebarE";
+import ProductosE from "../../componentesE/ProductosE";
 
-export const InicioAdmin = () => {
+export const ProductosEmpleado = () => {
   return (
     <div>
       <div className="flexx">
         <Sidebar />
-        <div className=" w-100">
+        <div className="content w-100">
           {/* <DashBoarAdmin /> */}
-          <Home />
+          <ProductosE />
         </div>
       </div>
     </div>
-
   );
 };

@@ -93,33 +93,7 @@ function RegistroUsuario() {
         if (!nombre || !apellido || !correo || !telefono || !password || !checkbox || !captchaValido) {
             setShowError(true);
             return;
-        }
-
-        // if (!nombre || !/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]{2,}$/.test(nombre)) {
-        //     showToastMessage('El nombre debe contener más de 2 letras.', 'error');
-        //     return;
-        // }
-
-        // if (!apellido || !/^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]+$/u.test(apellido)) {
-        //     showToastMessage('El apellido debe contener solo letras y espacios.', 'error');
-        //     return;
-        // }
-
-        // const correoRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        // if (!correoRegex.test(correo)) {
-        //     showToastMessage('Por favor, introduce una dirección de correo electrónico válida.', 'error');
-        //     return;
-        // }
-
-        // if (telefono.length === 0 || telefono.length !== 10 || !/^[0-9]+$/.test(telefono)) {
-        //     showToastMessage('El número de teléfono debe contener 10 dígitos numéricos.', 'error');
-        //     return;
-        // }
-
-        if (!passwordValidation()) {
-            showToastMessage(getPasswordErrorMessage(), 'error');
-            return;
-        }
+        }        
 
         try {
             const response = await fetch(UrlUsuarios);
@@ -345,7 +319,7 @@ function RegistroUsuario() {
                                     Acepta el captcha.
                                 </Form.Text>)}
 
-                            <div className='col-md-3 offset-md-3'>
+                            <div >
                                 <div className="text-center m-3 mb-3 d-grid mx-auto">
                                     <button className='btn' style={{ color: 'white', background: '#daa232' }} type="submit">
                                         Registrarse

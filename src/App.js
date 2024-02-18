@@ -21,6 +21,10 @@ import VistaBusquedaAvanzada from './vistas/usuario/VistaBusquedaAvanzada';
 import Prueba from './vistas/usuario/prueba';
 
 import { InicioAdmin } from './vistas/administrador/InicioAdmin';
+import { VentasEmpleado } from './vistas/administrador/VentasE';
+import { ClientesEmpleado } from './vistas/administrador/ClientesE';
+import { ProductosEmpleado } from './vistas/administrador/ProductosE';
+import { ConfiguracionEmpleado } from './vistas/administrador/ConfiguracionE';
 
 import InicioGerente from './vistas/gerente/InicioGerente';
 
@@ -47,7 +51,6 @@ export default function App() {
             <Route path="ayuda" element={<Ayuda/>}></Route>     
             <Route path="reservarA" element={<ReservarA />}></Route>            
             <Route path='avisoPrivacidad' element={<AvisoPrivacida />}></Route>
-            <Route path='inicioAdmin' element={<InicioAdmin />}></Route>
             <Route path='inicioGerente' element={<InicioGerente/>}></Route>
             <Route path="recuperarPassword" element={<RecuperarPasswordd />}></Route>
             <Route path="busquedasimple" element={<VistaBusquedaSimple />}></Route>
@@ -56,7 +59,13 @@ export default function App() {
             
             <Route path="*" element={<Error404 />} /> 
             <Route path="error-verificacion" element={<Error_verificacion />} /> 
-            <Route path="verificacion-correcta" element={<Verificacion_correcta />} />                                  
+            <Route path="verificacion-correcta" element={<Verificacion_correcta />} /> 
+
+            <Route path='inicioAdmin' element={<InicioAdmin />}></Route>
+            <Route path='ventasEmpleado' element={<VentasEmpleado />}></Route>
+            <Route path='clientesEmpleado' element={<ClientesEmpleado />}></Route>
+            <Route path='productosEmpleado' element={<ProductosEmpleado />}></Route>
+            <Route path='configuracionEmpleado' element={<ConfiguracionEmpleado />}></Route>                                 
           </Routes>
         </BrowserRouter>
       </AuthContextProvider>
