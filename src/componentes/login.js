@@ -35,27 +35,29 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         setShowError(false);
-
+    
         if (!email || !password) {
             setShowError(true);
             return;
         }
-
-        // Verificar las credenciales del usuario en los datos importados     
-        fetch(UrlLoginUsuarios, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                correo: email,
-                contraseña: password,
-            }),
-        })
-            .then(response => response.json())
-            .then(data => {
+    
+            // Verificar las credenciales del usuario en los datos importados     
+            const res = await fetch(UrlLoginUsuarios, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    correo: email,
+                    contraseña: password,
+                }),
+            });
+    
+            if (res.ok) {
+                const data = await res.json();
+    
                 if (data._id) {
                     if (data.estado === "ACTIVO") {
                         login(data);
@@ -70,14 +72,16 @@ function Login() {
                         showToastMessage('Tu cuenta está inactiva. Por favor, contacta al administrador.', 'error');
                     }
                 } else {
-                    showToastMessage('Credenciales incorrectas. Verifica tu correo y contraseña.', 'error');
+                    showToastMessage(data.message, 'error');
                 }
-            })
-            .catch((err) => console.log(err));
+            } else {
+                const data = await res.json();
+                showToastMessage(data.message, 'error');
 
-
+            }
+       
     };
-
+    
     return (
         <div className="container">
             <div className="row justify-content-center m-3">
