@@ -6,6 +6,7 @@ import { UrlUsuarios } from '../url/urlSitioWeb';
 import { useNavigate } from 'react-router-dom';
 import ToastMessage from '../utilidad/Toast'; // Toast 
 import ReCAPTCHA from 'react-google-recaptcha';
+import '../css/formulario.css'
 
 function RegistroUsuario() {
     const [nombre, setNombre] = useState('');
@@ -44,14 +45,34 @@ function RegistroUsuario() {
         }, 5000);
     };
 
+    // const passwordValidation = () => {
+    //     return (
+    //         password.length >= 8 &&
+    //         /[a-z]/.test(password) &&
+    //         /[A-Z]/.test(password) &&
+    //         /\d/.test(password) &&
+    //         /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    //     );
+    // };
+
     const passwordValidation = () => {
-        return (
-            password.length >= 8 &&
-            /[a-z]/.test(password) &&
-            /[A-Z]/.test(password) &&
-            /\d/.test(password) &&
-            /[!@#$%^&*(),.?":{}|<>]/.test(password)
-        );
+        const validations = [
+            { regex: /.{8,}/, weight: 20 }, // Caracteres
+            { regex: /[a-z]/, weight: 20 }, // Letra minúscula
+            { regex: /[A-Z]/, weight: 20 }, // Letra mayúscula
+            { regex: /\d/, weight: 20 },     // Número
+            { regex: /[!@#$%^&*(),.?":{}|<>]/, weight: 20 } // Carácter especial
+        ];
+
+        let totalScore = 0;
+
+        for (const validation of validations) {
+            if (validation.regex.test(password)) {
+                totalScore += validation.weight;
+            }
+        }
+
+        return totalScore;
     };
 
     const getPasswordErrorMessage = () => {
@@ -80,6 +101,24 @@ function RegistroUsuario() {
         return errorMensaje;
     };
 
+    // Determinar el color del div
+    let strengthClass = '';
+    let errorMessage = '';
+
+    const totalScore = passwordValidation();
+
+    if (totalScore < 10) {
+        strengthClass = 'cero';
+    } else if (totalScore <= 40) {
+        strengthClass = 'weak';
+        errorMessage = getPasswordErrorMessage();
+    } else if (totalScore < 90) {
+        strengthClass = 'medium';
+        errorMessage = getPasswordErrorMessage();
+    } else if (totalScore > 90) {
+        strengthClass = 'strong';
+    }
+
     const isValidEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
@@ -93,7 +132,7 @@ function RegistroUsuario() {
         if (!nombre || !apellido || !correo || !telefono || !password || !checkbox || !captchaValido) {
             setShowError(true);
             return;
-        }        
+        }
 
         try {
             const response = await fetch(UrlUsuarios);
@@ -269,7 +308,8 @@ function RegistroUsuario() {
 
                             {/* Campo Contraseña */}
                             <Form.Group className="input-group mb-1" controlId="password">
-                                <Form.Label>Contraseña</Form.Label>
+                                <label>Contraseña</label> <br></br>
+
                                 <div className="input-group">
                                     <span className="input-group-text" id="basic-addon1"><i className="fa fa-lock"></i></span>
                                     <Form.Control
@@ -287,17 +327,24 @@ function RegistroUsuario() {
                                         {showPassword ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
                                     </button>
                                 </div>
-                                {showError && !password && (
-                                    <Form.Text className="text-danger">
-                                        Ingrese una contraseña.
-                                    </Form.Text>
-                                )}
-                                {password && !passwordValidation() && (
-                                    <Form.Text className="text-danger">
-                                        {getPasswordErrorMessage()}
-                                    </Form.Text>
-                                )}
-                            </Form.Group >
+
+                            </Form.Group>
+                            <div className={`barss ${strengthClass}`}>
+                                <div className='divContraseña'></div>
+                            </div>
+
+                            {/* Mensaje de error de contraseña */}
+                            {showError && !password && (
+                                <Form.Text className="text-danger">
+                                    Ingrese una contraseña.
+                                </Form.Text>
+                            )}
+                            {password && errorMessage && (
+                                <Form.Text className="text-danger">
+                                    {errorMessage}
+                                </Form.Text>
+                            )}
+
 
                             <Form.Group controlId='terminos'>
                                 <input type="checkbox" checked={checkbox} onChange={(e) => setCheckbox(e.target.checked)} />
@@ -330,7 +377,7 @@ function RegistroUsuario() {
                         </Form>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     );
 }

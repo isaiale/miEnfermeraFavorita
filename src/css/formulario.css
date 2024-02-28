@@ -1,0 +1,39 @@
+/* styles.css */
+.barss {
+    margin: -1px 0;
+    margin-bottom: 3px;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 6px;
+    border-radius: 3px;
+    background: #dfe1f0; /* Corregido el color */
+}
+
+.barss .divContraseña {
+    height: 6px;
+    border-radius: 3px;
+    transition: width 0.4s; /* Corregido el tiempo de transición */
+    width: 0%;
+}
+
+.barss.cero .divContraseña {
+    background: #dfe1f0;
+    width: 33.33%;
+}
+.barss.weak .divContraseña {
+    background: red;
+    width: 33.33%;
+}
+
+.barss.medium .divContraseña {
+    background: orange;
+    width: 66.66%;
+}
+
+.barss.strong .divContraseña {
+    background: green;
+    width: 100%;
+}
+

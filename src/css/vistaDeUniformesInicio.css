@@ -1,26 +1,125 @@
-.descripcionLetra h1.tipoLetra {
-    font-size: 20px;
-    display: block;
-  }
-  .descripcionLetra p.precio {
-    font-size: 20px;
-    display: block;
-    color: rgb(72, 72, 239);
-  }
+:root {
+  --btn-importante: #FF4081;/* Para botones o elementos importantes */
+  --btn-secundario: #FF79B0;/* Para botones secundarios o elementos menos importantes */
+  --resaltar-brillo: #FFE4FF;/* Para resaltes o brillos */
+  --elemento-destacar: #00E5FF; /* Para elementos importantes que necesiten destacar */
+  --elemento-complementario: #00829b;/* Como color de acento complementario */
+  --text-primario: #333333;/* Color principal para el texto */
+  --text-secundario: #5C5C5C;/* Color secundario para el texto */
+  --fondo-principal: white;/* Fondo principal */
+  --fondo-secundario: #EBEBEB;/* Fondo para secciones secundarias */
+  --fondo-menos-importante: #C2C2C2;/* Fondo para elementos más pequeños o de menos importancia */
+}
+.contentoruniformes {
+  padding: 15px 0px 15px;
+}
+
+.contentoruniformes .contentUniform {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid var(--fondo-menos-importante); /* Agrega el borde de 1px */
+  margin: 5px;
+  text-decoration: none;
+}
+
+
+.contentUniform {
+  cursor: pointer;
+  padding: 1px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.contentUniform:hover {
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.imgproducto {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1px;
+}
+
+.imgproducto img {
+  height: 300px;
+  width: 100%;
+}
+/* filter: brightness(.9);*/
+
+.descProducto {
+  width: 90%;
+  text-align: center;
+  color: var(--text-primario);
+}
+.descProducto p {
+  width: 90%;
+  text-align: center;
+  color: var(--text-secundario);
+}
+
+.btnvermas {
+  width: 100%;
+  background: var(--btn-secundario);
+  margin-bottom: 10px;
+  color: var(--fondo-principal);
+  text-align: center;
+  display: inline-block;
+  transition-duration: 0.4s;
+  border: var(--btn-secundario) solid thin;  
+}
+
+.btnvermas:hover {
+  background: var(--btn-importante);
+  color: var(--fondo-principal);
+  border: var(--btn-importante) solid thin;
+}
+
+
 
 /*++++++++++++ Diseño de adaptacion de la pagina ++++++++++*/
-@media screen and (max-width: 580px) {
-    .descripcionLetra{
-        margin: -7px;
-    }
-    .descripcionLetra h1.tipoLetra {
-        font-size: 12px;
-        display: block;
-        margin: 1px;
-      }
-      .descripcionLetra p.precio {
-        font-size: 14px;
-        display: block;
-        color: rgb(72, 72, 239);
-      }
+@media only screen and (max-width: 1300px) {   
+  .imgproducto{
+    width: 100%;
   }
+  .imgproducto img {
+    height: 240px;
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 1024px) {   
+  .imgproducto{
+    width: 100%;
+  }
+  .imgproducto img {
+    height: 400px;
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 600px) {  
+  .contentUniform {    
+    width: 96%;
+  }  
+  .imgproducto{
+    width: 100%;
+  }
+  .imgproducto img {
+    height: 150px;
+    width: 100%;
+  }
+
+  .descProducto p,
+  .descProducto h4{
+    padding: 0px;
+    text-align: center;
+    font-size: 1em;
+  }
+
+  .btnvermas {
+    padding: 5px ;
+    font-size: 1em;
+    text-align: center;
+  }
+}
+

@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import "../css/sidebar.css";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faHouse, faCog, faSignOutAlt, faShoppingBasket, faStore, faBars, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faHouse, faCog, faSignOutAlt, faShoppingBasket, faStore, faBars } from "@fortawesome/free-solid-svg-icons";
 import logo from "../img/logo.jpg";
 
 
 const Sidebar = () => {
 
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
 
     const menuItem = [
@@ -48,28 +48,27 @@ const Sidebar = () => {
     return (
         <div className="d-flex flex-column">
             <div style={{ width: isOpen ? "200px" : "50px" }} className="sidebar">
-                <div className="top_section">
-                    <img src={logo} className="rounded-circle me-1" alt="" width="50" height="50" style={{ marginLeft: isOpen ? "0" : "-70px" }} />
-                    <h4 style={{ display: isOpen ? "block" : "none" }} className="logo">Admin</h4>
-                    <div style={{ marginLeft: isOpen ? "25px" : "15px" }} className="bars">
-                        {isOpen ?
-
-                            <FontAwesomeIcon icon={faChevronLeft} className="me-2" onClick={toggle} />
-                            :
-                            <FontAwesomeIcon icon={faBars} className="me-2" onClick={toggle} />
-                        }
-
+                <div >
+                    <div className="text-center mb-2">
+                        <img src={logo} className="rounded-circle mt-2" alt="" width="50" height="50" />
+                    </div>
+                    <div className="top_section">
+                        <h5 style={{ display: isOpen ? "block" : "none" }} className="logo">Administrar</h5>
+                        <div style={{ marginLeft: isOpen ? "55px" : "-1px" }} className="bars">
+                            <FontAwesomeIcon icon={faBars} onClick={toggle} />
+                        </div>
                     </div>
                 </div>
+
                 {
                     menuItem.map((item, index) => (
-                        <NavLink to={item.path} key={index} className="link" activeclassName="active">
+                        <NavLink to={item.path} key={index} className="linkSidebar" activeclassName="active">
                             <div className="icon">{item.icon}</div>
-                            <h2 style={{ display: isOpen ? "block" : "none", marginLeft: '-10px' }} className="link_text lead">{item.name}</h2>
+                            <h2 style={{ display: isOpen ? "block" : "none" }} className="link_text lead">{item.name}</h2>
                         </NavLink>
                     ))
                 }
-            </div>
+            </div>            
         </div>
     );
 };

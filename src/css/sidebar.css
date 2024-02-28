@@ -1,7 +1,7 @@
 .navbarE {
     background:#d81515; 
     color: #83dffe;
-    padding: 1rem 2rem;
+    padding: 1rem 5rem;
     Border-bottom: 1px solid #12a2f0;
 }
 
@@ -19,7 +19,7 @@
 .top_section{
     display: flex;
     align-items:center;
-    padding:20px 15px;
+    padding:10px 15px;
 }
 .logo{
     font-size: 20px;
@@ -27,17 +27,17 @@
 .bars{
     display: flex;
     font-size: 25px;
-    margin-left: 50px;
+    cursor: pointer;
 }
-.link{
+.linkSidebar{
     display: flex;
     text-decoration: none;
     color: #fff;
-    padding: 10px 15px;
-    gap: 15px;
+    padding: 5px 10px;
+    gap:2px;
     transition: all 0.5s;
 }
-.link:hover{
+.linkSidebar:hover{
     background:rgb(241, 168, 211);
     color: #000;
     transition: all 0.2s;
@@ -46,6 +46,17 @@
     background: rgb(249, 51, 216);
     color: #000;    
 }
-.icon, .link_text{
-    font-size: 20px;
+.icon, .linkSidebar_text{
+    font-size: 20px;    
 } 
+/* .linkSidebar_content {
+    display: flex;  Para alinear los elementos horizontalmente 
+    align-items: center;  Para centrar verticalmente los elementos
+}
+.icon {
+    margin-right: 10px; /* Espacio entre el ícono y el texto
+} */
+.linkSidebar_text {
+    display: inline; /* Para que el texto se muestre en línea */
+    margin-top: 5px;
+}

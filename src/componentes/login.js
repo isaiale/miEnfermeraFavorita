@@ -6,6 +6,7 @@ import { AuthContext } from '../autenticar/AuthProvider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import ToastMessage from '../utilidad/Toast'; // Toast 
+import '../css/colores.css';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -35,53 +36,53 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         setShowError(false);
-    
+
         if (!email || !password) {
             setShowError(true);
             return;
         }
-    
-            // Verificar las credenciales del usuario en los datos importados     
-            const res = await fetch(UrlLoginUsuarios, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    correo: email,
-                    contraseña: password,
-                }),
-            });
-    
-            if (res.ok) {
-                const data = await res.json();
-    
-                if (data._id) {
-                    if (data.estado === "ACTIVO") {
-                        login(data);
-                        if (data.rol === "User") {
-                            history('/');
-                        } else if (data.rol === "Admin") {
-                            history('/inicioAdmin');
-                        } else if (data.rol === "Gerente") {
-                            history('/inicioGerente');
-                        }
-                    } else {
-                        showToastMessage('Tu cuenta está inactiva. Por favor, contacta al administrador.', 'error');
+
+        // Verificar las credenciales del usuario en los datos importados     
+        const res = await fetch(UrlLoginUsuarios, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                correo: email,
+                contraseña: password,
+            }),
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+
+            if (data._id) {
+                if (data.estado === "ACTIVO") {
+                    login(data);
+                    if (data.rol === "User") {
+                        history('/');
+                    } else if (data.rol === "Admin") {
+                        history('/inicioAdmin');
+                    } else if (data.rol === "Gerente") {
+                        history('/inicioGerente');
                     }
                 } else {
-                    showToastMessage(data.message, 'error');
+                    showToastMessage('Tu cuenta está inactiva. Por favor, contacta al administrador.', 'error');
                 }
             } else {
-                const data = await res.json();
                 showToastMessage(data.message, 'error');
-
             }
-       
+        } else {
+            const data = await res.json();
+            showToastMessage(data.message, 'error');
+
+        }
+
     };
-    
+
     return (
         <div className="container">
             <div className="row justify-content-center m-3">
@@ -95,15 +96,16 @@ function Login() {
                         />
                         <h2 className="m-2 text-center">Inicio de Sesión</h2>
 
-                        <Form.Group className="" controlId="email">
+                        <Form.Group controlId="email">
                             <Form.Label>Correo Electrónico</Form.Label>
-                            <div class="input-group">
+                            <div class="input-group" >
                                 <span class="input-group-text" id="basic-addon1"><i className="fa fa-envelope"></i></span>
-                                <input type="email" 
-                                className={`form-control ${showError && !email ? 'is-invalid' : ''}`} 
-                                placeholder="Ingresa tu correo electrónico" 
-                                aria-describedby="basic-addon1" value={email} 
-                                onChange={(e) => setEmail(e.target.value)} />
+                                <input type="email"
+                                    id='cajaTexto'
+                                    className={`form-control ${showError && !email ? 'is-invalid' : ''}`}
+                                    placeholder="Ingresa tu correo electrónico"
+                                    aria-describedby="basic-addon1" value={email}
+                                    onChange={(e) => setEmail(e.target.value)} />
                             </div>
                             {showError && !email && (
                                 <Form.Text className="text-danger">
@@ -121,6 +123,7 @@ function Login() {
                                     placeholder="Ingresa tu contraseña"
                                     aria-describedby="basic-addon1"
                                     value={password}
+                                    id='cajaTexto'
                                     onChange={(e) => setPassword(e.target.value)}
                                     className={`form-control ${showError && !password ? 'is-invalid' : ''}`}
                                 />

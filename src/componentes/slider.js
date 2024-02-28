@@ -1,40 +1,35 @@
-import React from "react";
-import Carousel from 'react-bootstrap/Carousel';
-import img1 from '../img/hand-drawn-style-healthcare-center1664541219.jpg';
-import img2 from '../img/upload.png';
+import React from 'react';
+import groceryBanner from '../img/IMGSlider.png';
+import '../css/Slider.css';
+import { Link } from 'react-router-dom';
 
-const Slider = () => {
-
-    const sliders = [
-        {
-            id: 1,
-            img: img2,
-            descripcion: "Descripción 1"
-        },
-        {
-            id: 2,
-            img: img1,
-            descripcion: "Descripción 2"
-        },
-        {
-            id: 3,
-            img: img2,
-            descripcion: "Descripción 3"
-        }
-    ];
-
+const FreeShippingNotification = () => {
     return (
-        <Carousel className="carousel slider" interval={3000}>
-            {sliders.map((slide) => (
-                <Carousel.Item key={slide.id}>
-                    <img className="d-block img-fluid w-100" src={slide.img} alt={`Slide ${slide.id}`} />
-                    <Carousel.Caption className="carousel-caption">
-                        <p className="text-dark fw-bold mb-1">{slide.descripcion}</p>
-                    </Carousel.Caption>
-                </Carousel.Item>
-            ))}
-        </Carousel>
+        <div className="free-shipping-notification">
+            <div className="free-shipping-icon-container mb-4">
+                <img src={groceryBanner} alt="Free Shipping Icon" className="free-shipping-icon" /> {/* Imagen */}
+                <div className="circle"></div> {/* Div para el círculo */}
+            </div>
+            <div className="free-shipping-text-container mt-4 mb-4">
+                <span className="free-shipping-text-label">Descubre nuestra amplia gama de productos de
+                    <span className="free-shipping-text-content">
+                        &nbsp;enfermería.
+                    </span>
+                </span>
+                <span className="free-shipping-text">
+                    ¡Haz tu compra hoy y lleva la calidad y el cuidado a un nuevo nivel!
+                </span>
+                <div className="row justify-content-start">
+                    <Link to="/productos">
+                    <div className='col'>
+                        <button  className="btnVermas lead">Ver más <i class="fa fa-arrow-right"></i></button>
+                    </div>
+                    </Link>
+                    
+                </div>
+            </div>
+        </div>
     );
 };
 
-export default Slider;
+export default FreeShippingNotification;
