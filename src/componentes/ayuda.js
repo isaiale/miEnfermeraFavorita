@@ -31,7 +31,7 @@ function EmailForm() {
   return (
     <div className='m-auto'> 
     <div className='col-md-10 text-center'>
-      <h2>Formulario de Correo Electrónico enfermera</h2>
+      <h2>Formulario de Correo prueba</h2>
       <form onSubmit={handleSubmit}>
         <label className="mb-2">
           Correo Electrónico:
