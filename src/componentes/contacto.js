@@ -25,7 +25,6 @@ function Contacto() {
     <div className='p-5'>
       <div className="container mt-3 p-5 border">
         <h2>Contactanos</h2>
-        <h3>Pruba git james</h3>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="nombre" className="form-label">Nombre:</label>
