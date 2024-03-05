@@ -1,3 +1,25 @@
+:root {
+    --btn-importante: #FF4081;
+    /* Para botones o elementos importantes */
+    --btn-secundario: #FF79B0;
+    /* Para botones secundarios o elementos menos importantes */
+    --resaltar-brillo: #FFE4FF;
+    /* Para resaltes o brillos */
+    --elemento-destacar: #00E5FF;
+    /* Para elementos importantes que necesiten destacar */
+    --elemento-complementario: #00829b;
+    /* Como color de acento complementario */
+    --text-primario: #333333;
+    /* Color principal para el texto */
+    --text-secundario: #5C5C5C;
+    /* Color secundario para el texto */
+    --fondo-principal: white;
+    /* Fondo principal */
+    --fondo-secundario: #EBEBEB;
+    /* Fondo para secciones secundarias */
+    --fondo-menos-importante: #C2C2C2;
+    /* Fondo para elementos más pequeños o de menos importancia */
+}
 /* styles.css */
 .barss {
     margin: -1px 0;
@@ -8,13 +30,15 @@
     gap: 8px;
     height: 6px;
     border-radius: 3px;
-    background: #dfe1f0; /* Corregido el color */
+    background: #dfe1f0;
+    /* Corregido el color */
 }
 
 .barss .divContraseña {
     height: 6px;
     border-radius: 3px;
-    transition: width 0.4s; /* Corregido el tiempo de transición */
+    transition: width 0.4s;
+    /* Corregido el tiempo de transición */
     width: 0%;
 }
 
@@ -22,6 +46,7 @@
     background: #dfe1f0;
     width: 33.33%;
 }
+
 .barss.weak .divContraseña {
     background: red;
     width: 33.33%;
@@ -37,3 +62,228 @@
     width: 100%;
 }
 
+/* Formulario de Administrador cajas de texto*/
+/* Input container */
+.input-container {
+    position: relative;
+    margin: 10px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+/* Input field */
+.input-field {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+    /* border: none; */
+    border: 2px solid var(--fondo-menos-importante);
+    outline: none;
+    background-color: transparent;
+}
+
+/* Input label */
+.input-label {
+    position: absolute;
+    top: 0;
+    left: 5px;
+    margin: 2px 2px 2px;
+    font-size: 16px;
+    color: rgba(204, 204, 204, 0);
+    transition: all 0.3s ease;
+}
+
+/* Input highlight */
+.input-highlight {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background-color: var(--btn-secundario);
+    transition: all 0.3s ease;
+}
+
+/* Input field:focus styles */
+.input-field:focus+.input-label {
+    top: -19px;
+    left: 5px;
+    font-size: 18px;
+    color: var(--text-secundario);
+    background: white;
+}
+
+.input-field:valid+.input-label {
+    top: -19px;
+    left: 5px;
+    font-size: 16px;
+    color: var(--text-primario);
+    background-color: white;
+}
+
+.input-field:valid {
+    border-bottom: 2px solid var(--text-secundario);
+    color: var(--text-secundario);
+}
+
+.input-field:focus+.input-label+.input-highlight {
+    width: 100%;
+}
+
+/* Diseño de botones de formulario */
+.btnFormulario {
+    position: relative;
+    padding: 5px 20px;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    background-image: linear-gradient(-60deg, #ff5858 0%, #f09819 100%);
+    transition: all 0.2s ease;
+}
+
+.btnFormulario:active {
+    transform: scale(0.96);
+}
+
+.btnFormulario:before,
+.btnFormulario:after {
+    position: absolute;
+    content: "";
+    width: 150%;
+    left: 50%;
+    height: 100%;
+    transform: translateX(-50%);
+    z-index: 100;
+    background-repeat: no-repeat;
+}
+
+.btnFormulario:hover:before {
+    top: -60%;
+    background-image: radial-gradient(circle, #a89215 20%, transparent 20%),
+        radial-gradient(circle, transparent 20%, #13a5be 20%, transparent 30%),
+        radial-gradient(circle, #a3b82d 20%, transparent 20%),
+        radial-gradient(circle, #590cbe 20%, transparent 20%),
+        radial-gradient(circle, transparent 10%, #bd1717 15%, transparent 20%),
+        radial-gradient(circle, #2a7ce8 20%, transparent 20%),
+        radial-gradient(circle, #30e82a 20%, transparent 20%),
+        radial-gradient(circle, #e92c75 20%, transparent 20%),
+        radial-gradient(circle, #914fe7 20%, transparent 20%);
+    background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
+        10% 10%, 18% 18%;
+    background-position: 50% 120%;
+    animation: greentopBubbles 0.6s ease;
+}
+
+@keyframes greentopBubbles {
+    0% {
+        background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
+            40% 90%, 55% 90%, 70% 90%;
+    }
+
+    50% {
+        background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
+            50% 50%, 65% 20%, 90% 30%;
+    }
+
+    100% {
+        background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
+            50% 40%, 65% 10%, 90% 20%;
+        background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+}
+
+.btnFormulario:hover::after {
+    bottom: -60%;
+    background-image:
+        radial-gradient(circle, #ff93db 30%, transparent 30%),
+        radial-gradient(circle, #2ae8df 20%, transparent 20%),
+        radial-gradient(circle, transparent 10%, #71ffbd 15%, transparent 20%),
+        radial-gradient(circle, #2a9ce8 20%, transparent 20%),
+        radial-gradient(circle, #7814fc 20%, transparent 20%),
+        radial-gradient(circle, #73e4f8 20%, transparent 20%),
+        radial-gradient(circle, #f8d3a9 20%, transparent 20%);
+    background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
+    background-position: 50% 0%;
+    animation: greenbottomBubbles 0.6s ease;
+}
+
+@keyframes greenbottomBubbles {
+    0% {
+        background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
+            70% -10%, 70% 0%;
+    }
+
+    50% {
+        background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
+            105% 0%;
+    }
+
+    100% {
+        background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
+            110% 10%;
+        background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+}
+
+/* Diseño de boton de agregar */
+.buttonAgregar {
+    position: relative;
+    width: 160px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border: 1px solid #34974d;
+    background-color: #3aa856;
+}
+
+.buttonAgregar,
+.button__icon,
+.button__text {
+    transition: all 0.3s;
+}
+
+.buttonAgregar.button__text {
+    transform: translateX(30px);
+    color: #fff;
+    font-weight: 600;
+}
+
+.buttonAgregar .button__icon {
+    position: absolute;
+    transform: translateX(109px);
+    height: 100%;
+    width: 39px;
+    background-color: #34974d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonAgregar .svg {
+    width: 30px;
+    stroke: #fff;
+}
+
+.buttonAgregar:hover {
+    background: #34974d;
+}
+
+.buttonAgregar:hover .button__text {
+    color: transparent;
+}
+
+.buttonAgregar:hover .button__icon {
+    width: 148px;
+    transform: translateX(0);
+}
+
+.buttonAgregar:active .button__icon {
+    background-color: rgb(5, 153, 5);
+}
+
+.buttonAgregar:active {
+    border: 1px solid rgb(5, 153, 5);
+}
