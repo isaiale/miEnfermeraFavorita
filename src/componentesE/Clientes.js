@@ -1,34 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash, faCircle, faClose } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash, faLockOpen, faLock, faSearch } from "@fortawesome/free-solid-svg-icons";
 import '../css/formulario.css';
-import { useState } from "react";
-
-const usuarios = [
-  {
-    idUsuarios: 1,
-    nombre: 'isai',
-    apellido: 'Alejandro',
-    correo: 'isaialef@gamil.com',
-    numeroTelefono: '1234567891',
-    rol: 'Usuario',
-    fechaCreado: '2024/02/14',
-    estado: 2,
-    cuentaBloqueada: 'Desbloqueado'
-  },
-  {
-    idUsuarios: 2,
-    nombre: 'isa',
-    apellido: 'Alejandro',
-    correo: 'isaialef@gamil.com',
-    numeroTelefono: '1234567891',
-    rol: 'Usuario',
-    fechaCreado: '2024/02/14',
-    estado: 1,
-    cuentaBloqueada: 'Desbloqueado'
-  }
-];
+import { useEffect, useState } from "react";
+import { UrlUsuarios, BloquearUsuario, RolUsuario } from "../url/urlSitioWeb";
+import Swal from "sweetalert2";
+import { validarNombre } from "../utilidad/Validaciones";
 
 const Clientes = () => {
+  const [roles, setRoles] = useState([]);
+  const [dataUser, setDataUser] = useState([]);
   const [idUsuarios, setIdUsuarios] = useState('');
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
@@ -36,11 +16,42 @@ const Clientes = () => {
   const [contraseña, setContraseña] = useState('');
   const [telefono, setTelefono] = useState('');
   const [rol, setRol] = useState('');
-  const [cuentaBloqueada, setCuentaBloqueada] = useState('');
   const [operacionModal, setOperacionModal] = useState(1);
   const [tituloModal, setTituloModal] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [showError, setShowError] = useState(false);
+  const [buscar, setBuscar] = useState('');
+  
+
+  const datosUsuarios = async () => {
+    try {
+      const response = await fetch(UrlUsuarios);
+      if (!response.ok) {
+        throw new Error('La respuesta de la red no fue exitosa.')
+      }
+      const jsonDataUsuario = await response.json();
+      setDataUser(jsonDataUsuario);
+    } catch (error) {
+      Swal.fire({ title: "Error al hacer la solicitud.", icon: "error" });
+    }
+  }
+
+  const rolesUsuario = async () => {
+    try {
+      const response = await fetch(RolUsuario);
+      if (!response.ok) {
+        throw new Error('La respuesta de la red no fue exitosa.');
+      }
+      const dataRoles = await response.json();
+      setRoles(dataRoles);
+    } catch (error) {
+      console.error('Error al obtener roles de usuario:', error);
+    }
+  };
+
+  useEffect(() => {
+    datosUsuarios();
+    rolesUsuario();
+  }, [])
 
   // verificar si es registro o actualizar
   const abrirModal = (op, user) => {
@@ -56,32 +67,213 @@ const Clientes = () => {
     }
     else if (op === 2) {
       setTituloModal('Actualizar');
-      setIdUsuarios(user.idUsuarios);
+      setIdUsuarios(user._id);
       setNombre(user.nombre);
       setApellido(user.apellido);
       setTelefono(user.numeroTelefono);
-      setRol(user.rol)
+      const userRol = roles.find(role => role._id === user.rol[0]._id);
+      setRol(userRol ? userRol._id : '');
     }
     window.setTimeout(function () {
       document.getElementById('nombre').focus();
     }, 500);
   }
 
+  // Validar el ususario
+  const validar = () => {
+    if (!validarNombre(nombre)) {
+      Swal.fire({
+        title: "Nombre invalido.", icon: "info", timer: 1500
+      });
+      return;
+    }
+
+    var parametrosAgregarUsuario;
+    var parametrosEditarUsuario;
+
+    parametrosAgregarUsuario = {
+      nombre: nombre,
+      apellido: apellido,
+      correo: correo,
+      contraseña: contraseña,
+      numeroTelefono: telefono
+    };
+
+    parametrosEditarUsuario = {
+      nombre: nombre,
+      apellido: apellido,
+      numeroTelefono: telefono,
+      rol: rol
+    }
+
+    if (operacionModal === 1) {
+      agregarUsuario(parametrosAgregarUsuario);
+    } else {
+      editarUsuario(parametrosEditarUsuario, idUsuarios);
+    }
+  }
+
+  // agregar Usuario
+  const agregarUsuario = async (parametrosAgregarUsuario) => {
+    const response = await fetch(UrlUsuarios, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(parametrosAgregarUsuario)
+    });
+    if (response.ok) {
+      // Aquí puedes manejar la respuesta exitosa como desees
+      Swal.fire({ title: "Se agregó correctamente.", icon: "success", timer: 1500 });
+      document.getElementById('btncerrar').click();
+      datosUsuarios();
+    } else {
+      const data = await response.json();
+      console.log(data.message);
+      Swal.fire({
+        title: "Error al registrar usuario.", text: "Por favor, intenta nuevamente.", icon: "error",
+      });
+    }
+  };
+
+  // Editar Usuario
+  const editarUsuario = async (parametrosEditarUsuario, idUsuarios) => {
+    const response = await fetch(`${UrlUsuarios}/${idUsuarios}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(parametrosEditarUsuario)
+    });
+    if (response.ok) {
+      Swal.fire({ title: "Se actualizó correctamente.", icon: "success", timer: 1500 });
+      document.getElementById('btncerrar').click();
+      datosUsuarios();
+    } else {
+      const data = await response.json();
+      console.log(data.error);
+      Swal.fire({
+        title: "Error al actualizar usuario.", text: "Por favor, intenta nuevamente.", icon: "error",
+      });
+    }
+  }
+
+  // Bloquear usuario
+  const bloquearUsuario = async (user) => {
+    // Mostrar el mensaje de confirmación
+    const result = await Swal.fire({
+      title: 'Seguro que quiere cambiar estado de bloqueo a ' + user.nombre + '?', icon: 'question',
+      showCancelButton: true, confirmButtonText: 'Si', cancelButtonText: 'Cancelar'
+    });
+    // Si el usuario confirmó 
+    if (result.isConfirmed) {
+      try {
+        // Hacer la solicitud a la API para actualizar el estado de cuentaBloqueada
+        const response = await fetch(`${BloquearUsuario}/${user._id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            cuentaBloqueada: user.cuentaBloqueada
+          })
+        });
+
+        if (response.ok) {
+          datosUsuarios();
+          Swal.fire({
+            title: 'Usuario actualizado', text: 'El estado de la cuenta ha sido actualizado correctamente.', icon: 'success'
+          });
+        }
+      } catch (error) {
+        console.error('Error al bloquear usuario:', error);
+        // Mostrar una alerta de error
+        Swal.fire({
+          title: 'Error', text: 'Ha ocurrido un error al bloquear el usuario.', icon: 'error'
+        });
+      }
+    } else {
+      // Mostrar mensaje si el usuario cancela
+      Swal.fire({
+        title: "El usuario no fue bloqueado.", icon: "info", timer: 1500
+      });
+    }
+  };
+
+  // Eliminar usuario
+  const eliminarUsuario = async (user) => {
+    const result = await Swal.fire({
+      title: '¿Seguro que desea eliminar a ' + user.nombre + '?', icon: 'question',
+      showCancelButton: true, confirmButtonText: 'Sí, eliminar', cancelButtonText: 'Cancelar'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        // Realizar la solicitud DELETE a la API para eliminar al usuario
+        const response = await fetch(`${UrlUsuarios}/${user._id}`, {
+          method: 'DELETE',
+        });
+
+        if (response.ok) {
+          datosUsuarios();
+          Swal.fire({
+            title: 'Usuario eliminado', text: 'El usuario ha sido eliminado correctamente.', icon: 'success'
+          });
+        } else {
+          throw new Error('Error al eliminar usuario: ' + response.status);
+        }
+      } catch (error) {
+        console.error('Error al eliminar usuario:', error);
+        Swal.fire({
+          title: 'Error', text: 'Ha ocurrido un error al eliminar el usuario.', icon: 'error'
+        });
+      }
+    } else {
+      // El usuario canceló la eliminación
+      Swal.fire({
+        title: "El usuario no fue eliminado.", icon: "info", timer: 1500
+      });
+    }
+  }
+
+  const handleSearch = (e) => {
+    const value = e.target.value.toLowerCase();
+    setBuscar(value);
+  }
+  const usuariosFiltro = dataUser.filter(user =>
+    user.nombre.toLowerCase().includes(buscar) ||
+    user.apellido.toLowerCase().includes(buscar) ||
+    user.correo.toLowerCase().includes(buscar) ||
+    user.numeroTelefono.includes(buscar)
+  );
+
   return (
     <div>
       <div className="container-fluid">
-        <h3 className='text-center display-6'>Clientes</h3>
+        <h3 className='text-center display-6'>Usuarios</h3>
         <div className="row">
           <div className="row mb-2">
             {/* para agregar botones */}
-            <div className="col-md-4 offset-md-4 mb-2">
+            <div className=" mb-2">
               <div className="d-flex mx-auto">
-                {/* <button className="btn btn-success"> Agregar</button> */}
-                <button onClick={() => abrirModal(1)} type="button" className="buttonAgregar" data-bs-toggle='modal' data-bs-target='#modalUsuarios'>
-                  <span className="button__text">Agregar</span>
-                  <span className="button__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="24" fill="none" class="svg"><line y2="19" y1="5" x2="12" x1="12"></line><line y2="12" y1="12" x2="19" x1="5"></line></svg></span>
-                </button>
-                &nbsp;
+                <div className="text-start">
+                  <p className="lead ">Total de usuarios: {dataUser.length}</p>
+                </div>
+                &nbsp;&nbsp;
+                <div className="ms-5 text-center">
+                  <button onClick={() => abrirModal(1)} type="button" className="buttonAgregar ms-3" data-bs-toggle='modal' data-bs-target='#modalUsuarios'>
+                    <span className="button__text">Agregar</span>
+                    <span className="button__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="24" fill="none" class="svg"><line y2="19" y1="5" x2="12" x1="12"></line><line y2="12" y1="12" x2="19" x1="5"></line></svg></span>
+                  </button>
+                </div>
+                <div className="ms-auto">
+                  <div className="input-group">
+                    <input type="text" className="form-control" placeholder="Buscar usuario" value={buscar} onChange={handleSearch} />
+                    <button className="btn btn-outline-secondary" type="button" id="button-addon2">
+                      <FontAwesomeIcon icon={faSearch} />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
             {/* Parte de la tabla */}
@@ -96,7 +288,7 @@ const Clientes = () => {
                         <th>Apellido</th>
                         <th>Correo</th>
                         <th>Telefono</th>
-                        <th>Rol</th>
+                        <th>Rolis</th>
                         <th>Registro</th>
                         <th>Estado</th>
                         <th>Bloqueo</th>
@@ -104,33 +296,37 @@ const Clientes = () => {
                       </tr>
                     </thead>
                     <tbody className="table-group-divider">
-                      {usuarios.map((user, u) => (
-                        <tr className="lead" key={user.idUsuarios}>
-                          <td >{u++}</td>
+                      {usuariosFiltro.map((user, index) => (
+                        <tr className="" key={user._id}>
+                          <td>{index + 1}</td>
                           <td>{user.nombre}</td>
                           <td>{user.apellido}</td>
                           <td>{user.correo}</td>
                           <td>{user.numeroTelefono}</td>
-                          <td>{user.rol}</td>
+                          {/* Renderizar el rol del usuario */}
+                          <td>{user.rol[0].descripcion}</td>
                           <td>{user.fechaCreado}</td>
-                          <td style={{ color: user.estado === 1 ? 'green' : 'red' }}><FontAwesomeIcon icon={user.estado === 1 ? faCircle : faCircle} style={{ fontSize: '11px' }} /> {user.estado === 1 ? 'ACTIVO' : 'INACTIVO'}</td>
-                          <td>{user.cuentaBloqueada}</td>
+                          <td style={{ color: user.estado === "ACTIVO" ? 'green' : 'red' }}>{user.estado}</td>
+                          <td>
+                            {/* {user.cuentaBloqueada === false ? 'No bloqueada ' : 'Bloqueada'} */}
+                            <button className="btn btn-info" onClick={() => bloquearUsuario(user)}>
+                              <FontAwesomeIcon icon={user.cuentaBloqueada === false ? faLockOpen : faLock} />
+                            </button>
+                          </td>
                           <td>
                             <button onClick={() => abrirModal(2, user)} className="btn btn-warning" data-bs-toggle='modal' data-bs-target='#modalUsuarios'>
                               <FontAwesomeIcon icon={faEdit} />
                             </button>
-                            &nbsp;{/* Sirve para dar un espacio*/}
-                            <button className="btn btn-danger">
+                            &nbsp;
+                            <button onClick={() => eliminarUsuario(user)} className="btn btn-danger">
                               <FontAwesomeIcon icon={faTrash} />
                             </button>
-                            &nbsp;{/* Sirve para dar un espacio*/}
-                            <button className="btn btn-danger">
-                              <FontAwesomeIcon icon={faClose} />
-                            </button>
+                            &nbsp;
                           </td>
                         </tr>
                       ))}
                     </tbody>
+
                   </table>
                 </div>
               </div>
@@ -186,8 +382,8 @@ const Clientes = () => {
                       </>
                       :
                       <></>
-                      }
-                      { operacionModal === 2 ?
+                    }
+                    {operacionModal === 2 ?
                       <>
                         <div className="input-container">
                           <input placeholder="Nombre" className="input-field" id="nombre" type="text" required
@@ -208,9 +404,15 @@ const Clientes = () => {
                           <span className="input-highlight"></span>
                         </div>
                         <div className="input-container">
-                          <input placeholder="Rol del Usuario" className="input-field" type="text" required
-                            value={rol} onChange={(e) => setRol(e.target.value)} />
-                          <label for="input-field" className="input-label">Rol:</label>
+                          <select className="input-field" required value={rol} onChange={(e) => setRol(e.target.value)}>
+                            <option value="">Selecciona un rol</option>
+                            {roles.map((role) => (
+                              <option key={role._id} value={role._id}>
+                                {role.descripcion}
+                              </option>
+                            ))}
+                          </select>
+                          <label htmlFor="input-field" className="input-label">Rol:</label>
                           <span className="input-highlight"></span>
                         </div>
                       </>
@@ -222,7 +424,7 @@ const Clientes = () => {
               </div>
             </div>
             <div className='modal-footer'>
-              <button class="btnFormulario">
+              <button class="btnFormulario" onClick={() => validar()}>
                 {tituloModal}
               </button>
               <button id='btncerrar' type='button' className='btn btn-secondary' data-bs-dismiss='modal'>
@@ -235,5 +437,4 @@ const Clientes = () => {
     </div>
   )
 }
-
 export default Clientes
