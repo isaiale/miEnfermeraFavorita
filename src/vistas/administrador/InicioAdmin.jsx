@@ -1,6 +1,5 @@
 import React from "react";
 import Sidebar from "../../componentesE/sidebarE";
-import DashBoarAdmin from "../../componentesE/DashBoarAdmin";
 import Home from "../../componentesE/Home";
 
 export const InicioAdmin = () => {

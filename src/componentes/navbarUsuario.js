@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react';
 import logoU from '../img/Logo de mi enfermera favorita.jpg';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { faHouse, faShirt, faRightFromBracket, faShoppingBasket, faTag, faBars, faXmark, faTshirt, faSearch } from "@fortawesome/free-solid-svg-icons";
 import '../css/navbar.css';
 import { AuthContext } from '../autenticar/AuthProvider';
 // import '../css/colores.css';
-import { Dropdown, Nav, Button } from 'react-bootstrap';
+import { Dropdown, Nav } from 'react-bootstrap';
 
 
 const NavbarUsuario = () => {
@@ -20,7 +20,6 @@ const NavbarUsuario = () => {
     const cerrarSesion = () => {
         logout();
         history('/login');
-
     };
 
     const toggleMenu = () => {
@@ -125,35 +124,35 @@ const NavbarUsuario = () => {
                             show={abrirDrop2}
                             onMouseOver={() => setAbrirDrop2(true)}
                             onMouseOut={() => setAbrirDrop2(false)}>
-                            {isAuthenticated !== null ? (
-                                isAuthenticated ? (
-                                    <>
-                                        <Dropdown.Toggle className='text-dark' as={Nav.Link} variant="light" id="dropdown">
-                                            <span>Bienvenido<i className=''> {user.nombre} </i></span>
-                                        </Dropdown.Toggle>
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item as={Link} to="#perfil"><i className='fa fa-user'></i> PERFIL </Dropdown.Item>
-                                            <Dropdown.Item as={Link} to="#compras"><i className="fa fa-shopping-bag"></i> COMPRAS</Dropdown.Item>
-                                            <Dropdown.Item className='text-danger' onClick={cerrarSesion}><FontAwesomeIcon icon={faRightFromBracket} /> CERRAR SESIÓN</Dropdown.Item>
-                                        </Dropdown.Menu>
-                                    </>
-                                ) : (
-                                    <>
-                                        <div className='botonLogin ms-3'>
-                                            <Link className='colorRegistro me-1' to="/registroUsuario">
-                                                <button className='btn lead' id="login-button" >
-                                                    Registro
-                                                </button>
-                                            </Link>
-                                            <Link className='colorrIniciarSesion me-1' to="/login">
-                                                <button className='btn lead' id="login-button" >
-                                                    Iniciar sesión
-                                                </button>
-                                            </Link>
-                                        </div>
-                                    </>
-                                )
-                            ) : null}
+
+                            {isAuthenticated !== null && user?.rol === "User" ? (
+                                <>
+                                    <Dropdown.Toggle className='text-dark' as={Nav.Link} variant="light" id="dropdown"> 
+                                        <span>Bienvenido <i className=''>{user.nombre}</i></span>
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item as={Link} to="#perfil"><i className='fa fa-user'></i> PERFIL</Dropdown.Item>
+                                        <Dropdown.Item as={Link} to="#compras"><i className="fa fa-shopping-bag"></i> COMPRAS</Dropdown.Item>
+                                        <Dropdown.Item className='text-danger' onClick={cerrarSesion}>
+                                            <FontAwesomeIcon icon={faRightFromBracket} /> CERRAR SESIÓN
+                                        </Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </>
+                            ) : (
+                                <div className='botonLogin ms-3'>
+                                    <Link className='colorRegistro me-1' to="/registroUsuario">
+                                        <button className='btn lead' id="login-button" >
+                                            Registro
+                                        </button>
+                                    </Link>
+                                    <Link className='colorrIniciarSesion me-1' to="/login">
+                                        <button className='btn lead' id="login-button" >
+                                            Iniciar sesión
+                                        </button>
+                                    </Link>
+                                </div>
+                            )}
+
                         </Dropdown>
 
                     </>

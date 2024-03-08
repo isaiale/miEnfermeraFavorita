@@ -1,37 +1,23 @@
 import React, { useState, useContext } from 'react';
-import Form from 'react-bootstrap/Form';
-import { Link, useNavigate } from 'react-router-dom';
-import { UrlLoginUsuarios } from '../url/urlSitioWeb';
+import { decodeToken } from "react-jwt"; // Importa la función decodeToken
 import { AuthContext } from '../autenticar/AuthProvider';
+import Form from 'react-bootstrap/Form';
+import { UrlLoginUsuarios } from '../url/urlSitioWeb';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import ToastMessage from '../utilidad/Toast'; // Toast 
 import '../css/colores.css';
+import Swal from "sweetalert2";
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const { login } = useContext(AuthContext);
-    const [showToast, setShowToast] = useState(false);
-    const [message, setMessage] = useState('');
-    const [toastColor, setToastColor] = useState('');
     const [showError, setShowError] = useState(false);
-    const history = useNavigate();
 
     const handleShowPassword = () => {
         setShowPassword(!showPassword);
-    };
-
-    const showToastMessage = (message, toastColor) => {
-        setMessage(message);
-        setToastColor(toastColor);
-        setShowToast(true);
-
-        // Oculta el Toast después de 5 segundos
-        setTimeout(() => {
-            setShowToast(false);
-        }, 5000);
     };
 
     const handleSubmit = async (e) => {
@@ -44,43 +30,33 @@ function Login() {
             return;
         }
 
-        // Verificar las credenciales del usuario en los datos importados     
-        const res = await fetch(UrlLoginUsuarios, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                correo: email,
-                contraseña: password,
-            }),
-        });
+        try {
+            //const url = 'http://localhost:3000/api/auth/login'
+            const res = await fetch(UrlLoginUsuarios, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    correo: email,
+                    contraseña: password,
+                }),
+            });
 
-        if (res.ok) {
-            const data = await res.json();
-
-            if (data._id) {
-                if (data.estado === "ACTIVO") {
-                    login(data);
-                    if (data.rol === "User") {
-                        history('/');
-                    } else if (data.rol === "Admin") {
-                        history('/inicioAdmin');
-                    } else if (data.rol === "Gerente") {
-                        history('/inicioGerente');
-                    }
-                } else {
-                    showToastMessage('Tu cuenta está inactiva. Por favor, contacta al administrador.', 'error');
-                }
+            if (res.ok) {
+                const data = await res.json();
+                window.location.href = data.redirect;// Verificar si la respuesta indica una redirección
+                const decodedToken = decodeToken(data.token); // Decodifica el token
+                login(decodedToken); // Establece el usuario autenticado en el contexto                
             } else {
-                showToastMessage(data.message, 'error');
+                const data = await res.json();
+                Swal.fire({ title: `${data.message}`, icon: 'error', timer: 1500 });
             }
-        } else {
-            const data = await res.json();
-            showToastMessage(data.message, 'error');
-
+        } catch (error) {
+            // Manejar el error de red
+            console.error('Error al realizar la solicitud:', error);
+            Swal.fire({ title: 'Error al realizar la solicitud', icon: 'error', timer: 1500 });
         }
-
     };
 
     return (
@@ -88,18 +64,11 @@ function Login() {
             <div className="row justify-content-center m-3">
                 <div className="col-md-5 border">
                     <Form onSubmit={handleSubmit}>
-                        <ToastMessage
-                            showToast={showToast}
-                            message={message}
-                            onClose={() => setShowToast(false)}
-                            toastColor={toastColor}
-                        />
                         <h2 className="m-2 text-center">Inicio de Sesión</h2>
-
-                        <Form.Group controlId="email">
+                        <Form.Group >
                             <Form.Label>Correo Electrónico</Form.Label>
-                            <div class="input-group" >
-                                <span class="input-group-text" id="basic-addon1"><i className="fa fa-envelope"></i></span>
+                            <div className="input-group" >
+                                <span className="input-group-text" id="basic-addon1"><i className="fa fa-envelope"></i></span>
                                 <input type="email"
                                     id='cajaTexto'
                                     className={`form-control ${showError && !email ? 'is-invalid' : ''}`}
@@ -114,10 +83,10 @@ function Login() {
                             )}
                         </Form.Group>
 
-                        <Form.Group className="input-group mb-1" controlId="password">
+                        <Form.Group className="input-group mb-1" >
                             <Form.Label className='mt-1'>Contraseña</Form.Label>
                             <div className="input-group">
-                                <span class="input-group-text" id="basic-addon1"><i className="fa fa-lock"></i></span>
+                                <span className="input-group-text" id="basic-addon1"><i className="fa fa-lock"></i></span>
                                 <Form.Control
                                     type={showPassword ? 'text' : 'password'}
                                     placeholder="Ingresa tu contraseña"
