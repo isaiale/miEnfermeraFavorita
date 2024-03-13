@@ -29,6 +29,10 @@ import { ProductosEmpleado } from './vistas/administrador/ProductosE';
 import { ConfiguracionEmpleado } from './vistas/administrador/ConfiguracionE';
 
 import InicioGerente from './vistas/gerente/InicioGerente';
+import { ComprasG } from './vistas/gerente/ComprasG';
+import { ClientesFrecuentesG } from './vistas/gerente/ClientesFrecuentesG';
+import { ProveedoresG } from './vistas/gerente/ProveedoresG';
+import { InventarioG } from './vistas/gerente/Inventario';
 
 export default function App() {
   const { isAuthenticated, user } = useContext(AuthContext);
@@ -77,6 +81,10 @@ export default function App() {
           {isAuthenticated !== null && user?.rol === "Gerente" && (  
             <>
               <Route path='inicioGerente' element={<InicioGerente />} />
+              <Route path='comprasG' element={<ComprasG/>}></Route>  
+              <Route path='clientesFrecuentesG' element={<ClientesFrecuentesG/>}></Route>     
+              <Route path='proveedoresG' element={<ProveedoresG/>}></Route>                
+              <Route path='inventarioG' element={<InventarioG/>}></Route>
             </>
           )}           
         </Routes>
