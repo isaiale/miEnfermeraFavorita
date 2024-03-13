@@ -5,5 +5,9 @@ export const RecuperarPasswordEmail = "https://back-end-enfermera.vercel.app/api
 export const VerificarCodigo = "https://back-end-enfermera.vercel.app/api/verify-code"; //Para verificar codigo
 export const NuevaPassword = "https://back-end-enfermera.vercel.app/api/reset-password"; //Para nueva contraseña
 export const UrlLoginUsuarios = "https://back-end-enfermera.vercel.app/api/auth/login";//Para Login de usuarios
+export const Productos = "https://back-end-enfermera.vercel.app/api/productos/productos";//Para productos
+export const Estado_Producto = "https://back-end-enfermera.vercel.app/api/productos/estado";//Para estado de productos
+export const CategoriaProducto = "https://back-end-enfermera.vercel.app/api/categorias/categoria";//Para categoria
 
 export const Api_Validacio_Correo ="https://disify.com/api/email";//Validacion de correos electronicos 
+export const urlCloudinary = "https://api.cloudinary.com/v1_1/droihhnng/image/upload";//imagenes

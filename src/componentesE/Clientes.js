@@ -21,7 +21,6 @@ const Clientes = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [buscar, setBuscar] = useState('');
   
-
   const datosUsuarios = async () => {
     try {
       const response = await fetch(UrlUsuarios);
@@ -83,7 +82,7 @@ const Clientes = () => {
   const validar = () => {
     if (!validarNombre(nombre)) {
       Swal.fire({
-        title: "Nombre invalido.", icon: "info", timer: 1500
+        title: "Nombre invalido.", icon: "info", timer: 1500, showConfirmButton: false
       });
       return;
     }
@@ -124,14 +123,14 @@ const Clientes = () => {
     });
     if (response.ok) {
       // Aquí puedes manejar la respuesta exitosa como desees
-      Swal.fire({ title: "Se agregó correctamente.", icon: "success", timer: 1500 });
+      Swal.fire({ title: "Se agregó correctamente.", icon: "success", timer: 1500,showConfirmButton: false });
       document.getElementById('btncerrar').click();
       datosUsuarios();
     } else {
       const data = await response.json();
       console.log(data.message);
       Swal.fire({
-        title: "Error al registrar usuario.", text: "Por favor, intenta nuevamente.", icon: "error",
+        title: "Error al registrar usuario.", text: "Por favor, intenta nuevamente.", icon: "error",showConfirmButton: false
       });
     }
   };
@@ -146,14 +145,14 @@ const Clientes = () => {
       body: JSON.stringify(parametrosEditarUsuario)
     });
     if (response.ok) {
-      Swal.fire({ title: "Se actualizó correctamente.", icon: "success", timer: 1500 });
+      Swal.fire({ title: "Se actualizó correctamente.", icon: "success", timer: 1500,showConfirmButton: false });
       document.getElementById('btncerrar').click();
       datosUsuarios();
     } else {
       const data = await response.json();
       console.log(data.error);
       Swal.fire({
-        title: "Error al actualizar usuario.", text: "Por favor, intenta nuevamente.", icon: "error",
+        title: "Error al actualizar usuario.", text: "Por favor, intenta nuevamente.", icon: "error",showConfirmButton: false
       });
     }
   }
@@ -182,7 +181,7 @@ const Clientes = () => {
         if (response.ok) {
           datosUsuarios();
           Swal.fire({
-            title: 'Usuario actualizado', text: 'El estado de la cuenta ha sido actualizado correctamente.', icon: 'success'
+            title: 'Usuario actualizado', text: 'El estado de la cuenta ha sido actualizado correctamente.',timer: 1500, icon: 'success',showConfirmButton: false
           });
         }
       } catch (error) {
@@ -195,7 +194,7 @@ const Clientes = () => {
     } else {
       // Mostrar mensaje si el usuario cancela
       Swal.fire({
-        title: "El usuario no fue bloqueado.", icon: "info", timer: 1500
+        title: "El usuario no fue bloqueado.", icon: "info", timer: 1500,showConfirmButton: false
       });
     }
   };
@@ -217,7 +216,7 @@ const Clientes = () => {
         if (response.ok) {
           datosUsuarios();
           Swal.fire({
-            title: 'Usuario eliminado', text: 'El usuario ha sido eliminado correctamente.', icon: 'success'
+            title: 'Usuario eliminado', text: 'El usuario ha sido eliminado correctamente.', icon: 'success',showConfirmButton: false
           });
         } else {
           throw new Error('Error al eliminar usuario: ' + response.status);
@@ -225,13 +224,13 @@ const Clientes = () => {
       } catch (error) {
         console.error('Error al eliminar usuario:', error);
         Swal.fire({
-          title: 'Error', text: 'Ha ocurrido un error al eliminar el usuario.', icon: 'error'
+          title: 'Error', text: 'Ha ocurrido un error al eliminar el usuario.', icon: 'error',showConfirmButton: false
         });
       }
     } else {
       // El usuario canceló la eliminación
       Swal.fire({
-        title: "El usuario no fue eliminado.", icon: "info", timer: 1500
+        title: "El usuario no fue eliminado.", icon: "info", timer: 1500,showConfirmButton: false
       });
     }
   }

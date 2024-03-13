@@ -68,11 +68,17 @@ export default function App() {
             </>
           )}
           {/* Routes for Gerente */}
-          {isAuthenticated !== null && user?.rol === "Gerente" && (
+          {/* <Route path='inicioAdmin' element={<InicioAdmin />} />
+              <Route path='ventasEmpleado' element={<VentasEmpleado />} />
+              <Route path='clientesEmpleado' element={<ClientesEmpleado />} />
+              <Route path='productosEmpleado' element={<ProductosEmpleado />} />
+              <Route path='configuracionEmpleado' element={<ConfiguracionEmpleado />} /> */}
+              
+          {isAuthenticated !== null && user?.rol === "Gerente" && (  
             <>
               <Route path='inicioGerente' element={<InicioGerente />} />
             </>
-          )}          
+          )}           
         </Routes>
       </BrowserRouter>
     </div>
