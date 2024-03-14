@@ -1,48 +1,49 @@
-import React, { useState } from 'react';
-import { Card, Container, Row, Col } from 'react-bootstrap';
-import imgAccesoriosEnfermeria from '../img/Logo de mi enfermera favorita.jpg';
-import '../css/colores.css';
+import React, { useState } from "react";
+import { Card, Container, Row, Col } from "react-bootstrap";
+import imgAccesoriosEnfermeria from "../img/Logo de mi enfermera favorita.jpg";
+import Breadcrumb from "../utilidad/migapan";
+import "../css/colores.css";
 
 const accesoriosEnfermeria = [
   {
     id: 1,
-    nombre: 'Accesorio 1',
-    categoria: 'Accesorios de Enfermería',
-    precio: '$5.99',
+    nombre: "Accesorio 1",
+    categoria: "Accesorios de Enfermería",
+    precio: "$5.99",
     imageUrl: imgAccesoriosEnfermeria,
-    tipos: ['Estetoscopio', 'Tijeras Médicas', 'Reloj de Enfermera'],
-    colores: ['Blanco', 'Azul', 'Negro'],
-    descuento: '20%',
+    tipos: ["Estetoscopio", "Tijeras Médicas", "Reloj de Enfermera"],
+    colores: ["Blanco", "Azul", "Negro"],
+    descuento: "20%",
   },
   {
     id: 2,
-    nombre: 'Accesorio 2',
-    categoria: 'Accesorios de Enfermería',
-    precio: '$7.99',
+    nombre: "Accesorio 2",
+    categoria: "Accesorios de Enfermería",
+    precio: "$7.99",
     imageUrl: imgAccesoriosEnfermeria,
-    tipos: ['Gorra de Enfermera', 'Linterna Médica'],
-    colores: ['Blanco', 'Rosa'],
-    descuento: 'no aplica',
+    tipos: ["Gorra de Enfermera", "Linterna Médica"],
+    colores: ["Blanco", "Rosa"],
+    descuento: "no aplica",
   },
   {
     id: 3,
-    nombre: 'Accesorio 3',
-    categoria: 'Accesorios de Enfermería',
-    precio: '$9.99',
+    nombre: "Accesorio 3",
+    categoria: "Accesorios de Enfermería",
+    precio: "$9.99",
     imageUrl: imgAccesoriosEnfermeria,
-    tipos: ['Calcetines de Compresión', 'Guantes Médicos'],
-    colores: ['Azul', 'Morado'],
-    descuento: '15%',
+    tipos: ["Calcetines de Compresión", "Guantes Médicos"],
+    colores: ["Azul", "Morado"],
+    descuento: "15%",
   },
   {
     id: 4,
-    nombre: 'Accesorio 4',
-    categoria: 'Accesorios de Enfermería',
-    precio: '$12.99',
+    nombre: "Accesorio 4",
+    categoria: "Accesorios de Enfermería",
+    precio: "$12.99",
     imageUrl: imgAccesoriosEnfermeria,
-    tipos: ['Bolsa de Enfermera'],
-    colores: ['Negro', 'Rojo'],
-    descuento: 'no aplica',
+    tipos: ["Bolsa de Enfermera"],
+    colores: ["Negro", "Rojo"],
+    descuento: "no aplica",
   },
 ];
 
@@ -54,12 +55,11 @@ const csp = `
   font-src 'self' data:; 
 `;
 
-
 function AccesorioEnfermeriaCard({ accesorio }) {
   return (
     <Col xs={6} lg={3}>
       <Card className="mb-4">
-        {accesorio.descuento !== 'no aplica' && (
+        {accesorio.descuento !== "no aplica" && (
           <div className="position-absolute top-0 start-0">
             <span className="badge bg-danger">{accesorio.descuento}</span>
           </div>
@@ -68,12 +68,15 @@ function AccesorioEnfermeriaCard({ accesorio }) {
         <Card.Body>
           <Card.Title>{accesorio.nombre}</Card.Title>
           <Card.Text>Categoría: {accesorio.categoria}</Card.Text>
-          <Card.Text>Tipos: {accesorio.tipos.join(', ')}</Card.Text>
-          <Card.Text>Colores: {accesorio.colores.join(', ')}</Card.Text>
-          <Card.Text className="fs-5" style={{ color: '#0171fa' }}>
+          <Card.Text>Tipos: {accesorio.tipos.join(", ")}</Card.Text>
+          <Card.Text>Colores: {accesorio.colores.join(", ")}</Card.Text>
+          <Card.Text className="fs-5" style={{ color: "#0171fa" }}>
             {accesorio.precio}
           </Card.Text>
-          <button className="btn color" style={{ color: 'white', background: '#daa232' }}>
+          <button
+            className="btn color"
+            style={{ color: "white", background: "#daa232" }}
+          >
             Ver más
           </button>
         </Card.Body>
@@ -83,8 +86,8 @@ function AccesorioEnfermeriaCard({ accesorio }) {
 }
 
 function Accesorios() {
-  const [selectedType, setSelectedType] = useState(''); // Estado para el tipo seleccionado
-  const [selectedColor, setSelectedColor] = useState(''); // Estado para el color seleccionado
+  const [selectedType, setSelectedType] = useState(""); // Estado para el tipo seleccionado
+  const [selectedColor, setSelectedColor] = useState(""); // Estado para el color seleccionado
   const [priceRange, setPriceRange] = useState([0, 20]); // Rango de precios
   const minPrice = 0;
   const maxPrice = 20;
@@ -101,14 +104,15 @@ function Accesorios() {
   });
 
   const handlePriceRangeChange = (event) => {
-    const value = event.target.value.split(',').map(parseFloat);
+    const value = event.target.value.split(",").map(parseFloat);
     setPriceRange(value);
   };
 
   return (
     <Container>
-      
-
+      <div className="flex container mx-auto justify-center">
+        <Breadcrumb path={"Accesorios"} />
+      </div>
       <Row>
         <Col lg={3}>
           <div className="mb-4">
@@ -143,7 +147,7 @@ function Accesorios() {
               type="range"
               min={minPrice}
               max={maxPrice}
-              value={priceRange.join(',')}
+              value={priceRange.join(",")}
               className="form-range"
               onChange={handlePriceRangeChange}
             />
@@ -155,7 +159,10 @@ function Accesorios() {
         <Col lg={9}>
           <Row xs={2} md={4}>
             {accesoriosFiltrados.map((accesorio) => (
-              <AccesorioEnfermeriaCard key={accesorio.id} accesorio={accesorio} />
+              <AccesorioEnfermeriaCard
+                key={accesorio.id}
+                accesorio={accesorio}
+              />
             ))}
           </Row>
         </Col>

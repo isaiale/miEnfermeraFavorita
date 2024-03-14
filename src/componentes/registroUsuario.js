@@ -6,6 +6,7 @@ import { UrlUsuarios } from '../url/urlSitioWeb';
 import { useNavigate } from 'react-router-dom';
 import ToastMessage from '../utilidad/Toast'; // Toast 
 import ReCAPTCHA from 'react-google-recaptcha';
+import Breadcrumb from '../utilidad/migapan';
 import '../css/formulario.css'
 
 function RegistroUsuario() {
@@ -191,6 +192,9 @@ function RegistroUsuario() {
                 toastColor={toastColor}
             />
             <div className="container">
+                <div className='flex container mx-auto justify-center'>
+                    <Breadcrumb path={'Registro'} />
+                </div>
                 <div className="row justify-content-center m-3">
                     <div className="col-md-5 border">
                         <Form onSubmit={handleSubmit}>

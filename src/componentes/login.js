@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import '../css/colores.css';
 import Swal from "sweetalert2";
+import Breadcrumb from '../utilidad/migapan'
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -61,6 +62,9 @@ function Login() {
 
     return (
         <div className="container">
+            <div className='flex container mx-auto justify-center'>
+                <Breadcrumb path={'Iniciar sesión'} />
+            </div>
             <div className="row justify-content-center m-3">
                 <div className="col-md-5 border">
                     <Form onSubmit={handleSubmit}>
