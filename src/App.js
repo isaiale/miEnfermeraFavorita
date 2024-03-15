@@ -32,7 +32,7 @@ import { ConfiguracionEmpleado } from './vistas/administrador/ConfiguracionE';
 import InicioGerente from './vistas/gerente/InicioGerente';
 
 export default function App() {
-  const { isAuthenticated, user } = useContext(AuthContext);
+  const { isAuthenticated, user } = useContext(AuthContext); 
 
   return (
     <div>
@@ -59,6 +59,7 @@ export default function App() {
           <Route path="verificacion-correcta" element={<Verificacion_correcta />} />
           <Route path="perfil" element={<Perfil />} />
           {/* Routes for Admin */}
+          
           {isAuthenticated !== null && user?.rol === "Admin" && (
             <>
               <Route path='inicioAdmin' element={<InicioAdmin />} />
