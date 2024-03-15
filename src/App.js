@@ -21,6 +21,7 @@ import VistaBusquedaSimple from './vistas/usuario/VistaBusquedaSimple';
 import VistaBusquedaAvanzada from './vistas/usuario/VistaBusquedaAvanzada';
 import Prueba from './vistas/usuario/prueba';
 import { Ayuda } from './vistas/usuario/ayuda';
+import { Perfil } from "./vistas/usuario/perfil";
 
 import { InicioAdmin } from './vistas/administrador/InicioAdmin';
 import { VentasEmpleado } from './vistas/administrador/VentasE';
@@ -56,7 +57,7 @@ export default function App() {
           <Route path="*" element={<Error404 />} />
           <Route path="error-verificacion" element={<Error_verificacion />} />
           <Route path="verificacion-correcta" element={<Verificacion_correcta />} />
-
+          <Route path="perfil" element={<Perfil />} />
           {/* Routes for Admin */}
           {isAuthenticated !== null && user?.rol === "Admin" && (
             <>
