@@ -5,7 +5,7 @@
   /* Mantiene el color del texto original */
 }
 
-.content {
+.content-categoria {
   border: 1px solid var(--fondo-menos-importante);
   margin: 10px;
 }

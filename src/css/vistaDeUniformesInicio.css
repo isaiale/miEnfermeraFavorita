@@ -19,14 +19,13 @@
   flex-direction: column;
   align-items: center;
   border: 1px solid var(--fondo-menos-importante); /* Agrega el borde de 1px */
-  margin: 5px;
+  margin: 10px;
   text-decoration: none;
 }
 
 
 .contentUniform {
   cursor: pointer;
-  padding: 1px;
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
@@ -39,7 +38,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1px;
 }
 
 .imgproducto img {

@@ -74,7 +74,7 @@ const TuComponente = () => {
       <Carousel responsive={responsive} infinite={true} autoPlaySpeed={1000} transitionDuration={500}>
         {categoriaProducto.map((ProductoCategoria, index) => (
           <Link key={index} to={ProductoCategoria.to} className='link-no-underline '>
-            <div className='content'>
+            <div className='content-categoria'>
               <img className='d-block img-fluid w-100 ' src={ProductoCategoria.image} alt={ProductoCategoria.description} />
               <div className='desdription'>
                 <h6 className='lead text-description-categoria'>{ProductoCategoria.description}</h6>
