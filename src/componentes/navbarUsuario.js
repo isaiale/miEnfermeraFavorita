@@ -50,7 +50,7 @@ const NavbarUsuario = () => {
     ]
 
     return (
-        <div className='headerNavbar sticky-top'>
+        <div className='headerNavbar'>
             <div className='bordeNavbar'>
                 <img className="logoNavbar rounded-circle" src={logoU} alt="Logo" />
                 <button className="abrir-menu" onClick={toggleMenu}>
