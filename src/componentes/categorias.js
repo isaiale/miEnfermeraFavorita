@@ -53,15 +53,15 @@ const categoriaProducto = [
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 6,
+    items: 5,
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
-    items: 5,
+    items: 4,
   },
   mobile: {
     breakpoint: { max: 464, min: 0 },
-    items: 4,
+    items: 3,
   },
 };
 
@@ -69,17 +69,17 @@ const TuComponente = () => {
   return (
     <>
       <div className='text-center mt-2 '>
-        <h4>Categorías de uniformes</h4>
+        <h4 className='display-6'>Categorías de uniformes</h4>
       </div>
       <Carousel responsive={responsive} infinite={true} autoPlaySpeed={1000} transitionDuration={500}>
         {categoriaProducto.map((ProductoCategoria, index) => (
-          <Link key={index} to={ProductoCategoria.to} className='link-no-underline'>
-            <Card className='text-center m-1'>
-              <img className='d-block img-fluid w-100' src={ProductoCategoria.image} alt={ProductoCategoria.description} />
+          <Link key={index} to={ProductoCategoria.to} className='link-no-underline '>
+            <div className='content'>
+              <img className='d-block img-fluid w-100 ' src={ProductoCategoria.image} alt={ProductoCategoria.description} />
               <div className='desdription'>
-                <h6 className='text-center mt-1'><span className='fw-bold letra'>{ProductoCategoria.description}</span></h6>
+                <h6 className='lead text-description-categoria'>{ProductoCategoria.description}</h6>
               </div>
-            </Card>
+            </div>
           </Link>
         ))}
       </Carousel>
