@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash, faLockOpen, faLock, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash, faSearch } from "@fortawesome/free-solid-svg-icons";
 import '../css/formulario.css';
 import { useEffect, useState } from "react";
-import { Productos, Estado_Producto, CategoriaProducto, urlCloudinary } from "../url/urlSitioWeb";
+import { Productos, img, Estado_Producto, CategoriaProducto } from "../url/urlSitioWeb";
 import Swal from "sweetalert2";
 import { validarNombre } from "../utilidad/Validaciones";
 
@@ -14,7 +14,7 @@ const ProductosE = () => {
   const [descripcion, setDescripcion] = useState('');
   const [precio, setPrecio] = useState('');
   const [descuento, setDescuento] = useState('');
-  const [imagenes, setImagenes] = useState('');
+  const [imagenes, setImagenes] = useState([]);
   const [inventario, setInventario] = useState('');
   const [categoriaP, setCategoriaP] = useState('');
   const [estado, setEstado] = useState('');
@@ -54,35 +54,40 @@ const ProductosE = () => {
     catProducto();
   }, [])
 
-// Para subir imagenes
   const uploadImage = async (e) => {
     const files = e.target.files;
-    const data = new FormData();
-    data.append("file", files[0]);
-    data.append("upload_preset", "uploads");
-    // setLoading(true);}
+    const formData = new FormData();
+
     try {
-      const res = await fetch(urlCloudinary, {
-        method: "POST",
-        body: data,
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        formData.append('imagen', file);
+      }
+
+      const response = await fetch(img, {
+        method: 'POST',
+        body: formData
       });
-      const file = await res.json();
-      setImagenes(file.secure_url);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+
+      const data = await response.json();
+      setImagenes(prevImageUrls => [...prevImageUrls, { url: data.url, publicId: data.publicId }]);
+      console.log(data.url, data.publicId);
     } catch (error) {
-      Swal.fire({
-        title: "Error al cargar la imagen.", icon: "error", showConfirmButton: false
-      });
+      console.error(error.message);
     }
-    // setLoading(false);
   };
 
-  // verificar si es registro o actualizar
   const abrirModal = (op, productos) => {
     setIdProductos('');
     setNombre('');
     setDescripcion('');
     setPrecio('');
-    setImagenes('');
+    setImagenes([]);
     setInventario('');
     setDescuento('');
     setCategoriaP('');
@@ -101,14 +106,12 @@ const ProductosE = () => {
       setDescuento(productos.descuento);
       const catP = categoria.find(categ => categ._id === productos.categoria[0]._id);
       setCategoriaP(catP ? catP._id : '');
-
     }
     window.setTimeout(function () {
       document.getElementById('nombre').focus();
     }, 500);
   }
 
-  // Validar el producto
   const validar = () => {
     if (!validarNombre(nombre)) {
       Swal.fire({
@@ -136,7 +139,6 @@ const ProductosE = () => {
     }
   }
 
-  // agregar producto
   const agregarUsuario = async (parametros) => {
     const response = await fetch(Productos, {
       method: 'POST',
@@ -146,7 +148,6 @@ const ProductosE = () => {
       body: JSON.stringify(parametros)
     });
     if (response.ok) {
-      // Aquí puedes manejar la respuesta exitosa como desees
       Swal.fire({ title: "Se agregó correctamente.", icon: "success", timer: 1500, showConfirmButton: false });
       document.getElementById('btncerrar').click();
       datosProducto();
@@ -159,7 +160,6 @@ const ProductosE = () => {
     }
   };
 
-  // Editar producto
   const editarUsuario = async (parametros, idProductos) => {
     const response = await fetch(`${Productos}/${idProductos}`, {
       method: 'PUT',
@@ -174,31 +174,30 @@ const ProductosE = () => {
       datosProducto();
     } else {
       const data = await response.json();
-      console.log(data.error);
+      console.log(data.error, data.message);
       Swal.fire({
         title: "Error al actualizar usuario.", text: "Por favor, intenta nuevamente.", icon: "error", showConfirmButton: false
       });
     }
   }
+
   const handleOpenEstadoModal = (productos) => {
     setSelectedProduct(productos);
   };
 
-  // estado de producto
-  const EstadoProducto = async (handleOpenEstadoModal) => { 
+  const EstadoProducto = async (handleOpenEstadoModal) => {
     try {
-      // Hacer la solicitud a la API para actualizar el estado del producto
       const response = await fetch(`${Estado_Producto}/${handleOpenEstadoModal._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          estado: estado // Aquí pasamos el estado seleccionado
+          estado: estado
         })
       });
 
-      if (response.ok) {        
+      if (response.ok) {
         datosProducto();
         Swal.fire({
           title: 'Producto actualizado', text: 'El estado del producto ha sido actualizado correctamente.', timer: 1500, icon: 'success', showConfirmButton: false
@@ -207,15 +206,12 @@ const ProductosE = () => {
       }
     } catch (error) {
       console.error('Error al actualizar el estado del producto:', error);
-      // Mostrar una alerta de error
       Swal.fire({
         title: 'Error', text: 'Ha ocurrido un error al actualizar el estado del producto.', icon: 'error'
       });
     }
   };
 
-
-  // Eliminar producto
   const eliminarUsuario = async (productos) => {
     const result = await Swal.fire({
       title: '¿Seguro que desea eliminar a ' + productos.nombre + '?', icon: 'question',
@@ -224,7 +220,6 @@ const ProductosE = () => {
 
     if (result.isConfirmed) {
       try {
-        // Realizar la solicitud DELETE a la API para eliminar al usuario
         const response = await fetch(`${Productos}/${productos._id}`, {
           method: 'DELETE',
         });
@@ -244,22 +239,42 @@ const ProductosE = () => {
         });
       }
     } else {
-      // El usuario canceló la eliminación
       Swal.fire({
         title: "El producto no fue eliminado.", icon: "info", timer: 1500, showConfirmButton: false
       });
     }
   }
 
+  const eliminarImagen = async (publicId) => {
+    try {
+      const response = await fetch(`${img}/${publicId}`, {
+        method: 'DELETE'
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+
+      setImagenes(prevImageUrls => prevImageUrls.filter(image => image.publicId !== publicId));
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   const handleSearch = (e) => {
-    const value = e.target.value.toLowerCase();
-    setBuscar(value);
-  }
+    const value = e.target.value;
+    if (value !== undefined && value !== null) {
+      const lowerCaseValue = value.toLowerCase();
+      setBuscar(lowerCaseValue);
+    }
+  };
+
   const usuariosFiltro = dataProductos.filter(productos =>
-    productos.nombre.toLowerCase().includes(buscar) ||
-    productos.descripcion.toLowerCase().includes(buscar) ||
-    productos.precio.toLowerCase().includes(buscar) ||
-    productos.inventario.includes(buscar)
+    (productos.nombre && productos.nombre.toLowerCase().includes(buscar)) ||
+    (productos.descripcion && productos.descripcion.toLowerCase().includes(buscar)) ||
+    (productos.precio && productos.precio.toLowerCase().includes(buscar)) ||
+    (productos.inventario && productos.inventario.includes(buscar))
   );
 
   return (
@@ -268,7 +283,6 @@ const ProductosE = () => {
         <h3 className='text-center display-6'>Productos</h3>
         <div className="row">
           <div className="row mb-2">
-            {/* para agregar botones */}
             <div className=" mb-2">
               <div className="d-flex mx-auto">
                 <div className="text-start">
@@ -291,7 +305,6 @@ const ProductosE = () => {
                 </div>
               </div>
             </div>
-            {/* Parte de la tabla */}
             <div>
               <div>
                 <div className="table-responsive">
@@ -299,10 +312,10 @@ const ProductosE = () => {
                     <thead className="">
                       <tr >
                         <th>#</th>
-                        <th>Atualizado</th>
+                        <th>Creado</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
-                        <th style={{ width: '110px' }}>Imagen</th>
+                        <th style={{ width: '100px' }}>Imagen</th>
                         <th>Precio</th>
                         <th>Inventario</th>
                         <th>Categoria</th>
@@ -314,31 +327,36 @@ const ProductosE = () => {
                     <tbody className="table-group-divider">
                       {usuariosFiltro.map((productos, index) => (
                         <tr className="" key={productos._id}>
-
                           <td>{index + 1}</td>
-                          <td>{productos.actualizadoEn.split('T')[0]}</td>
+                          <td>{productos.creadoEn.split('T')[0]}</td>
                           <td>{productos.nombre}</td>
                           <td>{productos.descripcion}</td>
-                          <td><div className='w-50'><img src={productos.imagenes} className="img-fluid w-100 h-100" alt="Product" /></div></td>
+                          <td>
+                            {productos.imagenes.map((imagen, idx) => (
+                              <div key={idx} className="mt-2">
+                                <img src={imagen.url} alt={`Imagen ${idx}`} className="img-thumbnail" style={{ maxWidth: "100px" }} />
+                              </div>
+                            ))}
+                          </td>
                           <td>${productos.precio}</td>
                           <td>{productos.inventario}</td>
                           <td>{productos.categoria[0].nombre}</td>
                           <td>{productos.descuento === 0 ? 'sin descuento' : `%${productos.descuento}`}</td>
                           <td style={{ color: productos.estado === "Activo" ? 'green' : 'red' }}>{productos.estado}</td>
                           <td>
-                            <button onClick={() => abrirModal(2, productos)} className="btn btn-warning" data-bs-toggle='modal' data-bs-target='#modalProducto'>
+                            <button onClick={() => abrirModal(2, productos)} className="btn btn-warning" data-bs-toggle='modal' data-bs-target='#modalProducto' title="Editar producto.">
                               <FontAwesomeIcon icon={faEdit} />
                             </button>
                             &nbsp;
-                            <button onClick={() => eliminarUsuario(productos)} className="btn btn-danger">
+                            <button onClick={() => eliminarUsuario(productos)} className="btn btn-danger" title="Eliminar este producto.">
                               <FontAwesomeIcon icon={faTrash} />
                             </button>
                             &nbsp;
-
-                            <button onClick={() => handleOpenEstadoModal(productos)} className="btn btn-info" data-bs-toggle='modal' data-bs-target='#modalProductoEstado'>
+                            <button onClick={() => handleOpenEstadoModal(productos)} className="btn btn-info" data-bs-toggle='modal' data-bs-target='#modalProductoEstado' title="Cambiar estado del productoto.">
                               <FontAwesomeIcon icon={faEdit} />
                             </button>
                             &nbsp;
+
                           </td>
                         </tr>
                       ))}
@@ -350,7 +368,6 @@ const ProductosE = () => {
           </div>
         </div>
       </div>
-      {/* Parte del Modal */}
       <div id='modalProducto' class="modal fade" data-bs-backdrop="static">
         <div className='modal-dialog modal-fullscreen-sm-down'>
           <div className='modal-content'>
@@ -359,7 +376,6 @@ const ProductosE = () => {
               <button type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
             </div>
             <div className='modal-body'>
-              {/* Parte del  Formulario */}
               <div className="container-fluid">
                 <div className="row">
                   <div className="col-md-12">
@@ -376,55 +392,59 @@ const ProductosE = () => {
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
+                      <input placeholder="Precio" className="input-field" type="number" required
+                        value={precio} onChange={(e) => setPrecio(e.target.value)} />
+                      <label for="input-field" className="input-label">Precio:</label>
+                      <span className="input-highlight"></span>
+                    </div>
+                    <div className="input-container">
+                      <input placeholder="Descuento" className="input-field" type="number" required
+                        value={descuento} onChange={(e) => setDescuento(e.target.value)} />
+                      <label for="input-field" className="input-label">Descuento:</label>
+                      <span className="input-highlight"></span>
+                    </div>
+                    <div className="input-container">
                       <input placeholder="Inventario" className="input-field" type="number" required
                         value={inventario} onChange={(e) => setInventario(e.target.value)} />
                       <label for="input-field" className="input-label">Inventario:</label>
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
-                      <input placeholder="Precio:" className="input-field" type="number" required
-                        value={precio} onChange={(e) => setPrecio(e.target.value)} />
-                      <label for="input-field" className="input-label">Precio:</label>
-                      <span className="input-highlight"></span>
-                    </div>
-                    <div className="input-container">
-                      <input placeholder="Descuento opcional:" className="input-field" type="number"
-                        value={descuento} onChange={(e) => setDescuento(e.target.value)} />
-                      <label for="input-field" className="input-label">Descuento:</label>
-                      <span className="input-highlight"></span>
-                    </div>
-                    <div className="input-container">
-                      <input placeholder="Imagenes" className="input-field" type="file" required
-                        onChange={uploadImage} />
-                      <label for="input-field" className="input-label">Imagenes:</label>
-                      <span className="input-highlight"></span>
-                      {imagenes && <img src={imagenes} alt="imagen" className="img-thumbnail mb-3" style={{ maxWidth: "100px" }} />}
-                    </div>
-
-                    <div className="input-container">
-                      <select className="input-field" required value={categoriaP} onChange={(e) => setCategoriaP(e.target.value)}>
-                        <option value="">Selecciona una Categoria</option>
-                        {categoria.map((categoriaP) => (
-                          <option key={categoriaP._id} value={categoriaP._id}>
-                            {categoriaP.nombre}
-                          </option>
+                      <select placeholder="Categoria" className="input-field" required
+                        value={categoriaP} onChange={(e) => setCategoriaP(e.target.value)} >
+                        <option value="" disabled selected>Selecciona una categoria</option>
+                        {categoria.map(cat => (
+                          <option key={cat._id} value={cat._id}>{cat.nombre}</option>
                         ))}
                       </select>
-                      <label htmlFor="input-field" className="input-label">Categoria:</label>
+                      <label for="input-field" className="input-label">Categoria:</label>
                       <span className="input-highlight"></span>
                     </div>
-
+                    <div className="input-container">
+                      <input type="file" multiple onChange={uploadImage} />
+                      <span className="input-highlight"></span>
+                      <label for="input-field" className="input-label">Imagen:</label>
+                      <p>Imágenes seleccionadas:</p>
+                      <div className="d-flex">
+                        {imagenes.length > 0 && (
+                          imagenes.map((imagen, index) => (
+                            <div key={index} className="position-relative">
+                              <img key={index} src={imagen.url} alt={`Imagen ${index}`} style={{ maxWidth: '80px', marginRight: '10px' }} />
+                              <button className="btn btn-danger" onClick={() => eliminarImagen(imagen.publicId)} title="Eliminar esta imagen">
+                                <FontAwesomeIcon icon={faTrash} />
+                              </button>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className='modal-footer'>
-              <button class="btnFormulario" onClick={() => validar()}>
-                {tituloModal}
-              </button>
-              <button id='btncerrar' type='button' className='btn btn-secondary' data-bs-dismiss='modal'>
-                Cerrar
-              </button>
+              <button type='button' className='btn btn-danger' data-bs-dismiss='modal' id='btncerrar'>Cerrar</button>
+              <button type='button' className='btn btn-primary' onClick={validar}>{tituloModal}</button>
             </div>
           </div>
         </div>
@@ -433,22 +453,21 @@ const ProductosE = () => {
         <div className='modal-dialog modal-fullscreen-sm-down'>
           <div className='modal-content'>
             <div className="modal-header">
-              <h1 className="lead fw-bold">Estado de producto</h1>
+              <h1 className="lead fw-bold">Cambiar Estado del producto</h1>
               <button type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
             </div>
             <div className='modal-body'>
-              {/* Parte del  Formulario */}
               <div className="container-fluid">
                 <div className="row">
                   <div className="col-md-12">
                     <div className="input-container">
-                      <select className="input-field" required value={estado} onChange={(e) => setEstado(e.target.value)}>
-                        <option value="">Selecciona un estado</option>
+                      <select className="input-field" required
+                        value={estado} onChange={(e) => setEstado(e.target.value)} >
+                        <option value="" disabled selected>Selecciona un estado</option>
                         <option value="Activo">Activo</option>
-                        <option value="Agotado">Agotado</option>
                         <option value="Inactivo">Inactivo</option>
                       </select>
-                      <label htmlFor="input-field" className="input-label">Categoria:</label>
+                      <label for="input-field" className="input-label">Estado:</label>
                       <span className="input-highlight"></span>
                     </div>
                   </div>
@@ -456,17 +475,14 @@ const ProductosE = () => {
               </div>
             </div>
             <div className='modal-footer'>
-              <button onClick={() => EstadoProducto(selectedProduct)} class="btnFormulario">
-                Cambiar
-              </button>
-              <button id='btncerrarP' type='button' className='btn btn-secondary' data-bs-dismiss='modal'>
-                Cerrar
-              </button>
+              <button type='button' className='btn btn-danger' data-bs-dismiss='modal' id='btncerrarP'>Cerrar</button>
+              <button type='button' className='btn btn-primary' onClick={() => EstadoProducto(selectedProduct)}>Cambiar Estado</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
-}
-export default ProductosE
+  );
+};
+
+export default ProductosE;
