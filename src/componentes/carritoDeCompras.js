@@ -1,69 +1,142 @@
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Asegúrate de importar los estilos de Bootstrap
-import carrito from '../autenticar/carritoCompras.json';
-import imgproduct from '../img/imagenProductoAtuendoss.jpg';
-import '../css/carritoCompras.css';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../autenticar/AuthProvider';
+import { CarritoCompras } from '../url/urlSitioWeb';
+import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
 
-function CarritoDeCompra() {
-    // Asegúrate de que estos datos estén disponibles en tu archivo JSON
-    const resumenPedido = carrito.resumen_pedido;
-    const descuentos = carrito.descuentos;
-    const informacionAdicional = carrito.informacion_adicional;
+const ShoppingCart = () => {
+    const { isAuthenticated, user } = useContext(AuthContext);
+    const history = useNavigate();
+    const [productosCarrito, setProductosCarrito] = useState([]);
+    const [total, setTotal] = useState(0);
+
+    const datosCarrito = async () => {
+        try {
+            const response = await fetch(`${CarritoCompras}/${user._id}`);
+            if (!response.ok) {
+                throw new Error('La respuesta de la red no fue exitosa.')
+            }
+            const jsonData = await response.json();
+            setProductosCarrito(jsonData);
+            // console.log(jsonData);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const removeProduct = async (product) => {
+        // Mostrar confirmación antes de eliminar
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción eliminará el producto del carrito de compras.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        // Si el usuario confirma la eliminación, procede a eliminar el producto
+        if (result.isConfirmed) {
+            try {
+                const response = await fetch(`${CarritoCompras}/${user._id}/${product.idProducto}`, {
+                    method: 'DELETE'
+                });
+                console.log(user._id);
+                console.log(product.idProducto);
+                if (!response.ok) {
+                    throw new Error('Error al eliminar el producto del carrito');
+                }
+                
+                // Elimina el producto del estado
+                setProductosCarrito(productosCarrito.filter(item => item._id !== product.idProducto));
+                
+                // Vuelve a calcular el total después de eliminar
+                calculateTotal();
+                
+                // Muestra un mensaje de éxito
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Producto eliminado',
+                    text: 'El producto se ha eliminado del carrito de compras.',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } catch (error) {
+                console.error('Error al eliminar el producto del carrito:', error);
+            }
+        }
+    };
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            history('/'); // Utiliza navigate para redirigir
+        }
+        datosCarrito();
+        calculateTotal();
+    }, [isAuthenticated, history, productosCarrito]);
+
+    if (!isAuthenticated) {
+        return null; // Retorna null o un componente de carga mientras se redirige
+    }
+
+    const calculateTotal = () => {
+        let totalPrice = 0;
+        productosCarrito.forEach(product => {
+            totalPrice += product.precio * product.cantidad;
+        });
+        setTotal(totalPrice);
+    };
+
+    const renderProducts = () => { 
+        return productosCarrito.map(product => (
+            <div key={product._id} className="d-flex justify-content-between align-items-center mb-3">
+                {product.imagenes.length > 0 && (
+                <img
+                    alt="Shirt"
+                    className="aspect-square rounded-lg object-cover"
+                    height="80"
+                    src={product.imagenes[0].url}
+                    width="80"
+                />
+                )}
+                <div className="grid gap-1">
+                    <h2 className="font-semibold text-lg">{product.cantidad} {product.nombre}</h2>
+                </div>
+                <div className="ml-auto font-semibold me-4">${product.precio} {product._id}</div>
+                <div>
+                    <button className="btn btn-danger me-2" onClick={() => removeProduct(product)}>Eliminar</button>  
+                </div>
+            </div>
+        ));
+    }; 
 
     return (
-        <div className="m-3 mt-2 mb-2">
-            <h4 className='text-dark text-center'>Carrito de Compra</h4>
-            <div className="justify-content-between row">
-                <div className="col-md-9">
-                    {carrito.carrito.map((item) => (
-                        <div key={item.producto.id} className="m-2 tituloContenidocarrito d-flex align-items-center border-3d">
-                            <img src={imgproduct} style={{ width: '90px', height: '90px' }} className="m-1 me-2" />
-                            <div className="d-flex flex-grow-1 justify-content-between">
-                                <p className="mb-0 text-truncate">{item.cantidad} {item.producto.nombre}</p>
-                                <p className="mb-0 me-4">Total: ${item.precio_total.toFixed(2)}</p>
-                            </div>
-                        </div>
-                    ))}
+        <div className="container">
+            <div className="row">
+                <div className="col-md-8">
+                    <h2>Productos en tu carrito</h2>
+                    {renderProducts()}
                 </div>
-                <div className="col-md-3">
-                    <div className='border-3d'>
-                        <div className='m-1'>
-                            <h3 className='titulocarritocompra'>Resumen de pedido</h3>
-                            <div className='tituloContenidocarrito d-flex justify-content-between me-2 ms-2'>
-                                <div>
-                                    <p>Subtotal:</p>
-                                    <p>Impuestos:</p>
-                                    <p>Costos de Envío:</p>
-                                    <p>Total:</p>
-                                </div>
-                                <div>
-                                    <p>${resumenPedido.subtotal.toFixed(2)}</p>
-                                    <p>${resumenPedido.impuestos.toFixed(2)}</p>
-                                    <p>${resumenPedido.costos_envio.toFixed(2)}</p>
-                                    <p style={{color:'blue'}}>${resumenPedido.total.toFixed(2)}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='m-1'>
-                            <h3 className='titulocarritocompra'>Descuentos</h3>
-                            {descuentos.map((descuento) => (
-                                <div className='tituloContenidocarrito '>
-                                    <p key={descuento.codigo}>${descuento.monto.toFixed(2)}</p>
-                                </div>
-                            ))}
-                        </div>
-                        <div className='m-1'>
-                            <h3 className='titulocarritocompra'>Información Adicional</h3>
-                            <div className='m-3 colorRojoTexto'>
-                                <p>Política de cambio {informacionAdicional.politica_cambio} </p>
-                            </div>
+                <div className="col-md-4 mt-5">
+                    <div className="card">
+                        <div className="card-body d-flex justify-content-between">
+                            <h2>Total:</h2><h2>${total}</h2>
                         </div>
                     </div>
-
+                    <div className="d-grid mx-auto">
+                        <button className="btnvermas">
+                            <span className="ml-auto font-semibold me-4">Pagar</span>
+                        </button>
+                    </div>
+                    <div className="card mt-2 text-center mb-2">
+                        <span className="ml-auto font-semibold me-4">La entrega del producto será en la tienda.</span>
+                    </div>
                 </div>
             </div>
         </div>
     );
-}
+};
 
-export default CarritoDeCompra;
+export default ShoppingCart;

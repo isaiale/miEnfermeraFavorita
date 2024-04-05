@@ -87,83 +87,404 @@
 // };
 
 // export default ProductCard;
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import React, { useState } from 'react';
-import { Productos, img } from '../url/urlSitioWeb';
+// import React, { useState, useEffect } from "react";
+// import { Card, Container, Row, Col } from "react-bootstrap";
+// import imgAccesoriosEnfermeria from "../img/Logo de mi enfermera favorita.jpg";
+// import Breadcrumb from "../utilidad/migapan";
+// import "../css/colores.css";
+// import Swal from "sweetalert2";
 
-const ImageUploader = () => {
-    const [imageUrls, setImageUrls] = useState([]);
-    const [errorMessage, setErrorMessage] = useState('');
 
-    const handleFileChange = async (event) => {
-        const files = event.target.files;
-        const formData = new FormData();
+// const accesoriosEnfermeria = [
+//     {
+//         id: 1,
+//         nombre: "Accesorio 1",
+//         categoria: "Accesorios de Enfermería",
+//         precio: "$5.99",
+//         imageUrl: imgAccesoriosEnfermeria,
+//         tipos: ["Estetoscopio", "Tijeras Médicas", "Reloj de Enfermera"],
+//         colores: ["Blanco", "Azul", "Negro"],
+//         descuento: "20%",
+//     },
+//     {
+//         id: 2,
+//         nombre: "Accesorio 2",
+//         categoria: "Accesorios de Enfermería",
+//         precio: "$7.99",
+//         imageUrl: imgAccesoriosEnfermeria,
+//         tipos: ["Gorra de Enfermera", "Linterna Médica"],
+//         colores: ["Blanco", "Rosa"],
+//         descuento: "no aplica",
+//     },
+//     {
+//         id: 3,
+//         nombre: "Accesorio 3",
+//         categoria: "Accesorios de Enfermería",
+//         precio: "$9.99",
+//         imageUrl: imgAccesoriosEnfermeria,
+//         tipos: ["Calcetines de Compresión", "Guantes Médicos"],
+//         colores: ["Azul", "Morado"],
+//         descuento: "15%",
+//     },
+//     {
+//         id: 4,
+//         nombre: "Accesorio 4",
+//         categoria: "Accesorios de Enfermería",
+//         precio: "$12.99",
+//         imageUrl: imgAccesoriosEnfermeria,
+//         tipos: ["Bolsa de Enfermera"],
+//         colores: ["Negro", "Rojo"],
+//         descuento: "no aplica",
+//     },
+// ];
 
-        try {
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                formData.append('imagen', file);
-            }
+// // function AccesorioEnfermeriaCard({ accesorio }) {
+// //   return (
+// //     <Col xs={6} lg={3}>
+// //       <Card className="mb-4">
+// //         {accesorio.descuento !== "no aplica" && (
+// //           <div className="position-absolute top-0 start-0">
+// //             <span className="badge bg-danger">{accesorio.descuento}</span>
+// //           </div>
+// //         )}
+// //         <Card.Img variant="top" src={accesorio.imageUrl} />
+// //         <Card.Body>
+// //           <Card.Title>{accesorio.nombre}</Card.Title>
+// //           <Card.Text>Categoría: {accesorio.categoria}</Card.Text>
+// //           <Card.Text>Tipos: {accesorio.tipos.join(", ")}</Card.Text>
+// //           <Card.Text>Colores: {accesorio.colores.join(", ")}</Card.Text>
+// //           <Card.Text className="fs-5" style={{ color: "#0171fa" }}>
+// //             {accesorio.precio}
+// //           </Card.Text>
+// //           <button
+// //             className="btn color"
+// //             style={{ color: "white", background: "#daa232" }}
+// //           >
+// //             Ver más
+// //           </button>
+// //         </Card.Body>
+// //       </Card>
+// //     </Col>
+// //   );
+// // }
 
-            const response = await fetch(img, {
-                method: 'POST',
-                body: formData
-            });
+// function Accesorios() {
+//     const [data, setData] = useState([]);
+//     const [selectedType, setSelectedType] = useState(""); // Estado para el tipo seleccionado
+//     const [selectedColor, setSelectedColor] = useState(""); // Estado para el color seleccionado
+//     const [priceRange, setPriceRange] = useState([0, 20]); // Rango de precios
+//     const minPrice = 0;
+//     const maxPrice = 20;
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message);
-            }
+//     const datosProducto = async () => {
+//         try {
+//             const response = await fetch(Productos);
+//             if (!response.ok) {
+//                 throw new Error('La respuesta de la red no fue exitosa.')
+//             }
+//             const jsonData = await response.json();
+//             setData(jsonData);
+//         } catch (error) {
+//             Swal.fire({ title: "Error al hacer la solicitud.", icon: "error" });
+//         }
+//     }
 
-            const data = await response.json();
-            setImageUrls(prevImageUrls => [...prevImageUrls, { url: data.url, publicId: data.publicId }]);
-            console.log(data.url, data.publicId);
-        } catch (error) {
-            console.error(error.message);
-            setErrorMessage(error.message);
-        }
+//     useEffect(() => {
+//         datosProducto();
+//     }, [])
+
+//     // Función para aplicar filtros de tipo y color
+//     const accesoriosFiltrados = accesoriosEnfermeria.filter((accesorio) => {
+//         if (selectedType && !accesorio.tipos.includes(selectedType)) {
+//             return false;
+//         }
+//         if (selectedColor && !accesorio.colores.includes(selectedColor)) {
+//             return false;
+//         }
+//         return true;
+//     });
+
+//     const handlePriceRangeChange = (event) => {
+//         const value = event.target.value.split(",").map(parseFloat);
+//         setPriceRange(value);
+//     };
+
+//     return (
+//         <Container>
+//             <div className="flex container mx-auto justify-center">
+//                 <Breadcrumb path={"Ayuda"} />
+//             </div>
+//             <Row>
+//                 <Col lg={3}>
+//                     <div className="mb-4">
+//                         <h5>Filtrar por Tipo</h5>
+//                         <select
+//                             className="form-select"
+//                         //   onChange={(e) => setSelectedType(e.target.value)}
+//                         //   value={selectedType}
+//                         >
+//                             <option value="">Todos</option>
+//                             <option value="Estetoscopio">Estetoscopio</option>
+//                             <option value="Tijeras Médicas">Tijeras Médicas</option>
+//                             {/* Agrega más tipos según sea necesario */}
+//                         </select>
+//                     </div>
+//                     <div className="mb-4">
+//                         <h5>Filtrar por Color</h5>
+//                         <select
+//                             className="form-select"
+//                         //   onChange={(e) => setSelectedColor(e.target.value)}
+//                         //   value={selectedColor}
+//                         >
+//                             <option value="">Todos</option>
+//                             <option value="Blanco">Blanco</option>
+//                             <option value="Azul">Azul</option>
+//                             {/* Agrega más colores según sea necesario */}
+//                         </select>
+//                     </div>
+//                     <div className="mb-4">
+//                         <h5>Filtrar por Precio</h5>
+//                         <input
+//                             type="range"
+//                             min={minPrice}
+//                             max={maxPrice}
+//                             value={priceRange.join(",")}
+//                             className="form-range"
+//                         //   onChange={handlePriceRangeChange}
+//                         />
+//                         <div>
+//                             Precios: ${priceRange[0]} - ${priceRange[1]}
+//                         </div>
+//                     </div>
+//                 </Col>
+//                 <Col lg={9}>
+//                     <Row xs={2} md={4}>
+//                         {data.map((accesorios) => (
+//                             <div>
+//                                 {accesorios.descuento !== 0 && (
+//                                 <div className="position-absolute top-0 start-0">
+//                                   <span className="badge bg-danger">{accesorios.descuento}</span>
+//                                 </div>
+//                               )}
+//                                 <div className="imgproducto">
+//                                 <img src={accesorios.imagenes[0].url} alt=''/>
+//                                 </div>
+//                                 <div className="descProducto">
+//                                     <h4 className="lead">{accesorios.nombre}</h4>
+//                                     <p className="lead">$ {accesorios.precio}</p>
+//                                     <div className="d-grid mx-auto">
+//                                         <button className="btnvermas">Ver más</button>
+//                                     </div>
+//                                 </div>
+//                             </div>
+//                         ))}
+//                     </Row>
+//                 </Col>
+//             </Row>
+//         </Container>
+//     );
+// }
+
+// export default Accesorios;
+// import React, { useState, useEffect } from "react";
+// import { useParams } from "react-router-dom";
+// import { Productos } from "../url/urlSitioWeb";
+// import img from '../img/enfermera-removebg-preview.png'
+
+// function DetalleProducto() {
+//     const { idProductos } = useParams();
+//     const [producto, setProducto] = useState(null);
+
+//     useEffect(() => {
+//         const fetchProducto = async () => {
+//             try {
+//                 const response = await fetch(`${Productos}/${idProductos}`);
+//                 if (!response.ok) {
+//                     throw new Error("La respuesta de la red no fue exitosa.");
+//                 }
+//                 const data = await response.json();
+//                 setProducto(data);
+//             } catch (error) {
+//                 console.error("Error al cargar los detalles del producto:", error);
+//             }
+//         };
+
+//         fetchProducto();
+//     }, [idProductos]);
+
+//     return (
+//         <div>
+//             {/* Aquí renderizas los detalles del producto */}
+//             {producto ? (
+//                 <div>
+//                     <h1>Detalles del producto</h1>
+//                     <p>Nombre: {producto.nombre}</p>
+//                     <p>Precio: {producto.precio}</p>
+//                     {producto.imagenes.map((imagen, idx) => (
+//                         <div key={idx} className="mt-2">
+//                             <img src={imagen.url} alt={`Imagen ${idx}`} className="img-thumbnail" style={{ maxWidth: "100px" }} />
+//                         </div>
+//                     ))}
+//                     {/* Renderiza otros detalles del producto según sea necesario */}
+//                 </div>
+//             ) : (
+//                 <p>Cargando...</p>
+//             )}
+//             <div className="grid gap-4">
+//                 <div className="flex items-center gap-4">
+//                     <img
+//                         alt="Sneakers"
+//                         className="aspect-square rounded-lg object-cover"
+//                         height="80"
+//                         src={img}
+//                         width="80"
+//                     />
+//                     <div className="grid gap-1">
+//                         <h2 className="font-semibold text-lg">Sneakers</h2>
+//                         <p className="text-sm text-gray-500 dark:text-gray-400">Size: 10.5, Color: White</p>
+//                     </div>
+//                     <div className="ml-auto font-semibold">$150</div>
+//                 </div>
+//                 <div className="flex items-center gap-4">
+//                     <img
+//                         alt="Backpack"
+//                         className="aspect-square rounded-lg object-cover"
+//                         height="80"
+//                         src={img}
+//                         width="80"
+//                     />
+//                     <div className="grid gap-1">
+//                         <h2 className="font-semibold text-lg">Backpack</h2>
+//                         <p className="text-sm text-gray-500 dark:text-gray-400">Color: Black</p>
+//                     </div>
+//                     <div className="ml-auto font-semibold">$50</div>
+//                 </div>
+//                 <div className="flex items-center gap-4">
+//                     <img
+//                         alt="Watch"
+//                         className="aspect-square rounded-lg object-cover"
+//                         height="80"
+//                         src={img}
+//                         width="80"
+//                     />
+//                     <div className="grid gap-1">
+//                         <h2 className="font-semibold text-lg">Watch</h2>
+//                         <p className="text-sm text-gray-500 dark:text-gray-400">Color: Silver</p>
+//                     </div>
+//                     <div className="ml-auto font-semibold">$200</div>
+//                 </div>
+//                 <div className="flex items-center gap-4">
+//                     <img
+//                         alt="Headphones"
+//                         className="aspect-square rounded-lg object-cover"
+//                         height="80"
+//                         src={img}
+//                         width="80"
+//                     />
+//                     <div className="grid gap-1">
+//                         <h2 className="font-semibold text-lg">Headphones</h2>
+//                         <p className="text-sm text-gray-500 dark:text-gray-400">Color: Black</p>
+//                     </div>
+//                     <div className="ml-auto font-semibold">$100</div>
+//                 </div>
+// <div className="flex items-center gap-4">
+//     <img
+//         alt="Shirt"
+//         className="aspect-square rounded-lg object-cover"
+//         height="80"
+//         src={img}
+//         width="80"
+//     />
+//     <div className="grid gap-1">
+//         <h2 className="font-semibold text-lg">Shirt</h2>
+//         <p className="text-sm text-gray-500 dark:text-gray-400">Size: M, Color: Blue</p>
+//     </div>
+//     <div className="ml-auto font-semibold">$20</div>
+// </div>
+//             </div>
+//         </div>
+//     );
+// }
+
+// export default DetalleProducto;
+
+
+import React, { useState, useEffect } from 'react';
+import img from '../img/enfermera-removebg-preview.png'
+
+const ShoppingCart = () => {
+    const [products, setProducts] = useState([
+        { id: 1, name: 'Producto 1', price: 50 },
+        { id: 2, name: 'Producto 2', price: 20 },
+        { id: 3, name: 'Producto 3', price: 30 }
+    ]);
+    const [total, setTotal] = useState(0);
+
+    const removeProduct = (productId) => {
+        setProducts(products.filter(product => product.id !== productId));
     };
 
-    const handleDeleteImage = async (publicId) => {
-        try {
-            const response = await fetch(`${img}/${publicId}`, {
-                method: 'DELETE'
-            });
+    const calculateTotal = () => {
+        let totalPrice = 0;
+        products.forEach(product => {
+            totalPrice += product.price;
+        });
+        setTotal(totalPrice);
+    };
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message);
-            }
+    useEffect(() => {
+        calculateTotal();
+    }, [products]);
 
-            setImageUrls(prevImageUrls => prevImageUrls.filter(image => image.publicId !== publicId));
-        } catch (error) {
-            console.error(error.message);
-            setErrorMessage(error.message);
-        }
+    const renderProducts = () => {
+        return products.map(product => (
+            <div key={product.id} className="d-flex justify-content-between align-items-center mb-3">
+                <img
+                    alt="Shirt"
+                    className="aspect-square rounded-lg object-cover"
+                    height="80"
+                    src={img}
+                    width="80"
+                />
+                {/* <span>{product.name} - ${product.price}</span> */}
+                <div className="grid gap-1">
+                    <h2 className="font-semibold text-lg">{product.name}</h2>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Size: M, Color: Blue</p>
+                </div>
+                <div className="ml-auto font-semibold me-4">${product.price}</div>
+                <div>
+                    <button className="btn btn-danger me-2" onClick={() => removeProduct(product.id)}>Eliminar</button>
+                    <button className="btn btn-secondary">Editar</button>
+                </div>
+            </div>
+        ));
     };
 
     return (
-        <div>
-            <h2>Subir Imágenes</h2>
-            {imageUrls.length > 0 && (
-                imageUrls.map((imagen, index) => (
-                    <div>                
-                        <img key={index} src={imagen.url} alt={`Imagen ${index}`} style={{ maxWidth: '80px', marginRight: '10px' }} /> 
-                        <button className="btn btn-danger" onClick={() => handleDeleteImage(imagen.publicId)}>
-                            <FontAwesomeIcon icon={faTrash} />
+        <div className="container">
+            <div className="row">
+                <div className="col-md-8">
+                    <h2>Productos en tu carrito:</h2>
+                    {renderProducts()}
+                </div>
+                <div className="col-md-4 mt-5">
+                    <div className="card">
+                        <div className="card-body d-flex justify-content-between">
+                            <h2>Total:</h2><h2>${total}</h2>
+                        </div>
+                    </div>
+                    <div className="d-grid mx-auto">
+                        <button className="btnvermas">
+                            <span className="ml-auto font-semibold me-4">Pagar</span>
                         </button>
                     </div>
-                ))
-            )}
-            <input type="file" accept="image/*" multiple onChange={handleFileChange} />
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+                    <div className="card mt-2 text-center mb-2">
+                        <span className="ml-auto font-semibold me-4">La entrega del producto será en la tienda.</span>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
 
-export default ImageUploader;
-
-
-
-
+export default ShoppingCart;

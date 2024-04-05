@@ -23,6 +23,7 @@ import VistaBusquedaAvanzada from './vistas/usuario/VistaBusquedaAvanzada';
 import Prueba from './vistas/usuario/prueba';
 import { Ayuda } from './vistas/usuario/ayuda';
 import { Perfil } from "./vistas/usuario/perfil";
+import { ProductoDetalle } from "./vistas/usuario/productoDetalle";
 
 import { InicioAdmin } from './vistas/administrador/InicioAdmin';
 import { VentasEmpleado } from './vistas/administrador/VentasE';
@@ -40,8 +41,8 @@ export default function App() {
       <BrowserRouter>
       <ScrollTop/>
         <Routes>
-          <Route path='/' element={<InicioUsuario />} />
-          <Route path="productos" element={<Producto />} />
+          <Route path='/' element={<InicioUsuario />} /> 
+          <Route path="productos" element={<Producto />} /> 
           <Route path="login" element={<LoginUser />} />
           <Route path="registroUsuario" element={<RegistroUser />} />
           <Route path="carritoDeCompras" element={<CarritoCompra />} />
@@ -60,6 +61,7 @@ export default function App() {
           <Route path="error-verificacion" element={<Error_verificacion />} />
           <Route path="verificacion-correcta" element={<Verificacion_correcta />} />
           <Route path="perfil" element={<Perfil />} />
+          <Route path="detalle-producto/:idProductos" element={<ProductoDetalle />} /> 
           {/* Routes for Admin */}
           
           {isAuthenticated !== null && user?.rol === "Admin" && (

@@ -8,10 +8,17 @@ export const UrlLoginUsuarios = "https://back-end-enfermera.vercel.app/api/auth/
 
 export const Productos = "https://back-end-enfermera.vercel.app/api/productos/productos";//Para productos
 //export const Productos = "http://localhost:3000/api/productos/productos";//Para productos
-export const img = "https://back-end-enfermera.vercel.app/api/productos/imagenes"; //Para img productos
+export const img = "https://back-end-enfermera.vercel.app/api/productos/imagenes"; //Para subir imgenes de productos
 
 export const Estado_Producto = "https://back-end-enfermera.vercel.app/api/productos/estado";//Para estado de productos
 export const CategoriaProducto = "https://back-end-enfermera.vercel.app/api/categorias/categoria";//Para categoria
 
 export const Api_Validacio_Correo ="https://disify.com/api/email";//Validacion de correos electronicos 
 export const urlCloudinary = "https://api.cloudinary.com/v1_1/droihhnng/image/upload";//imagenes
+
+// ***************************Carrito de compra*********************************************
+export const CarritoCompras = "https://back-end-enfermera.vercel.app/api/carrito";//Para Carrito
+// export const  = "";//
+// export const  = "";//
+// export const  = "";//
+// export const  = "";//

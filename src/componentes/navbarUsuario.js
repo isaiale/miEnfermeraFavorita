@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import logoU from '../img/Logo de mi enfermera favorita.jpg';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useNavigate } from "react-router-dom";
-import { faHouse, faShirt, faRightFromBracket, faShoppingBasket, faTag, faBars, faXmark, faTshirt, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faHouse, faShirt, faRightFromBracket, faShoppingBasket, faTag, faBars, faXmark, faTshirt, faSearch, faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import '../css/navbar.css';
 import { AuthContext } from '../autenticar/AuthProvider';
 // import '../css/colores.css';
@@ -125,6 +125,16 @@ const NavbarUsuario = () => {
 
                             </Dropdown.Menu>
                         </Dropdown>
+                        {isAuthenticated !== null && user?.rol === "User" ? (
+                            <>
+                                <Link to='/carritoDeCompras' className={` ${menuVisible ? 'navLinkFalse ' : 'navLinkFalse lead ms-3'}`}>
+                                    <div ><FontAwesomeIcon icon={faCartShopping} className="me-2" /></div>
+                                </Link>
+                            </>
+                        ) : (
+                            <></>
+                        )}
+
                         <Dropdown className='Dropdown lead' as={Nav.Item}
                             show={abrirDrop2}
                             onMouseOver={() => setAbrirDrop2(true)}
@@ -132,7 +142,7 @@ const NavbarUsuario = () => {
 
                             {isAuthenticated !== null && user?.rol === "User" ? (
                                 <>
-                                    <Dropdown.Toggle className='text-dark' as={Nav.Link} variant="light" id="dropdown"> 
+                                    <Dropdown.Toggle className='text-dark' as={Nav.Link} variant="light" id="dropdown">
                                         <span>Bienvenido <i className=''>{user.nombre}</i></span>
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
