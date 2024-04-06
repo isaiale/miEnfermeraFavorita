@@ -15,7 +15,9 @@ import TerminosYCondiciones from './vistas/usuario/terminosYCondiciones';
 import Error404 from './errores/error404';
 import { Error_verificacion } from './errores/error_verificacion';
 import Verificacion_correcta from './errores/verificacion_correcta';
-import { Accesorioss } from './vistas/usuario/accesorios';
+import Cancelado from "./errores/canceled";
+import Success from "./errores/success";
+import { Accesorioss } from './vistas/usuario/accesorios'; 
 import { Contactos } from './vistas/usuario/contacto';
 import RecuperarPasswordd from './vistas/usuario/RecuperarPassword';
 import VistaBusquedaSimple from './vistas/usuario/VistaBusquedaSimple';
@@ -59,6 +61,8 @@ export default function App() {
           <Route path="prueba" element={<Prueba />} />
           <Route path="*" element={<Error404 />} />
           <Route path="error-verificacion" element={<Error_verificacion />} />
+          <Route path="success" element={<Success />} />
+          <Route path="cancelado" element={<Cancelado />} />
           <Route path="verificacion-correcta" element={<Verificacion_correcta />} />
           <Route path="perfil" element={<Perfil />} />
           <Route path="detalle-producto/:idProductos" element={<ProductoDetalle />} /> 
