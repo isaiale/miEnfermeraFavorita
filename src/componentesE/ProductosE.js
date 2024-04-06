@@ -379,6 +379,24 @@ const ProductosE = () => {
               <div className="container-fluid">
                 <div className="row">
                   <div className="col-md-12">
+                  <div className="input-container">
+                      <select
+                        placeholder="Categoria"
+                        className="input-field"
+                        required
+                      >
+                        <option value="" disabled selected>
+                          Selecciona genero
+                        </option>
+                        <option>Hombre</option>
+                        <option>Mujer</option>
+                        <option>Unisex</option>
+                      </select>
+                      <label for="input-field" className="input-label">
+                        Genero:
+                      </label>
+                      <span className="input-highlight"></span>
+                    </div>
                     <div className="input-container">
                       <input placeholder="Nombre" className="input-field" id="nombre" type="text" required
                         value={nombre} onChange={(e) => setNombre(e.target.value)} />
@@ -419,6 +437,29 @@ const ProductosE = () => {
                       </select>
                       <label for="input-field" className="input-label">Categoria:</label>
                       <span className="input-highlight"></span>
+                    </div>
+                    <div className="input-container">
+                      <label for="input-field" className="">
+                        Seleccione las tallas o talla:
+                      </label>
+                      <div className="d-flex">
+                        <label className="container">
+                          <input type="checkbox" name="size" value="c" />
+                          <div className="checkmark">S</div>
+                        </label>
+                        <label className="container">
+                          <input type="checkbox" name="size" value="s" />
+                          <div className="checkmark">M</div>
+                        </label>
+                        <label className="container">
+                          <input type="checkbox" name="size" value="m" />
+                          <div className="checkmark">L</div>
+                        </label>
+                        <label className="container">
+                          <input type="checkbox" name="size" value="g" />
+                          <div className="checkmark">XL</div>
+                        </label>
+                      </div>
                     </div>
                     <div className="input-container">
                       <input type="file" multiple onChange={uploadImage} />
