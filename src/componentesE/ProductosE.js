@@ -428,6 +428,12 @@ const ProductosE = () => {
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
+                      <input placeholder="Color" className="input-field" id="color" type="text" required
+                        value="" />
+                      <label for="input-field" className="input-label">Color:</label>
+                      <span className="input-highlight"></span>
+                    </div>
+                    <div className="input-container">
                       <select placeholder="Categoria" className="input-field" required
                         value={categoriaP} onChange={(e) => setCategoriaP(e.target.value)} >
                         <option value="" disabled selected>Selecciona una categoria</option>
