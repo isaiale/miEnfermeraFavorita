@@ -1,3 +1,26 @@
+import React from 'react';
+
+const StripeComponent = () => {
+  const handleCheckout = async () => {
+    const response = await fetch('http://localhost:3001/create-checkout-session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+    window.location.href = `https://checkout.stripe.com/pay/${data.sessionId}`;
+  };
+
+  return (
+    <div>
+      <button onClick={handleCheckout}>Pagar</button>
+    </div>
+  );
+};
+
+export default StripeComponent;
 
 // import React, { useState } from 'react';
 
@@ -409,86 +432,86 @@
 // export default DetalleProducto;
 
 
-import React, { useState, useEffect } from 'react';
-import img from '../img/enfermera-removebg-preview.png'
+// import React, { useState, useEffect } from 'react';
+// import img from '../img/enfermera-removebg-preview.png'
 
-const ShoppingCart = () => {
-    const [products, setProducts] = useState([
-        { id: 1, name: 'Producto 1', price: 50 },
-        { id: 2, name: 'Producto 2', price: 20 },
-        { id: 3, name: 'Producto 3', price: 30 }
-    ]);
-    const [total, setTotal] = useState(0);
+// const ShoppingCart = () => {
+//     const [products, setProducts] = useState([
+//         { id: 1, name: 'Producto 1', price: 50 },
+//         { id: 2, name: 'Producto 2', price: 20 },
+//         { id: 3, name: 'Producto 3', price: 30 }
+//     ]);
+//     const [total, setTotal] = useState(0);
 
-    const removeProduct = (productId) => {
-        setProducts(products.filter(product => product.id !== productId));
-    };
+//     const removeProduct = (productId) => {
+//         setProducts(products.filter(product => product.id !== productId));
+//     };
 
-    const calculateTotal = () => {
-        let totalPrice = 0;
-        products.forEach(product => {
-            totalPrice += product.price;
-        });
-        setTotal(totalPrice);
-    };
+//     const calculateTotal = () => {
+//         let totalPrice = 0;
+//         products.forEach(product => {
+//             totalPrice += product.price;
+//         });
+//         setTotal(totalPrice);
+//     };
 
-    useEffect(() => {
-        calculateTotal();
-    }, [products]);
+//     useEffect(() => {
+//         calculateTotal();
+//     }, [products]);
 
-    const renderProducts = () => {
-        return products.map(product => (
-            <div key={product.id} className="d-flex justify-content-between align-items-center mb-3">
-                <img
-                    alt="Shirt"
-                    className="aspect-square rounded-lg object-cover"
-                    height="80"
-                    src={img}
-                    width="80"
-                />
-                {/* <span>{product.name} - ${product.price}</span> */}
-                <div className="grid gap-1">
-                    <h2 className="font-semibold text-lg">{product.name}</h2>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Size: M, Color: Blue</p>
-                </div>
-                <div className="ml-auto font-semibold me-4">${product.price}</div>
-                <div>
-                    <button className="btn btn-danger me-2" onClick={() => removeProduct(product.id)}>Eliminar</button>
-                    <button className="btn btn-secondary">Editar</button>
-                </div>
-            </div>
-        ));
-    };
+//     const renderProducts = () => {
+//         return products.map(product => (
+//             <div key={product.id} className="d-flex justify-content-between align-items-center mb-3">
+//                 <img
+//                     alt="Shirt"
+//                     className="aspect-square rounded-lg object-cover"
+//                     height="80"
+//                     src={img}
+//                     width="80"
+//                 />
+//                 {/* <span>{product.name} - ${product.price}</span> */}
+//                 <div className="grid gap-1">
+//                     <h2 className="font-semibold text-lg">{product.name}</h2>
+//                     <p className="text-sm text-gray-500 dark:text-gray-400">Size: M, Color: Blue</p>
+//                 </div>
+//                 <div className="ml-auto font-semibold me-4">${product.price}</div>
+//                 <div>
+//                     <button className="btn btn-danger me-2" onClick={() => removeProduct(product.id)}>Eliminar</button>
+//                     <button className="btn btn-secondary">Editar</button>
+//                 </div>
+//             </div>
+//         ));
+//     };
 
-    return (
-        <div className="container">
-            <div className="row">
-                <div className="col-md-8">
-                    <h2>Productos en tu carrito:</h2>
-                    {renderProducts()}
-                </div>
-                <div className="col-md-4 mt-5">
-                    <div className="card">
-                        <div className="card-body d-flex justify-content-between">
-                            <h2>Total:</h2><h2>${total}</h2>
-                        </div>
-                    </div>
-                    <div className="d-grid mx-auto">
-                        <button className="btnvermas">
-                            <span className="ml-auto font-semibold me-4">Pagar</span>
-                        </button>
-                    </div>
-                    <div className="card mt-2 text-center mb-2">
-                        <span className="ml-auto font-semibold me-4">La entrega del producto será en la tienda.</span>
-                    </div>
-                </div>
-            </div>
-            <div className='mt-5 mb-5' style={{ backgroundColor: 'lightgreen', padding: '10px', borderRadius: '5px', textAlign: 'center' }}>
-                <h2>¡El pago se realizó con éxito!</h2>
-                <p>Gracias por tu compra. </p>
-            </div>
-        </div>
-    );
-};
+//     return (
+//         <div className="container">
+//             <div className="row">
+//                 <div className="col-md-8">
+//                     <h2>Productos en tu carrito:</h2>
+//                     {renderProducts()}
+//                 </div>
+//                 <div className="col-md-4 mt-5">
+//                     <div className="card">
+//                         <div className="card-body d-flex justify-content-between">
+//                             <h2>Total:</h2><h2>${total}</h2>
+//                         </div>
+//                     </div>
+//                     <div className="d-grid mx-auto">
+//                         <button className="btnvermas">
+//                             <span className="ml-auto font-semibold me-4">Pagar</span>
+//                         </button>
+//                     </div>
+//                     <div className="card mt-2 text-center mb-2">
+//                         <span className="ml-auto font-semibold me-4">La entrega del producto será en la tienda.</span>
+//                     </div>
+//                 </div>
+//             </div>
+//             <div className='mt-5 mb-5' style={{ backgroundColor: 'lightgreen', padding: '10px', borderRadius: '5px', textAlign: 'center' }}>
+//                 <h2>¡El pago se realizó con éxito!</h2>
+//                 <p>Gracias por tu compra. </p>
+//             </div>
+//         </div>
+//     );
+// };
 
-export default ShoppingCart;
+// export default ShoppingCart;

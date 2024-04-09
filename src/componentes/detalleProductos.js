@@ -5,15 +5,15 @@ import { useParams } from "react-router-dom";
 import { AuthContext } from '../autenticar/AuthProvider';
 import { CarritoCompras } from '../url/urlSitioWeb';
 import Swal from "sweetalert2";
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 const DetalleProducto = () => {
-    const [selectedImage, setSelectedImage] = useState(''); 
-    const [count, setCount] = useState(1); 
+    const [selectedImage, setSelectedImage] = useState('');
+    const [count, setCount] = useState(1);
     const { idProductos } = useParams();
     const [producto, setProducto] = useState(null);
     const { isAuthenticated, user } = useContext(AuthContext);
-    const history = useNavigate();
+    // const history = useNavigate();
 
     const fetchProducto = async () => {
         try {
@@ -24,7 +24,7 @@ const DetalleProducto = () => {
             const data = await response.json();
             setProducto(data);
             if (data.imagenes.length > 0) {
-                setSelectedImage(data.imagenes[0].url); 
+                setSelectedImage(data.imagenes[0].url);
             }
         } catch (error) {
             console.error("Error al cargar los detalles del producto:", error);
@@ -33,7 +33,7 @@ const DetalleProducto = () => {
 
     useEffect(() => {
         fetchProducto();
-    }, [idProductos]);    
+    }, [idProductos]);
 
     const handleThumbnailClick = (image) => {
         setSelectedImage(image);
@@ -41,15 +41,38 @@ const DetalleProducto = () => {
 
     const handleCountChange = (action) => {
         if (action === "increment") {
-            setCount(count + 1);
+            if (count < producto.inventario) {
+                setCount(count + 1);
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Cantidad máxima alcanzada',
+                    text: 'La cantidad seleccionada ya alcanzó el límite del inventario.',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }
         } else if (action === "decrement" && count > 1) {
             setCount(count - 1);
         }
     };
 
+
     const addToCart = async () => {
         if (isAuthenticated) {
             try {
+                // Verificar si la cantidad seleccionada excede el inventario
+                if (count > producto.inventario) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Cantidad no disponible',
+                        text: 'La cantidad seleccionada excede la disponibilidad en el inventario.',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    return; // Detener la ejecución si la cantidad excede el inventario
+                }
+
                 const response = await fetch(CarritoCompras, {
                     method: 'POST',
                     headers: {
@@ -75,7 +98,7 @@ const DetalleProducto = () => {
             } catch (error) {
                 console.error('Error al agregar al carrito:', error);
             }
-        } else {            
+        } else {
             Swal.fire({
                 icon: 'info',
                 title: 'Inicia sesión o registrate para poder agregar al carrito de compras.',
@@ -84,6 +107,7 @@ const DetalleProducto = () => {
             });
         }
     };
+
 
     return (
         <div>
@@ -141,9 +165,9 @@ const DetalleProducto = () => {
                         <div>
                             <button className="agregar_carrito" onClick={addToCart}>Agregar al carrito</button>
                         </div>
-                        <div>
+                        {/* <div>
                             <button className="comprar">Comprar ahora</button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             ) : (

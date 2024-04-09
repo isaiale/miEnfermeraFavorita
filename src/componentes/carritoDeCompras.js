@@ -1,14 +1,31 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../autenticar/AuthProvider';
-import { CarritoCompras } from '../url/urlSitioWeb';
+import { CarritoCompras, Stripe } from '../url/urlSitioWeb';
 import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCreditCard, faTrash, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import "../css/colores.css";
+import '../css/carritoCompras.css'
 
-const ShoppingCart = () => {
+
+const CarritoCompra = () => {
     const { isAuthenticated, user } = useContext(AuthContext);
     const history = useNavigate();
     const [productosCarrito, setProductosCarrito] = useState([]);
     const [total, setTotal] = useState(0);
+    const [showPaymentOptions, setShowPaymentOptions] = useState(false);
+    const [showPagar, setShowPagar] = useState(true);
+
+    const handleOpenPaymentOptions = () => {
+        setShowPaymentOptions(true);
+        setShowPagar(false);
+    };
+
+    const handleClosePaymentOptions = () => {
+        setShowPaymentOptions(false);
+        setShowPagar(true);
+    };
 
     const datosCarrito = async () => {
         try {
@@ -48,13 +65,13 @@ const ShoppingCart = () => {
                 if (!response.ok) {
                     throw new Error('Error al eliminar el producto del carrito');
                 }
-                
+
                 // Elimina el producto del estado
                 setProductosCarrito(productosCarrito.filter(item => item._id !== product.idProducto));
-                
+
                 // Vuelve a calcular el total después de eliminar
                 calculateTotal();
-                
+
                 // Muestra un mensaje de éxito
                 Swal.fire({
                     icon: 'success',
@@ -89,28 +106,121 @@ const ShoppingCart = () => {
         setTotal(totalPrice);
     };
 
-    const renderProducts = () => { 
+    const manejoDePago = async () => {
+        try {
+            // Construir el objeto de datos del carrito
+            const data = {
+                tipoEntrega: "delivery",
+                dateselect: new Date().toISOString().split('T')[0],
+                productos: productosCarrito,
+                datoscliente: {
+                    name: user.nombre,
+                    paternalLastname: user.apellido,
+                    email: user.correo
+                },
+                instruction: "El producto se recoje en la tienda"
+                // totalneto: total // Agregar el totalneto al objeto de datos
+            };
+
+            // Enviar la solicitud POST al servidor
+            const response = await fetch(Stripe, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al procesar el pago');
+            }
+
+            // Obtener la URL de la sesión de pago desde la respuesta
+            const responseData = await response.json();
+            const sessionId = responseData.sessionId;
+
+            // Redireccionar a la página de pago con la URL de la sesión de pago
+            window.location.href = sessionId;
+        } catch (error) {
+            console.error('Error al procesar el pago:', error);
+            // Manejar errores
+        }
+    };
+
+    const handleIncreaseQuantity = async (product) => {
+        const updatedProducts = [...productosCarrito];
+        const index = updatedProducts.indexOf(product);
+        updatedProducts[index].cantidad += 1;
+        setProductosCarrito(updatedProducts);
+        await updateQuantity(updatedProducts[index], updatedProducts[index].cantidad);
+    };
+
+    const handleDecreaseQuantity = async (product) => {
+        const updatedProducts = [...productosCarrito];
+        const index = updatedProducts.indexOf(product);
+        if (updatedProducts[index].cantidad > 1) {
+            updatedProducts[index].cantidad -= 1;
+            setProductosCarrito(updatedProducts);
+            await updateQuantity(updatedProducts[index], updatedProducts[index].cantidad);
+        }
+    };
+
+    const updateQuantity = async (product, cantidadP) => {
+        try {
+            const response = await fetch(`${CarritoCompras}/${user._id}/${product.idProducto}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ cantidad: cantidadP }),
+            });
+            const responseData = await response.json(); // Convertir la respuesta a JSON
+            console.log('Respuesta del servidor:', responseData); // Mostrar la respuesta en la consola
+            if (responseData.mensajeExceso) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Cantidad no disponible',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }
+
+            if (!response.ok) {
+                throw new Error('Error al actualizar la cantidad del producto en el carrito');
+            }
+        } catch (error) {
+            console.error('Error al actualizar la cantidad del producto en el carrito:', error);
+        }
+    };
+
+    const renderProducts = () => {
         return productosCarrito.map(product => (
-            <div key={product._id} className="d-flex justify-content-between align-items-center mb-3">
+            <div className="d-flex justify-content-between align-items-center mb-2" style={{ border: '0.5px solid #cac6c6', padding: '10px' }}>
                 {product.imagenes.length > 0 && (
-                <img
-                    alt="Shirt"
-                    className="aspect-square rounded-lg object-cover"
-                    height="80"
-                    src={product.imagenes[0].url}
-                    width="80"
-                />
+                    <img
+                        alt="Shirt"
+                        className="aspect-square rounded-lg object-cover"
+                        height="50"
+                        src={product.imagenes[0].url}
+                        width="50"
+                    />
                 )}
                 <div className="grid gap-1">
                     <h2 className="font-semibold text-lg">{product.cantidad} {product.nombre}</h2>
                 </div>
-                <div className="ml-auto font-semibold me-4">${product.precio} {product._id}</div>
+                <div className="btn-group ms-5">
+                    <button className="btn btn-secondary font-semibold" onClick={() => handleDecreaseQuantity(product)}>-</button>
+                    <span className="btn font-semibold">{product.cantidad}</span>
+                    <button className="btn btn-secondary font-semibold" onClick={() => handleIncreaseQuantity(product)}>+</button>
+                </div>
+
+                <div className="ml-auto font-semibold me-4">${product.precio}</div>
                 <div>
-                    <button className="btn btn-danger me-2" onClick={() => removeProduct(product)}>Eliminar</button>  
+                    <FontAwesomeIcon onClick={() => removeProduct(product)} icon={faTrash} />
                 </div>
             </div>
         ));
-    }; 
+    };
 
     return (
         <div className="container">
@@ -126,17 +236,39 @@ const ShoppingCart = () => {
                         </div>
                     </div>
                     <div className="d-grid mx-auto">
-                        <button className="btnvermas">
-                            <span className="ml-auto font-semibold me-4">Pagar</span>
-                        </button>
+                        {showPagar && (
+                            <button className="btnvermas  font-semibold" onClick={handleOpenPaymentOptions}>
+                                Pagar
+                            </button>
+                        )}
+                        {showPaymentOptions && (
+                            <>
+                                <button className="btnCerrar font-semibold" onClick={handleClosePaymentOptions}>
+                                    Cancelar
+                                </button>
+                                {/* Otros métodos de pago */}
+                            </>
+                        )}
+                        {showPaymentOptions && (
+                            <>
+                                <button className="btnPagar font-semibold" onClick={manejoDePago}>
+                                    <FontAwesomeIcon icon={faCreditCard} /> Con tarjeta
+                                </button>
+                                <button className="btnPagar font-semibold">
+                                    <i class="fa fa-paypal" aria-hidden="true"></i> Paypal
+                                </button>
+                                {/* Otros métodos de pago */}
+                            </>
+                        )}
                     </div>
-                    <div className="card mt-2 text-center mb-2">
+                    <div className="card mt-2 text-center mb-3">
                         <span className="ml-auto font-semibold me-4">La entrega del producto será en la tienda.</span>
                     </div>
+
                 </div>
             </div>
         </div>
     );
 };
 
-export default ShoppingCart;
+export default CarritoCompra;
