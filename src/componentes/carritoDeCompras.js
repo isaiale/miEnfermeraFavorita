@@ -86,13 +86,36 @@ const CarritoCompra = () => {
         }
     };
 
+    // useEffect(() => {
+    //     if (!isAuthenticated) {
+    //         history('/'); // Utiliza navigate para redirigir
+    //     }
+    //     datosCarrito();
+    //     calculateTotal();
+    // }, [isAuthenticated, history, productosCarrito]);
+
     useEffect(() => {
-        if (!isAuthenticated) {
-            history('/'); // Utiliza navigate para redirigir
-        }
-        datosCarrito();
-        calculateTotal();
+        const fetchData = async () => {
+            try {
+                if (!isAuthenticated) {
+                    history('/'); // Utiliza navigate para redirigir
+                }
+                await datosCarrito();
+                // Calcula el total solo si hay productos en el carrito
+                if (productosCarrito.length > 0) {
+                    calculateTotal();
+                    setShowPagar(true); // Cambia el estado a true si hay productos en el carrito
+                } else {
+                    setShowPagar(false); // Cambia el estado a false si el carrito está vacío
+                }
+            } catch (error) {
+                console.error('Error al obtener los datos del carrito:', error);
+            }
+        };
+
+        fetchData();
     }, [isAuthenticated, history, productosCarrito]);
+
 
     if (!isAuthenticated) {
         return null; // Retorna null o un componente de carga mientras se redirige
@@ -116,7 +139,8 @@ const CarritoCompra = () => {
                 datoscliente: {
                     name: user.nombre,
                     paternalLastname: user.apellido,
-                    email: user.correo
+                    email: user.correo,
+                    idUser: user._id
                 },
                 instruction: "El producto se recoje en la tienda"
                 // totalneto: total // Agregar el totalneto al objeto de datos

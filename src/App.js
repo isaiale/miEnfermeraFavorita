@@ -17,7 +17,7 @@ import { Error_verificacion } from './errores/error_verificacion';
 import Verificacion_correcta from './errores/verificacion_correcta';
 import Cancelado from "./errores/canceled";
 import Success from "./errores/success";
-import { Accesorioss } from './vistas/usuario/accesorios'; 
+import { Accesorioss } from './vistas/usuario/accesorios';
 import { Contactos } from './vistas/usuario/contacto';
 import RecuperarPasswordd from './vistas/usuario/RecuperarPassword';
 import VistaBusquedaSimple from './vistas/usuario/VistaBusquedaSimple';
@@ -26,6 +26,7 @@ import Prueba from './vistas/usuario/prueba';
 import { Ayuda } from './vistas/usuario/ayuda';
 import { Perfil } from "./vistas/usuario/perfil";
 import { ProductoDetalle } from "./vistas/usuario/productoDetalle";
+import { Compras } from "./vistas/usuario/Compras";
 
 import { InicioAdmin } from './vistas/administrador/InicioAdmin';
 import { VentasEmpleado } from './vistas/administrador/VentasE';
@@ -36,15 +37,15 @@ import { ConfiguracionEmpleado } from './vistas/administrador/ConfiguracionE';
 import InicioGerente from './vistas/gerente/InicioGerente';
 
 export default function App() {
-  const { isAuthenticated, user } = useContext(AuthContext); 
+  const { isAuthenticated, user } = useContext(AuthContext);
 
   return (
     <div>
       <BrowserRouter>
-      <ScrollTop/>
+        <ScrollTop/>
         <Routes>
-          <Route path='/' element={<InicioUsuario />} /> 
-          <Route path="productos" element={<Producto />} /> 
+          <Route path='/' element={<InicioUsuario />} />
+          <Route path="productos" element={<Producto />} />
           <Route path="login" element={<LoginUser />} />
           <Route path="registroUsuario" element={<RegistroUser />} />
           <Route path="carritoDeCompras" element={<CarritoCompra />} />
@@ -65,9 +66,10 @@ export default function App() {
           <Route path="cancelado" element={<Cancelado />} />
           <Route path="verificacion-correcta" element={<Verificacion_correcta />} />
           <Route path="perfil" element={<Perfil />} />
-          <Route path="detalle-producto/:idProductos" element={<ProductoDetalle />} /> 
+          <Route path="Compras" element={<Compras />} /> 
+          <Route path="detalle-producto/:idProductos" element={<ProductoDetalle />} />
           {/* Routes for Admin */}
-          
+
           {isAuthenticated !== null && user?.rol === "Admin" && (
             <>
               <Route path='inicioAdmin' element={<InicioAdmin />} />
@@ -83,12 +85,12 @@ export default function App() {
               <Route path='clientesEmpleado' element={<ClientesEmpleado />} />
               <Route path='productosEmpleado' element={<ProductosEmpleado />} />
               <Route path='configuracionEmpleado' element={<ConfiguracionEmpleado />} /> */}
-              
-          {isAuthenticated !== null && user?.rol === "Gerente" && (  
+
+          {isAuthenticated !== null && user?.rol === "Gerente" && (
             <>
               <Route path='inicioGerente' element={<InicioGerente />} />
             </>
-          )}           
+          )}
         </Routes>
       </BrowserRouter>
     </div>

@@ -19,8 +19,9 @@ export const urlCloudinary = "https://api.cloudinary.com/v1_1/droihhnng/image/up
 // ***************************Carrito de compra*********************************************
 export const CarritoCompras = "https://back-end-enfermera.vercel.app/api/carrito";//Para Carrito
 // para Realizar pagos con stripe
-export const Stripe = "https://back-end-enfermera.vercel.app/stripe/create-checkout-session";//Para Carrito
-// export const Stripe = "http://localhost:3000/stripe/create-checkout-session";//Para Carrito
+//export const Stripe = "https://back-end-enfermera.vercel.app/stripe/create-checkout-session";//Para Carrito
+ export const Stripe = "http://localhost:3000/stripe/create-checkout-session";//Para Carrito
+ export const ComprasUsuariosUrl = "http://localhost:3000/detalle";//Para Detalle compra o venta
 // export const  = "";//
 // export const  = "";//
 // export const  = "";//

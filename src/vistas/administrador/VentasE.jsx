@@ -7,7 +7,7 @@ export const VentasEmpleado = () => {
     <div>
       <div className="flexx">
         <Sidebar />
-        <div className="content w-100 overflow-auto pt-24">
+        <div className="content w-100 overflow-auto ">
           {/* <DashBoarAdmin /> */}
           <VentasE />
         </div>
