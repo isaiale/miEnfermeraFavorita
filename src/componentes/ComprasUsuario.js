@@ -34,7 +34,7 @@ const ComprasUsuario = () => {
 
     return (
         <div className="container">
-            <h3 className='text-center display-6'>Compras registradas</h3>
+            <h3 className='text-center display-6'>{user.nombre}Compras registradas</h3>
             {ventas.length === 0 && <p className="text-center mt-5 mb-5">No hay compras registradas.</p>}
             <div className="row">
                 {ventas.map((venta, indexVenta) => (

@@ -86,14 +86,6 @@ const CarritoCompra = () => {
         }
     };
 
-    // useEffect(() => {
-    //     if (!isAuthenticated) {
-    //         history('/'); // Utiliza navigate para redirigir
-    //     }
-    //     datosCarrito();
-    //     calculateTotal();
-    // }, [isAuthenticated, history, productosCarrito]);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -115,7 +107,6 @@ const CarritoCompra = () => {
 
         fetchData();
     }, [isAuthenticated, history, productosCarrito]);
-
 
     if (!isAuthenticated) {
         return null; // Retorna null o un componente de carga mientras se redirige

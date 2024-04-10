@@ -7,7 +7,7 @@ const Ventas = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(ComprasUsuariosUrl);
+        const response = await fetch(`${ComprasUsuariosUrl}/ventas`);
         if (!response.ok) {
           throw new Error('Error al obtener los datos');
         }

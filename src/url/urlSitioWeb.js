@@ -21,7 +21,7 @@ export const CarritoCompras = "https://back-end-enfermera.vercel.app/api/carrito
 // para Realizar pagos con stripe
 export const Stripe = "https://back-end-enfermera.vercel.app/stripe/create-checkout-session";//Para Carrito
 //export const Stripe = "http://localhost:3000/stripe/create-checkout-session";//Para Carrito
- export const ComprasUsuariosUrl = "https://back-end-enfermera.vercel.app/detalle";//Para Detalle compra o venta
+export const ComprasUsuariosUrl = "https://back-end-enfermera.vercel.app/api/detalle";//Para Detalle compra o venta
 // export const  = "";//
 // export const  = "";//
 // export const  = "";//
