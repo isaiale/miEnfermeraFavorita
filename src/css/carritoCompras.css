@@ -95,3 +95,11 @@
     padding: 0.5em;
     text-decoration: none;
 }
+.btnRegresar {
+    background: var(--fondo-principal);
+    color: var(--text-primario);
+    padding: 0.5em;
+    margin-top: 5px;
+    text-decoration: none;
+    border: 1px solid black;
+}
