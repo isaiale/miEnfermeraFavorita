@@ -18,10 +18,12 @@ const ProductosE = () => {
   const [inventario, setInventario] = useState('');
   const [categoriaP, setCategoriaP] = useState('');
   const [estado, setEstado] = useState('');
+  const [sexo, setSexo] = useState('');
   const [operacionModal, setOperacionModal] = useState(1);
   const [tituloModal, setTituloModal] = useState('');
   const [buscar, setBuscar] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [tallasSeleccionadas, setTallasSeleccionadas] = useState([]);
 
   const datosProducto = async () => {
     try {
@@ -81,7 +83,7 @@ const ProductosE = () => {
       console.error(error.message);
     }
   };
-
+  // Para productoss
   const abrirModal = (op, productos) => {
     setIdProductos('');
     setNombre('');
@@ -91,6 +93,8 @@ const ProductosE = () => {
     setInventario('');
     setDescuento('');
     setCategoriaP('');
+    setSexo('');
+    setTallasSeleccionadas('');
     setOperacionModal(op);
     if (op === 1) {
       setTituloModal('Registrar');
@@ -106,10 +110,65 @@ const ProductosE = () => {
       setDescuento(productos.descuento);
       const catP = categoria.find(categ => categ._id === productos.categoria[0]._id);
       setCategoriaP(catP ? catP._id : '');
+      setSexo(productos.sexo);
+      setTallasSeleccionadas(productos.talla);
     }
     window.setTimeout(function () {
       document.getElementById('nombre').focus();
     }, 500);
+  }
+
+  // Para accesorios
+  const abrirModalAccesorio = (op, productos) => {
+    setIdProductos('');
+    setNombre('');
+    setDescripcion('');
+    setPrecio('');
+    setImagenes([]);
+    setInventario('');
+    setDescuento('');
+    setOperacionModal(op);
+    if (op === 1) {
+      setTituloModal('Registrar');
+    }
+    else if (op === 2) {
+      setTituloModal('Actualizar');
+      setIdProductos(productos._id);
+      setNombre(productos.nombre);
+      setDescripcion(productos.descripcion);
+      setInventario(productos.inventario);
+      setPrecio(productos.precio);
+      setImagenes(productos.imagenes);
+      setDescuento(productos.descuento);
+    }
+    window.setTimeout(function () {
+      document.getElementById('nombree').focus();
+    }, 500);
+  }
+  const validarAccesorio = () => {
+    if (!validarNombre(nombre)) {
+      Swal.fire({
+        title: "Nombre invalido.", icon: "info", timer: 1500, showConfirmButton: false
+      });
+      return;
+    }
+
+    var parametros;
+
+    parametros = {
+      nombre: nombre,
+      descripcion: descripcion,
+      precio: precio,
+      imagenes: imagenes,
+      inventario: inventario,
+      descuento: descuento
+    };
+
+    if (operacionModal === 1) {
+      agregarAccesorios(parametros);
+    } else {
+      editarUsuario(parametros, idProductos);
+    }
   }
 
   const validar = () => {
@@ -129,7 +188,9 @@ const ProductosE = () => {
       categoria: categoriaP,
       imagenes: imagenes,
       inventario: inventario,
-      descuento: descuento
+      descuento: descuento,
+      talla: tallasSeleccionadas.join(', '),
+      sexo: sexo
     };
 
     if (operacionModal === 1) {
@@ -138,6 +199,27 @@ const ProductosE = () => {
       editarUsuario(parametros, idProductos);
     }
   }
+
+  const agregarAccesorios = async (parametros) => {
+    const response = await fetch(`${Productos}/accesorios`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(parametros)
+    });
+    if (response.ok) {
+      Swal.fire({ title: "Se agregó correctamente el accesorio.", icon: "success", timer: 1500, showConfirmButton: false });
+      document.getElementById('btncerrarA').click();
+      datosProducto();
+    } else {
+      const data = await response.json();
+      console.log(data.message);
+      Swal.fire({
+        title: "Error al registrar.", text: "Por favor, intenta nuevamente.", icon: "error", showConfirmButton: false
+      });
+    }
+  };
 
   const agregarUsuario = async (parametros) => {
     const response = await fetch(Productos, {
@@ -155,7 +237,7 @@ const ProductosE = () => {
       const data = await response.json();
       console.log(data.message);
       Swal.fire({
-        title: "Error al registrar usuario.", text: "Por favor, intenta nuevamente.", icon: "error", showConfirmButton: false
+        title: "Error al registrar.", text: "Por favor, intenta nuevamente.", icon: "error", showConfirmButton: false
       });
     }
   };
@@ -171,6 +253,7 @@ const ProductosE = () => {
     if (response.ok) {
       Swal.fire({ title: "Se actualizó correctamente.", icon: "success", timer: 1500, showConfirmButton: false });
       document.getElementById('btncerrar').click();
+      document.getElementById('btncerrarA').click();
       datosProducto();
     } else {
       const data = await response.json();
@@ -270,6 +353,17 @@ const ProductosE = () => {
     }
   };
 
+  // Para las tallas
+  const handleTallaSeleccionada = (e) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setTallasSeleccionadas([...tallasSeleccionadas, value]);
+    } else {
+      // Quitar la talla del array
+      setTallasSeleccionadas(tallasSeleccionadas.filter(talla => talla !== value));
+    }
+  };
+
   const usuariosFiltro = dataProductos.filter(productos =>
     (productos.nombre && productos.nombre.toLowerCase().includes(buscar)) ||
     (productos.descripcion && productos.descripcion.toLowerCase().includes(buscar)) ||
@@ -288,13 +382,31 @@ const ProductosE = () => {
                 <div className="text-start">
                   <p className="lead ">Total de productos: {dataProductos.length}</p>
                 </div>
+
                 &nbsp;&nbsp;
-                <div className="ms-5 text-center">
+                {/* <div className="ms-5 text-center">
                   <button onClick={() => abrirModal(1)} type="button" className="buttonAgregar ms-3" data-bs-toggle='modal' data-bs-target='#modalProducto'>
                     <span className="button__text">Agregar</span>
                     <span className="button__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="24" fill="none" class="svg"><line y2="19" y1="5" x2="12" x1="12"></line><line y2="12" y1="12" x2="19" x1="5"></line></svg></span>
                   </button>
+                </div> */}
+
+                <div className="dropdown">
+                  <button
+                    className="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Opciones
+                  </button>
+                  <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li ><button className="dropdown-item" onClick={() => abrirModal(1)} data-bs-toggle='modal' data-bs-target='#modalProducto'>Agregar producto.</button></li>
+                    <li><button className="dropdown-item" onClick={() => abrirModalAccesorio(1)} data-bs-toggle='modal' data-bs-target='#modalAccesorios'>Agregar Accesorios.</button></li>
+                  </ul>
                 </div>
+
                 <div className="ms-auto">
                   <div className="input-group">
                     <input type="text" className="form-control" placeholder="Buscar usuario" value={buscar} onChange={handleSearch} />
@@ -344,9 +456,15 @@ const ProductosE = () => {
                           <td>{productos.descuento === 0 ? 'sin descuento' : `%${productos.descuento}`}</td>
                           <td style={{ color: productos.estado === "Activo" ? 'green' : 'red' }}>{productos.estado}</td>
                           <td>
-                            <button onClick={() => abrirModal(2, productos)} className="btn btn-warning" data-bs-toggle='modal' data-bs-target='#modalProducto' title="Editar producto.">
-                              <FontAwesomeIcon icon={faEdit} />
-                            </button>
+                            {productos.categoria[0].nombre === 'Accesorios' ? (
+                              <button onClick={() => abrirModalAccesorio(2, productos)} className="btn btn-warning" data-bs-toggle='modal' data-bs-target='#modalAccesorios' title="Editar Accesorio.">
+                                <FontAwesomeIcon icon={faEdit} />
+                              </button>
+                            ) : (
+                              <button onClick={() => abrirModal(2, productos)} className="btn btn-warning" data-bs-toggle='modal' data-bs-target='#modalProducto' title="Editar producto.">
+                                <FontAwesomeIcon icon={faEdit} />
+                              </button>
+                            )}
                             &nbsp;
                             <button onClick={() => eliminarUsuario(productos)} className="btn btn-danger" title="Eliminar este producto.">
                               <FontAwesomeIcon icon={faTrash} />
@@ -379,22 +497,14 @@ const ProductosE = () => {
               <div className="container-fluid">
                 <div className="row">
                   <div className="col-md-12">
-                  <div className="input-container">
-                      <select
-                        placeholder="Categoria"
-                        className="input-field"
-                        required
-                      >
-                        <option value="" disabled selected>
-                          Selecciona genero
-                        </option>
-                        <option>Hombre</option>
-                        <option>Mujer</option>
-                        <option>Unisex</option>
+                    <div className="input-container">
+                      <select placeholder="Categoria" className="input-field" required value={sexo} onChange={(e) => setSexo(e.target.value)}>
+                        <option value="" disabled selected>Selecciona genero</option>
+                        <option value="Hombre">Hombre</option>
+                        <option value="Mujer">Mujer</option>
+                        <option value="Unisex">Unisex</option>
                       </select>
-                      <label for="input-field" className="input-label">
-                        Genero:
-                      </label>
+                      <label for="input-field" className="input-label">Genero:</label>
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
@@ -427,12 +537,12 @@ const ProductosE = () => {
                       <label for="input-field" className="input-label">Inventario:</label>
                       <span className="input-highlight"></span>
                     </div>
-                    <div className="input-container">
+                    {/* <div className="input-container">
                       <input placeholder="Color" className="input-field" id="color" type="text" required
                         value="" />
                       <label for="input-field" className="input-label">Color:</label>
                       <span className="input-highlight"></span>
-                    </div>
+                    </div> */}
                     <div className="input-container">
                       <select placeholder="Categoria" className="input-field" required
                         value={categoriaP} onChange={(e) => setCategoriaP(e.target.value)} >
@@ -445,24 +555,24 @@ const ProductosE = () => {
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
-                      <label for="input-field" className="">
+                      <label htmlFor="input-field" className="">
                         Seleccione las tallas o talla:
                       </label>
                       <div className="d-flex">
                         <label className="container">
-                          <input type="checkbox" name="size" value="c" />
+                          <input type="checkbox" name="size" value="S" checked={tallasSeleccionadas.includes('S')} onChange={handleTallaSeleccionada} />
                           <div className="checkmark">S</div>
                         </label>
                         <label className="container">
-                          <input type="checkbox" name="size" value="s" />
+                          <input type="checkbox" name="size" value="M" checked={tallasSeleccionadas.includes('M')} onChange={handleTallaSeleccionada} />
                           <div className="checkmark">M</div>
                         </label>
                         <label className="container">
-                          <input type="checkbox" name="size" value="m" />
+                          <input type="checkbox" name="size" value="L" checked={tallasSeleccionadas.includes('L')} onChange={handleTallaSeleccionada} />
                           <div className="checkmark">L</div>
                         </label>
                         <label className="container">
-                          <input type="checkbox" name="size" value="g" />
+                          <input type="checkbox" name="size" value="XL" checked={tallasSeleccionadas.includes('XL')} onChange={handleTallaSeleccionada} />
                           <div className="checkmark">XL</div>
                         </label>
                       </div>
@@ -524,6 +634,76 @@ const ProductosE = () => {
             <div className='modal-footer'>
               <button type='button' className='btn btn-danger' data-bs-dismiss='modal' id='btncerrarP'>Cerrar</button>
               <button type='button' className='btn btn-primary' onClick={() => EstadoProducto(selectedProduct)}>Cambiar Estado</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id='modalAccesorios' class="modal fade" data-bs-backdrop="static">
+        <div className='modal-dialog modal-fullscreen-sm-down'>
+          <div className='modal-content'>
+            <div className="modal-header">
+              <h1 className="lead fw-bold">{tituloModal}&nbsp;Accesorios</h1>
+              <button type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+            </div>
+            <div className='modal-body'>
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="input-container">
+                      <input placeholder="Nombre" className="input-field" id="nombree" type="text" required
+                        value={nombre} onChange={(e) => setNombre(e.target.value)} />
+                      <label for="input-field" className="input-label">Nombre:</label>
+                      <span className="input-highlight"></span>
+                    </div>
+                    <div className="input-container">
+                      <input placeholder="Descripción" className="input-field" type="text" required
+                        value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
+                      <label for="input-field" className="input-label">Descripción:</label>
+                      <span className="input-highlight"></span>
+                    </div>
+                    <div className="input-container">
+                      <input placeholder="Precio" className="input-field" type="number" required
+                        value={precio} onChange={(e) => setPrecio(e.target.value)} />
+                      <label for="input-field" className="input-label">Precio:</label>
+                      <span className="input-highlight"></span>
+                    </div>
+                    <div className="input-container">
+                      <input placeholder="Es opcional el descuento" className="input-field" type="number" required
+                        value={descuento} onChange={(e) => setDescuento(e.target.value)} />
+                      <label for="input-field" className="input-label">Descuento:</label>
+                      <span className="input-highlight"></span>
+                    </div>
+                    <div className="input-container">
+                      <input placeholder="Inventario" className="input-field" type="number" required
+                        value={inventario} onChange={(e) => setInventario(e.target.value)} />
+                      <label for="input-field" className="input-label">Inventario:</label>
+                      <span className="input-highlight"></span>
+                    </div>
+                    <div className="input-container">
+                      <input type="file" multiple onChange={uploadImage} />
+                      <span className="input-highlight"></span>
+                      <label for="input-field" className="input-label">Imagen:</label>
+                      <p>Imágenes seleccionadas:</p>
+                      <div className="d-flex">
+                        {imagenes.length > 0 && (
+                          imagenes.map((imagen, index) => (
+                            <div key={index} className="position-relative">
+                              <img key={index} src={imagen.url} alt={`Imagen ${index}`} style={{ maxWidth: '80px', marginRight: '10px' }} />
+                              <button className="btn btn-danger" onClick={() => eliminarImagen(imagen.publicId)} title="Eliminar esta imagen">
+                                <FontAwesomeIcon icon={faTrash} />
+                              </button>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className='modal-footer'>
+              <button type='button' className='btn btn-danger' data-bs-dismiss='modal' id='btncerrarA'>Cerrar</button>
+              <button type='button' className='btn btn-primary' onClick={validarAccesorio}>{tituloModal}</button>
             </div>
           </div>
         </div>

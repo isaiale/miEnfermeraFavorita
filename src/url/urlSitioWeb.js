@@ -7,7 +7,7 @@ export const NuevaPassword = "https://back-end-enfermera.vercel.app/api/reset-pa
 export const UrlLoginUsuarios = "https://back-end-enfermera.vercel.app/api/auth/login";//Para Login de usuarios
 
 export const Productos = "https://back-end-enfermera.vercel.app/api/productos/productos";//Para productos
-//export const Productos = "http://localhost:3000/api/productos/productos";//Para productos
+// export const Productos = "http://localhost:3000/api/productos/productos";//Para productos
 export const img = "https://back-end-enfermera.vercel.app/api/productos/imagenes"; //Para subir imgenes de productos
 
 export const Estado_Producto = "https://back-end-enfermera.vercel.app/api/productos/estado";//Para estado de productos
