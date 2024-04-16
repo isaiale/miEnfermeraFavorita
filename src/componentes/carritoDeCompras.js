@@ -156,7 +156,7 @@ const CarritoCompra = () => {
             const data = {
                 tipoEntrega: "delivery",
                 dateselect: new Date().toISOString().split('T')[0],
-                productos: productosValidos,
+                productos: productosCarrito,
                 datoscliente: {
                     name: user.nombre,
                     paternalLastname: user.apellido,
