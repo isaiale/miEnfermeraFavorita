@@ -13,7 +13,7 @@ const ProductosE = () => {
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [precio, setPrecio] = useState('');
-  const [descuento, setDescuento] = useState('');
+  const [descuento, setDescuento] = useState(0);
   const [imagenes, setImagenes] = useState([]);
   const [inventario, setInventario] = useState('');
   const [categoriaP, setCategoriaP] = useState('');
@@ -406,7 +406,6 @@ const ProductosE = () => {
                     <li><button className="dropdown-item" onClick={() => abrirModalAccesorio(1)} data-bs-toggle='modal' data-bs-target='#modalAccesorios'>Agregar Accesorios.</button></li>
                   </ul>
                 </div>
-
                 <div className="ms-auto">
                   <div className="input-group">
                     <input type="text" className="form-control" placeholder="Buscar usuario" value={buscar} onChange={handleSearch} />
@@ -444,11 +443,11 @@ const ProductosE = () => {
                           <td>{productos.nombre}</td>
                           <td>{productos.descripcion}</td>
                           <td>
-                            {productos.imagenes.map((imagen, idx) => (
-                              <div key={idx} className="mt-2">
-                                <img src={imagen.url} alt={`Imagen ${idx}`} className="img-thumbnail" style={{ maxWidth: "100px" }} />
+                            {productos.imagenes.length > 0 && (
+                              <div className="mt-2">
+                                <img src={productos.imagenes[0].url} alt={`Imagen 1`} className="img-thumbnail" style={{ maxWidth: "100px" }} />
                               </div>
-                            ))}
+                            )}
                           </td>
                           <td>${productos.precio}</td>
                           <td>{productos.inventario}</td>
@@ -578,7 +577,8 @@ const ProductosE = () => {
                       </div>
                     </div>
                     <div className="input-container">
-                      <input type="file" multiple onChange={uploadImage} />
+                      <input type="file" multiple onChange={uploadImage} accept="image/*" />
+
                       <span className="input-highlight"></span>
                       <label for="input-field" className="input-label">Imagen:</label>
                       <p>Imágenes seleccionadas:</p>
@@ -680,7 +680,7 @@ const ProductosE = () => {
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
-                      <input type="file" multiple onChange={uploadImage} />
+                    <input type="file" multiple onChange={uploadImage} accept="image/*" />
                       <span className="input-highlight"></span>
                       <label for="input-field" className="input-label">Imagen:</label>
                       <p>Imágenes seleccionadas:</p>

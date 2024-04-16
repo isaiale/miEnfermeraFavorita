@@ -57,7 +57,6 @@ const DetalleProducto = () => {
         }
     };
 
-
     const addToCart = async () => {
         if (isAuthenticated) {
             try {
