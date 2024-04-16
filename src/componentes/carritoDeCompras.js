@@ -138,19 +138,19 @@ const CarritoCompra = () => {
     const manejoDePago = async () => {
         try {
             // Filtrar los productos del carrito para incluir solo aquellos que tienen una cantidad igual o menor a la cantidad disponible en el inventario
-            const productosValidos = productosCarrito.filter(product => product.cantidad <= product.inventario);
+            // const productosValidos = productosCarrito.filter(product => product.cantidad <= product.inventario);
     
-            // Verificar si la lista de productos válidos está vacía
-            if (productosValidos.length === 0) {
-                // Si no hay productos válidos en el carrito, mostrar un mensaje de error
-                Swal.fire({
-                    icon: 'error',
-                    title: 'No hay productos disponibles',
-                    text: 'No hay productos en tu carrito que estén disponibles en el inventario. Por favor, revisa tu carrito antes de continuar.',
-                    showConfirmButton: true
-                });
-                return;
-            }
+            // // Verificar si la lista de productos válidos está vacía
+            // if (productosValidos.length === 0) {
+            //     // Si no hay productos válidos en el carrito, mostrar un mensaje de error
+            //     Swal.fire({
+            //         icon: 'error',
+            //         title: 'No hay productos disponibles',
+            //         text: 'No hay productos en tu carrito que estén disponibles en el inventario. Por favor, revisa tu carrito antes de continuar.',
+            //         showConfirmButton: true
+            //     });
+            //     return;
+            // }
     
             // Construir el objeto de datos del carrito usando solo los productos válidos
             const data = {
