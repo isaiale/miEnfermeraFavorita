@@ -134,10 +134,10 @@ const DetalleProducto = () => {
                             {producto.descripcion}
                         </p>
                         <h4 className="precio mb-3">${producto.precio}</h4>
-                        <p className="lead">
-                            Inventario: {producto.inventario}
+                        <p className={`lead ${producto.inventario === 0 ? 'text-danger' : ''}`}>
+                            Inventario: {producto.inventario === 0 ? 'Agotado' : producto.inventario}
                         </p>
-                        <div className="contenedor-cantidad mb-3">
+                        {/* <div className="contenedor-cantidad mb-3">
                             <button
                                 type="button"
                                 className="menos"
@@ -160,7 +160,33 @@ const DetalleProducto = () => {
                             >
                                 +
                             </button>
+                        </div> */}
+                        <div className="contenedor-cantidad mb-3 d-flex align-items-center">
+                            <button
+                                type="button"
+                                className="btn btn-danger menos me-2"
+                                onClick={() => handleCountChange("decrement")}
+                            >
+                                -
+                            </button>
+                            <input
+                                id="quantity"
+                                className="form-control text-center flex-grow-1"
+                                value={count}
+                                min="1"
+                                type="number"
+                                name="quantity"
+                            />
+                            <button
+                                type="button"
+                                className="btn btn-success mas ms-2"
+                                onClick={() => handleCountChange("increment")}
+                            >
+                                +
+                            </button>
                         </div>
+
+
                         <div>
                             <button className="agregar_carrito" onClick={addToCart}>Agregar al carrito</button>
                         </div>
