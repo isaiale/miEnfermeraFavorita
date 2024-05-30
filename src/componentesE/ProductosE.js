@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Productos, img, Estado_Producto, CategoriaProducto } from "../url/urlSitioWeb";
 import Swal from "sweetalert2";
 import { validarNombre } from "../utilidad/Validaciones";
+import { Pagination } from 'react-bootstrap';
 
 const ProductosE = () => {
   const [categoria, setCategoria] = useState([]);
@@ -24,6 +25,12 @@ const ProductosE = () => {
   const [buscar, setBuscar] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [tallasSeleccionadas, setTallasSeleccionadas] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(3);
+  const indexOfLastItem = currentPage * itemsPerPage;
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+const [usuariosFiltro, setUsuariosFiltro] = useState([]);
+const currentItems = usuariosFiltro.slice(indexOfFirstItem, indexOfLastItem);
 
   const datosProducto = async () => {
     try {
@@ -364,12 +371,21 @@ const ProductosE = () => {
     }
   };
 
-  const usuariosFiltro = dataProductos.filter(productos =>
-    (productos.nombre && productos.nombre.toLowerCase().includes(buscar)) ||
-    (productos.descripcion && productos.descripcion.toLowerCase().includes(buscar)) ||
-    (productos.precio && productos.precio.toLowerCase().includes(buscar)) ||
-    (productos.inventario && productos.inventario.includes(buscar))
-  );
+  useEffect(() => {
+    // Esta función filtra los productos y actualiza usuariosFiltro
+    const filtrarProductos = () => {
+      const filtro = dataProductos.filter(productos =>
+        (productos.nombre && productos.nombre.toLowerCase().includes(buscar)) ||
+        (productos.descripcion && productos.descripcion.toLowerCase().includes(buscar)) ||
+        (productos.precio && productos.precio.toLowerCase().includes(buscar)) ||
+        (productos.inventario && productos.inventario.includes(buscar))
+      );
+      setUsuariosFiltro(filtro); // Actualiza usuariosFiltro con el resultado del filtro
+    };
+
+    filtrarProductos(); // Llama a la función de filtrado cuando cambia 'buscar' o 'dataProductos'
+
+  }, [buscar, dataProductos]);
 
   return (
     <div>
@@ -422,7 +438,7 @@ const ProductosE = () => {
                   <table className="table table-bordered table-hover">
                     <thead className="">
                       <tr >
-                        <th>#</th>
+                        {/*<th>#</th>*/}
                         <th>Creado</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
@@ -436,9 +452,9 @@ const ProductosE = () => {
                       </tr>
                     </thead>
                     <tbody className="table-group-divider">
-                      {usuariosFiltro.map((productos, index) => (
+                      {currentItems.map((productos, index) => (
                         <tr className="" key={productos._id}>
-                          <td>{index + 1}</td>
+                       {/*<td>{index + 1}</td>*/}
                           <td>{productos.creadoEn.split('T')[0]}</td>
                           <td>{productos.nombre}</td>
                           <td>{productos.descripcion}</td>
@@ -469,15 +485,15 @@ const ProductosE = () => {
                               <FontAwesomeIcon icon={faTrash} />
                             </button>
                             &nbsp;
-                            <button onClick={() => handleOpenEstadoModal(productos)} className="btn btn-info" data-bs-toggle='modal' data-bs-target='#modalProductoEstado' title="Cambiar estado del productoto.">
+                            <button onClick={() => handleOpenEstadoModal(productos)} className="btn btn-info" data-bs-toggle='modal' data-bs-target='#modalProductoEstado' title="Cambiar estado del producto.">
                               <FontAwesomeIcon icon={faEdit} />
                             </button>
                             &nbsp;
-
                           </td>
                         </tr>
                       ))}
                     </tbody>
+
                   </table>
                 </div>
               </div>
@@ -485,6 +501,20 @@ const ProductosE = () => {
           </div>
         </div>
       </div>
+      {usuariosFiltro.length > 0 && (
+      <div className="ms-5" style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)', width: '100%' }}>
+        <Pagination className="ms-5">
+          <Pagination.Prev onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1} />
+          {[...Array(Math.ceil(usuariosFiltro.length / itemsPerPage)).keys()].map((number) => (
+            <Pagination.Item key={number + 1} active={number + 1 === currentPage} onClick={() => setCurrentPage(number + 1)}>
+              {number + 1}
+            </Pagination.Item>
+          ))}
+          <Pagination.Next onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === Math.ceil(usuariosFiltro.length / itemsPerPage)} />
+        </Pagination>
+      </div>
+    )}
+
       <div id='modalProducto' class="modal fade" data-bs-backdrop="static">
         <div className='modal-dialog modal-fullscreen-sm-down'>
           <div className='modal-content'>

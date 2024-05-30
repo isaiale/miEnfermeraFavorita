@@ -98,7 +98,6 @@ const NavbarUsuario = () => {
                                 <Dropdown.Item as={Link} to="#otros">PANTALONES</Dropdown.Item>
                                 <Dropdown.Item as={Link} to="#otros">SUÉTERES</Dropdown.Item>
                                 <Dropdown.Item as={Link} to="#otros">SCRUBS</Dropdown.Item>
-
                             </Dropdown.Menu>
                         </Dropdown>
                         <Dropdown className='Dropdown lead'
