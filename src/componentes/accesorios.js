@@ -108,7 +108,7 @@ function Accesorios() {
             //   onChange={handlePriceRangeChange}
             />
             <div>
-              Precios: ${priceRange[0]} - ${priceRange[1]}
+              Preciosss: ${priceRange[0]} - ${priceRange[1]}
             </div>
           </div>
         </Col>

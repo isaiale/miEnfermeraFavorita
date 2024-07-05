@@ -135,7 +135,7 @@ const DetalleProducto = () => {
                         </p>
                         <h4 className="precio mb-3">${producto.precio}</h4>
                         <p className={`lead ${producto.inventario === 0 ? 'text-danger' : ''}`}>
-                            Inventario: {producto.inventario === 0 ? 'Agotado' : producto.inventario}
+                            Inventarioss: {producto.inventario === 0 ? 'Agotado' : producto.inventario}
                         </p>
                         {/* <div className="contenedor-cantidad mb-3">
                             <button

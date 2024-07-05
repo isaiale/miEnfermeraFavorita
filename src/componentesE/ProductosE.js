@@ -28,9 +28,9 @@ const ProductosE = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(3);
   const indexOfLastItem = currentPage * itemsPerPage;
-const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-const [usuariosFiltro, setUsuariosFiltro] = useState([]);
-const currentItems = usuariosFiltro.slice(indexOfFirstItem, indexOfLastItem);
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const [usuariosFiltro, setUsuariosFiltro] = useState([]);
+  const currentItems = usuariosFiltro.slice(indexOfFirstItem, indexOfLastItem);
 
   const datosProducto = async () => {
     try {
@@ -454,7 +454,7 @@ const currentItems = usuariosFiltro.slice(indexOfFirstItem, indexOfLastItem);
                     <tbody className="table-group-divider">
                       {currentItems.map((productos, index) => (
                         <tr className="" key={productos._id}>
-                       {/*<td>{index + 1}</td>*/}
+                          {/*<td>{index + 1}</td>*/}
                           <td>{productos.creadoEn.split('T')[0]}</td>
                           <td>{productos.nombre}</td>
                           <td>{productos.descripcion}</td>
@@ -502,18 +502,18 @@ const currentItems = usuariosFiltro.slice(indexOfFirstItem, indexOfLastItem);
         </div>
       </div>
       {usuariosFiltro.length > 0 && (
-      <div className="ms-5" style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)', width: '100%' }}>
-        <Pagination className="ms-5">
-          <Pagination.Prev onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1} />
-          {[...Array(Math.ceil(usuariosFiltro.length / itemsPerPage)).keys()].map((number) => (
-            <Pagination.Item key={number + 1} active={number + 1 === currentPage} onClick={() => setCurrentPage(number + 1)}>
-              {number + 1}
-            </Pagination.Item>
-          ))}
-          <Pagination.Next onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === Math.ceil(usuariosFiltro.length / itemsPerPage)} />
-        </Pagination>
-      </div>
-    )}
+        <div className="ms-5" style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)', width: '100%' }}>
+          <Pagination className="ms-5">
+            <Pagination.Prev onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1} />
+            {[...Array(Math.ceil(usuariosFiltro.length / itemsPerPage)).keys()].map((number) => (
+              <Pagination.Item key={number + 1} active={number + 1 === currentPage} onClick={() => setCurrentPage(number + 1)}>
+                {number + 1}
+              </Pagination.Item>
+            ))}
+            <Pagination.Next onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === Math.ceil(usuariosFiltro.length / itemsPerPage)} />
+          </Pagination>
+        </div>
+      )}
 
       <div id='modalProducto' class="modal fade" data-bs-backdrop="static">
         <div className='modal-dialog modal-fullscreen-sm-down'>
@@ -710,7 +710,7 @@ const currentItems = usuariosFiltro.slice(indexOfFirstItem, indexOfLastItem);
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
-                    <input type="file" multiple onChange={uploadImage} accept="image/*" />
+                      <input type="file" multiple onChange={uploadImage} accept="image/*" />
                       <span className="input-highlight"></span>
                       <label for="input-field" className="input-label">Imagen:</label>
                       <p>Imágenes seleccionadas:</p>

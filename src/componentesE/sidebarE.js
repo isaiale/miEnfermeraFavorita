@@ -38,11 +38,15 @@ const Sidebar = () => {
             icon: <FontAwesomeIcon icon={faCog} className="me-2" />,
         },
         {
+            path: "/Renta_productos",
+            name: "Renta",
+            icon: <FontAwesomeIcon icon={faStore} className="me-2" />,
+        },
+        {
             path: "/",
             name: "Salir",
             icon: <FontAwesomeIcon icon={faSignOutAlt} className="me-2" />,
-        },
-
+        }
     ]
 
     return (

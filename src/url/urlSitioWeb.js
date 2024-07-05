@@ -22,3 +22,9 @@ export const CarritoCompras = "https://back-end-enfermera.vercel.app/api/carrito
 export const Stripe = "https://back-end-enfermera.vercel.app/api/stripe/create-checkout-session";//Para Carrito
 // export const Stripe = "http://localhost:3000/api/stripe/create-checkout-session";//Para Carrito
 export const ComprasUsuariosUrl = "https://back-end-enfermera.vercel.app/api/detalle";//Para Detalle compra o venta
+
+export const Productos_Renta = "http://localhost:3000/api/productos-renta"
+export const Rentas =  "http://localhost:3000/api/rentas" //Para checar rentas del producto, CRUD
+export const PagosRentas = "http://localhost:3000/api/pagos"
+export const TiempoDeRenta = "http://localhost:3000/api/rentas"///66837fcbac9a828222b3c180/tiempo-restante de renta
+export const RentaDeUsuarios = "http://localhost:3000/api/rentas/usuario/"// Para checar la renta de cada usuario

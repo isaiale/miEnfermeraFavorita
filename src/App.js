@@ -26,13 +26,16 @@ import Prueba from './vistas/usuario/prueba';
 import { Ayuda } from './vistas/usuario/ayuda';
 import { Perfil } from "./vistas/usuario/perfil";
 import { ProductoDetalle } from "./vistas/usuario/productoDetalle";
+import { ProductoDetalleRenta } from "./vistas/usuario/Detalle_ProductoRenta";
 import { Compras } from "./vistas/usuario/Compras";
+import RentasUsuario from "./vistas/usuario/Rentas";
 
 import { InicioAdmin } from './vistas/administrador/InicioAdmin';
 import { VentasEmpleado } from './vistas/administrador/VentasE';
 import { ClientesEmpleado } from './vistas/administrador/ClientesE';
 import { ProductosEmpleado } from './vistas/administrador/ProductosE';
 import { ConfiguracionEmpleado } from './vistas/administrador/ConfiguracionE';
+import { Renta_producto } from "./vistas/administrador/Renta_producto";
 
 import InicioGerente from './vistas/gerente/InicioGerente';
 
@@ -68,6 +71,8 @@ export default function App() {
           <Route path="perfil" element={<Perfil />} />
           <Route path="Compras" element={<Compras />} /> 
           <Route path="detalle-producto/:idProductos" element={<ProductoDetalle />} />
+          <Route path="ProductoDetalleRenta/:idRentas" element={<ProductoDetalleRenta />} />
+          <Route path="RentasUser" element={<RentasUsuario/>}/>
           {/* Routes for Admin */}
 
           {isAuthenticated !== null && user?.rol === "Admin" && (
@@ -77,6 +82,7 @@ export default function App() {
               <Route path='clientesEmpleado' element={<ClientesEmpleado />} />
               <Route path='productosEmpleado' element={<ProductosEmpleado />} />
               <Route path='configuracionEmpleado' element={<ConfiguracionEmpleado />} />
+              <Route path='Renta_productos' element={<Renta_producto />} />
             </>
           )}
           {/* Routes for Gerente */}

@@ -20,16 +20,16 @@ const CarritoCompra = () => {
 
     const datosProducto = async () => {
         try {
-          const response = await fetch(Productos);
-          if (!response.ok) {
-            throw new Error('La respuesta de la red no fue exitosa.')
-          }
-          const jsonDataUsuario = await response.json();
-          setDataProductos(jsonDataUsuario);
+            const response = await fetch(Productos);
+            if (!response.ok) {
+                throw new Error('La respuesta de la red no fue exitosa.')
+            }
+            const jsonDataUsuario = await response.json();
+            setDataProductos(jsonDataUsuario);
         } catch (error) {
-          Swal.fire({ title: "Error al hacer la solicitud.", icon: "error" });
+            Swal.fire({ title: "Error al hacer la solicitud.", icon: "error" });
         }
-      }
+    }
 
     const handleOpenPaymentOptions = () => {
         setShowPaymentOptions(true);
@@ -139,7 +139,7 @@ const CarritoCompra = () => {
         try {
             // Filtrar los productos del carrito para incluir solo aquellos que tienen una cantidad igual o menor a la cantidad disponible en el inventario
             // const productosValidos = productosCarrito.filter(product => product.cantidad <= product.inventario);
-    
+
             // // Verificar si la lista de productos válidos está vacía
             // if (productosValidos.length === 0) {
             //     // Si no hay productos válidos en el carrito, mostrar un mensaje de error
@@ -151,7 +151,7 @@ const CarritoCompra = () => {
             //     });
             //     return;
             // }
-    
+
             // Construir el objeto de datos del carrito usando solo los productos válidos
             const data = {
                 tipoEntrega: "delivery",
@@ -166,7 +166,7 @@ const CarritoCompra = () => {
                 instruction: "El producto se recoje en la tienda"
                 // totalneto: total // Agregar el totalneto al objeto de datos
             };
-    
+
             // Enviar la solicitud POST al servidor
             const response = await fetch(Stripe, {
                 method: 'POST',
@@ -175,22 +175,22 @@ const CarritoCompra = () => {
                 },
                 body: JSON.stringify(data),
             });
-    
+
             if (!response.ok) {
                 throw new Error('Error al procesar el pago');
             }
-    
+
             // Obtener la URL de la sesión de pago desde la respuesta
             const responseData = await response.json();
             const sessionId = responseData.sessionId;
-    
+
             // Redireccionar a la página de pago con la URL de la sesión de pago
             window.location.href = sessionId;
         } catch (error) {
             console.error('Error al procesar el pago:', error);
             // Manejar errores
         }
-    };    
+    };
 
     const handleIncreaseQuantity = async (product) => {
         const updatedProducts = [...productosCarrito];

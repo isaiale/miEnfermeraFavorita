@@ -34,7 +34,7 @@ const NavbarUsuario = () => {
         },
         {
             path: "/reservarA",
-            name: "Reservar",
+            name: "Rentar",
             icon: <FontAwesomeIcon icon={faShoppingBasket} className="me-2" />,
         },
         {
@@ -147,6 +147,7 @@ const NavbarUsuario = () => {
                                     <Dropdown.Menu>
                                         <Dropdown.Item as={Link} to="/perfil"><i className='fa fa-user'></i> PERFIL</Dropdown.Item>
                                         <Dropdown.Item as={Link} to="/Compras"><i className="fa fa-shopping-bag"></i> COMPRAS</Dropdown.Item>
+                                        <Dropdown.Item as={Link} to="/RentasUser"><i className="fa fa-shopping-bag"></i> RENTAS</Dropdown.Item>
                                         <Dropdown.Item className='text-danger' onClick={cerrarSesion}>
                                             <FontAwesomeIcon icon={faRightFromBracket} /> CERRAR SESIÓN
                                         </Dropdown.Item>
