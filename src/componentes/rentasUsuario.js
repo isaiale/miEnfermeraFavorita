@@ -1,20 +1,24 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../autenticar/AuthProvider';
-import { RentaDeUsuarios, TiempoDeRenta } from '../url/urlSitioWeb';
+import { RentaDeUsuarios, TiempoDeRenta, servidor } from '../url/urlSitioWeb';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import io from 'socket.io-client';
+import Pagination from 'react-bootstrap/Pagination';
+import '../css/spinner.css'
 
 const RentasUsuarios = () => {
   const [rentas, setRentas] = useState([]);
   const [tiempos, setTiempos] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(3); // Número de elementos por página
   const { isAuthenticated, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const socket = io('http://localhost:3000'); // Asegúrate de usar la URL correcta de tu servidor
+    const socket = io(servidor); // Asegúrate de usar la URL correcta de tu servidor
     socket.on('notificacion', (data) => {
       if (data.usuarioId === user._id) {
         Swal.fire({
@@ -37,8 +41,11 @@ const RentasUsuarios = () => {
           throw new Error('Error al obtener las rentas');
         }
         const data = await response.json();
-        setRentas(data);
-        fetchTiempos(data);
+        // Ordenar rentas de más reciente a más antiguo
+        const sortedData = data.sort((a, b) => new Date(b.fechaInicio) - new Date(a.fechaInicio));
+        setRentas(sortedData);
+        fetchTiempos(sortedData);
+        console.log(sortedData);
       } catch (error) {
         console.error('Error al obtener las rentas:', error);
       }
@@ -51,14 +58,15 @@ const RentasUsuarios = () => {
       for (let renta of rentas) {
         const response = await fetch(`${TiempoDeRenta}/${renta._id}/tiempo-restante`);
         if (!response.ok) {
-          throw new Error('Error al obtener el tiempo de renta');
+          throw new Error(`Error al obtener el tiempo de renta para la renta con ID ${renta._id}`);
         }
         const data = await response.json();
+        console.log('respuesta tiempos: ',data);
         tiemposData[renta._id] = data;
       }
-      setTiempos(tiemposData);
+      setTiempos(tiemposData);      
     } catch (error) {
-      console.error('Error al obtener los tiempos de renta:', error);
+      console.error('Error al obtener los tiempos de renta:', error.message);
     }
   };
 
@@ -74,15 +82,28 @@ const RentasUsuarios = () => {
     return () => clearInterval(interval); // Limpiar el intervalo cuando el componente se desmonte
   }, [user]);
 
-  if (!user) {
-    return <p>Cargando...</p>; // O algún otro mensaje de carga
+  if (!rentas || rentas.length === 0) {
+    return (
+      <div className='mt-5 mb-5'>
+        <p className='name-spinner mt-5'>Cargando...</p>
+        <div className="spinner mb-5"></div>
+      </div>
+    );
   }
+
+  // Obtener los elementos actuales de la página
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = rentas.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Cambiar de página
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="container mt-2">
       <h2 className="mb-2">Rentas del Usuario</h2>
       <div className="row">
-        {rentas.map(renta => (
+        {currentItems.map(renta => (
           <div className="col-md-4 mb-4" key={renta._id}>
             <div className="card h-100">
               <img src={renta.productoRentaId.imagenes[0].url} className="card-img-top" alt={renta.productoRentaId.nombre} />
@@ -93,18 +114,18 @@ const RentasUsuarios = () => {
                 <p className="card-text">Talla Seleccionada: {renta.tallaSeleccionada}</p>
                 <p className="card-text">
                   Tiempo:
-                  {tiempos[renta._id] && tiempos[renta._id].diasRestantes !== undefined && tiempos[renta._id].horasRestantes !== undefined && tiempos[renta._id].minutosRestantes !== undefined ? (
+                  {tiempos[renta._id] && tiempos[renta._id].diasRestantes !== undefined && tiempos[renta._id].horasRestantes !== undefined && tiempos[renta._id].minutosRestantes !== undefined ? ( 
                     <>
                       {`${tiempos[renta._id].diasRestantes} días, ${tiempos[renta._id].horasRestantes} horas, ${tiempos[renta._id].minutosRestantes} minutos`}
                     </>
                   ) : (
-                    'Aún no comienza el conteo'
-                  )}
+                    '0 días, 0 horas, 0 minutos'  
+                  )} 
                 </p>
                 <p className="card-text">
                   {tiempos[renta._id] ? tiempos[renta._id].mensajeUser : ''}
                 </p>
-                <p className="card-text">Estado: {renta.estado}</p>
+                <p className="card-text">Estado: {renta.estado}</p>                
                 {/* <p className="card-text">Fecha de Inicio: {new Date(renta.fechaInicio).toLocaleDateString()}</p>
                 <p className="card-text">Fecha de Fin: {new Date(renta.fechaFin).toLocaleDateString()}</p> */}
                 <p className="card-text">Horario de Entrega: {renta.horarioRecogida}</p>
@@ -113,6 +134,13 @@ const RentasUsuarios = () => {
           </div>
         ))}
       </div>
+      <Pagination>
+        {Array.from({ length: Math.ceil(rentas.length / itemsPerPage) }, (_, index) => (
+          <Pagination.Item key={index + 1} active={index + 1 === currentPage} onClick={() => paginate(index + 1)}>
+            {index + 1}
+          </Pagination.Item>
+        ))}
+      </Pagination>
     </div>
   );
 };

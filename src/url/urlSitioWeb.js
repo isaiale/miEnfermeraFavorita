@@ -6,8 +6,10 @@ export const VerificarCodigo = "https://back-end-enfermera.vercel.app/api/verify
 export const NuevaPassword = "https://back-end-enfermera.vercel.app/api/reset-password"; //Para nueva contraseña
 export const UrlLoginUsuarios = "https://back-end-enfermera.vercel.app/api/auth/login";//Para Login de usuarios
 
-export const Productos = "https://back-end-enfermera.vercel.app/api/productos/productos";//Para productos
+export const Productos = "https://back-end-enfermera.vercel.app/api/productos/productos";//Para productos 
 // export const Productos = "http://localhost:3000/api/productos/productos";//Para productos
+
+export const categoria_productos = "https://back-end-enfermera.vercel.app/api/productos/productos/categoria/";
 export const img = "https://back-end-enfermera.vercel.app/api/productos/imagenes"; //Para subir imgenes de productos
 
 export const Estado_Producto = "https://back-end-enfermera.vercel.app/api/productos/estado";//Para estado de productos
@@ -28,6 +30,9 @@ export const ComprasUsuariosUrl = "https://back-end-enfermera.vercel.app/api/det
 // export const PagosRentas = "http://localhost:3000/api/pagos"
 // export const TiempoDeRenta = "http://localhost:3000/api/rentas"///66837fcbac9a828222b3c180/tiempo-restante de renta
 // export const RentaDeUsuarios = "http://localhost:3000/api/rentas/usuario/"// Para checar la renta de cada usuario
+
+export const servidor = "https://back-end-enfermera.vercel.app"
+// export const servidor ="http://localhost:3000"
 
 export const Productos_Renta = "https://back-end-enfermera.vercel.app/api/productos-renta"
 export const Rentas =  "https://back-end-enfermera.vercel.app/api/rentas" //Para checar rentas del producto, CRUD

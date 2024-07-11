@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from '../autenticar/AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import '../css/spinner.css'
 
 const DetalleProductoRenta = () => {
   const [selectedImage, setSelectedImage] = useState('');
@@ -134,7 +135,7 @@ const DetalleProductoRenta = () => {
     const [hora, minutos] = value.split(':');
     if (hora < 8 || hora > 17 || (hora == 17 && minutos > 0)) {
       setErrors(prevErrors => ({
-        ...prevErrors,        
+        ...prevErrors,
         horaRecogida: `La hora de recogida debe estar entre las 8:00 AM y las 5:00 PM.`
       }));
     } else {
@@ -188,8 +189,8 @@ const DetalleProductoRenta = () => {
             fechaInicio,
             fechaFin,
             horarioRecogida: horaRecogida,
-            Cantidad:count,
-            tallaSeleccionada:selectedTalla
+            Cantidad: count,
+            tallaSeleccionada: selectedTalla
           })
         });
         const rentaData = await responseRenta.json();
@@ -378,7 +379,10 @@ const DetalleProductoRenta = () => {
 
         </div>
       ) : (
-        <p>Cargando...</p>
+        <div className='mt-5 mb-5'>
+          <p className='name-spinner mt-5'>Cargando...</p>
+          <div className="spinner mb-5"></div>
+        </div>
       )}
     </div>
   );

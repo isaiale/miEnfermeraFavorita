@@ -24,13 +24,15 @@ const ProductosE = () => {
   const [tituloModal, setTituloModal] = useState('');
   const [buscar, setBuscar] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [tallasSeleccionadas, setTallasSeleccionadas] = useState([]);
+  const [tallasSeleccionadas, setTallasSeleccionadas] = useState([]); /* tallas seleccionada bien  */
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(3);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const [usuariosFiltro, setUsuariosFiltro] = useState([]);
   const currentItems = usuariosFiltro.slice(indexOfFirstItem, indexOfLastItem);
+  const [selectedCategoriaFiltro, setSelectedCategoriaFiltro] = useState(''); // Nuevo estado para el filtro de categoría
+  const [tallasDisponibles, setTallasDisponibles] = useState(['Ch', 'M', 'G', 'XL']); // Estado para las tallas disponibles
 
   const datosProducto = async () => {
     try {
@@ -90,7 +92,25 @@ const ProductosE = () => {
       console.error(error.message);
     }
   };
-  // Para productoss
+
+  // Manejar el cambio de categoría para ajustar las tallas disponibles
+  const handleCategoriaChange = (e) => {
+    const selectedCategoria = e.target.value;
+    setCategoriaP(selectedCategoria);
+
+    // Encuentra la categoría seleccionada
+    const categoriaSeleccionada = categoria.find(cat => cat._id === selectedCategoria);
+
+    if (categoriaSeleccionada && categoriaSeleccionada.nombre === 'Pantalones') {
+      setTallasDisponibles(['28', '30', '32', '34', '36', '38']);
+    } else {
+      setTallasDisponibles(['Ch', 'M', 'G', 'XL']);
+    }
+
+    // Limpiar las tallas seleccionadas
+    setTallasSeleccionadas([]);
+  }
+
   const abrirModal = (op, productos) => {
     setIdProductos('');
     setNombre('');
@@ -101,7 +121,7 @@ const ProductosE = () => {
     setDescuento('');
     setCategoriaP('');
     setSexo('');
-    setTallasSeleccionadas('');
+    setTallasSeleccionadas([]);
     setOperacionModal(op);
     if (op === 1) {
       setTituloModal('Registrar');
@@ -118,7 +138,7 @@ const ProductosE = () => {
       const catP = categoria.find(categ => categ._id === productos.categoria[0]._id);
       setCategoriaP(catP ? catP._id : '');
       setSexo(productos.sexo);
-      setTallasSeleccionadas(productos.talla);
+      setTallasSeleccionadas(Array.isArray(productos.talla) ? productos.talla : [productos.talla]);
     }
     window.setTimeout(function () {
       document.getElementById('nombre').focus();
@@ -152,6 +172,7 @@ const ProductosE = () => {
       document.getElementById('nombree').focus();
     }, 500);
   }
+
   const validarAccesorio = () => {
     if (!validarNombre(nombre)) {
       Swal.fire({
@@ -174,7 +195,7 @@ const ProductosE = () => {
     if (operacionModal === 1) {
       agregarAccesorios(parametros);
     } else {
-      editarUsuario(parametros, idProductos);
+      actualizar(parametros, idProductos);
     }
   }
 
@@ -196,14 +217,14 @@ const ProductosE = () => {
       imagenes: imagenes,
       inventario: inventario,
       descuento: descuento,
-      talla: tallasSeleccionadas.join(', '),
+      talla: tallasSeleccionadas,
       sexo: sexo
     };
 
     if (operacionModal === 1) {
-      agregarUsuario(parametros);
+      agregarProductos(parametros);
     } else {
-      editarUsuario(parametros, idProductos);
+      actualizar(parametros, idProductos);
     }
   }
 
@@ -228,7 +249,7 @@ const ProductosE = () => {
     }
   };
 
-  const agregarUsuario = async (parametros) => {
+  const agregarProductos = async (parametros) => {
     const response = await fetch(Productos, {
       method: 'POST',
       headers: {
@@ -242,14 +263,14 @@ const ProductosE = () => {
       datosProducto();
     } else {
       const data = await response.json();
-      console.log(data.message);
+      console.log(data);
       Swal.fire({
         title: "Error al registrar.", text: "Por favor, intenta nuevamente.", icon: "error", showConfirmButton: false
       });
     }
   };
 
-  const editarUsuario = async (parametros, idProductos) => {
+  const actualizar = async (parametros, idProductos) => {
     const response = await fetch(`${Productos}/${idProductos}`, {
       method: 'PUT',
       headers: {
@@ -361,31 +382,36 @@ const ProductosE = () => {
   };
 
   // Para las tallas
-  const handleTallaSeleccionada = (e) => {
+  const tallasSeleccionadasFuncion = (e) => {
     const { value, checked } = e.target;
-    if (checked) {
-      setTallasSeleccionadas([...tallasSeleccionadas, value]);
-    } else {
-      // Quitar la talla del array
-      setTallasSeleccionadas(tallasSeleccionadas.filter(talla => talla !== value));
-    }
+    setTallasSeleccionadas(prevTallas =>
+      checked ? [...prevTallas, value] : prevTallas.filter(talla => talla !== value)
+    );
+  };
+
+  const handleCategoriaFiltroChange = (e) => {
+    setSelectedCategoriaFiltro(e.target.value);
   };
 
   useEffect(() => {
-    // Esta función filtra los productos y actualiza usuariosFiltro
     const filtrarProductos = () => {
-      const filtro = dataProductos.filter(productos =>
+      let filtro = dataProductos.filter(productos =>
         (productos.nombre && productos.nombre.toLowerCase().includes(buscar)) ||
         (productos.descripcion && productos.descripcion.toLowerCase().includes(buscar)) ||
         (productos.precio && productos.precio.toLowerCase().includes(buscar)) ||
         (productos.inventario && productos.inventario.includes(buscar))
       );
-      setUsuariosFiltro(filtro); // Actualiza usuariosFiltro con el resultado del filtro
+
+      if (selectedCategoriaFiltro) {
+        filtro = filtro.filter(productos => productos.categoria[0]._id === selectedCategoriaFiltro);
+      }
+
+      setUsuariosFiltro(filtro);
     };
 
-    filtrarProductos(); // Llama a la función de filtrado cuando cambia 'buscar' o 'dataProductos'
+    filtrarProductos();
 
-  }, [buscar, dataProductos]);
+  }, [buscar, dataProductos, selectedCategoriaFiltro]);
 
   return (
     <div>
@@ -400,13 +426,6 @@ const ProductosE = () => {
                 </div>
 
                 &nbsp;&nbsp;
-                {/* <div className="ms-5 text-center">
-                  <button onClick={() => abrirModal(1)} type="button" className="buttonAgregar ms-3" data-bs-toggle='modal' data-bs-target='#modalProducto'>
-                    <span className="button__text">Agregar</span>
-                    <span className="button__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="24" fill="none" class="svg"><line y2="19" y1="5" x2="12" x1="12"></line><line y2="12" y1="12" x2="19" x1="5"></line></svg></span>
-                  </button>
-                </div> */}
-
                 <div className="dropdown">
                   <button
                     className="btn btn-secondary dropdown-toggle"
@@ -424,11 +443,20 @@ const ProductosE = () => {
                 </div>
                 <div className="ms-auto">
                   <div className="input-group">
-                    <input type="text" className="form-control" placeholder="Buscar usuario" value={buscar} onChange={handleSearch} />
+                    <input type="text" className="form-control" placeholder="Buscar" value={buscar} onChange={handleSearch} />
                     <button className="btn btn-outline-secondary" type="button" id="button-addon2">
                       <FontAwesomeIcon icon={faSearch} />
                     </button>
                   </div>
+                </div>
+                <div className="ms-auto">
+                  <select className="form-select" value={selectedCategoriaFiltro} onChange={handleCategoriaFiltroChange}>
+                    <option value="">Todas las categorías</option>
+                    {categoria.map(cat => (
+                      <option key={cat._id} value={cat._id}>{cat.nombre}</option>
+                    ))}
+                    <option key='660e8da897d41d20a385ee4f' value='660e8da897d41d20a385ee4f'>Accesorios</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -438,7 +466,6 @@ const ProductosE = () => {
                   <table className="table table-bordered table-hover">
                     <thead className="">
                       <tr >
-                        {/*<th>#</th>*/}
                         <th>Creado</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
@@ -454,7 +481,6 @@ const ProductosE = () => {
                     <tbody className="table-group-divider">
                       {currentItems.map((productos, index) => (
                         <tr className="" key={productos._id}>
-                          {/*<td>{index + 1}</td>*/}
                           <td>{productos.creadoEn.split('T')[0]}</td>
                           <td>{productos.nombre}</td>
                           <td>{productos.descripcion}</td>
@@ -493,7 +519,6 @@ const ProductosE = () => {
                         </tr>
                       ))}
                     </tbody>
-
                   </table>
                 </div>
               </div>
@@ -526,6 +551,16 @@ const ProductosE = () => {
               <div className="container-fluid">
                 <div className="row">
                   <div className="col-md-12">
+                    <div className="input-container">
+                      <select placeholder="Categoria" className="input-field" required value={categoriaP} onChange={handleCategoriaChange}>
+                        <option value="" disabled selected>Selecciona una categoria</option>
+                        {categoria.map(cat => (
+                          <option key={cat._id} value={cat._id}>{cat.nombre}</option>
+                        ))}
+                      </select>
+                      <label for="input-field" className="input-label">Categoria:</label>
+                      <span className="input-highlight"></span>
+                    </div>
                     <div className="input-container">
                       <select placeholder="Categoria" className="input-field" required value={sexo} onChange={(e) => setSexo(e.target.value)}>
                         <option value="" disabled selected>Selecciona genero</option>
@@ -566,49 +601,26 @@ const ProductosE = () => {
                       <label for="input-field" className="input-label">Inventario:</label>
                       <span className="input-highlight"></span>
                     </div>
-                    {/* <div className="input-container">
-                      <input placeholder="Color" className="input-field" id="color" type="text" required
-                        value="" />
-                      <label for="input-field" className="input-label">Color:</label>
-                      <span className="input-highlight"></span>
-                    </div> */}
-                    <div className="input-container">
-                      <select placeholder="Categoria" className="input-field" required
-                        value={categoriaP} onChange={(e) => setCategoriaP(e.target.value)} >
-                        <option value="" disabled selected>Selecciona una categoria</option>
-                        {categoria.map(cat => (
-                          <option key={cat._id} value={cat._id}>{cat.nombre}</option>
-                        ))}
-                      </select>
-                      <label for="input-field" className="input-label">Categoria:</label>
-                      <span className="input-highlight"></span>
-                    </div>
                     <div className="input-container">
                       <label htmlFor="input-field" className="">
                         Seleccione las tallas o talla:
                       </label>
                       <div className="d-flex">
-                        <label className="container">
-                          <input type="checkbox" name="size" value="S" checked={tallasSeleccionadas.includes('S')} onChange={handleTallaSeleccionada} />
-                          <div className="checkmark">S</div>
-                        </label>
-                        <label className="container">
-                          <input type="checkbox" name="size" value="M" checked={tallasSeleccionadas.includes('M')} onChange={handleTallaSeleccionada} />
-                          <div className="checkmark">M</div>
-                        </label>
-                        <label className="container">
-                          <input type="checkbox" name="size" value="L" checked={tallasSeleccionadas.includes('L')} onChange={handleTallaSeleccionada} />
-                          <div className="checkmark">L</div>
-                        </label>
-                        <label className="container">
-                          <input type="checkbox" name="size" value="XL" checked={tallasSeleccionadas.includes('XL')} onChange={handleTallaSeleccionada} />
-                          <div className="checkmark">XL</div>
-                        </label>
+                        {tallasDisponibles.map(size => (
+                          <label key={size} style={{ display: 'inline-block', marginRight: '10px' }}>
+                            <input
+                              type="checkbox"
+                              value={size}
+                              checked={tallasSeleccionadas.includes(size)}
+                              onChange={tallasSeleccionadasFuncion}
+                            />
+                            {size}
+                          </label>
+                        ))}
                       </div>
                     </div>
                     <div className="input-container">
                       <input type="file" multiple onChange={uploadImage} accept="image/*" />
-
                       <span className="input-highlight"></span>
                       <label for="input-field" className="input-label">Imagen:</label>
                       <p>Imágenes seleccionadas:</p>

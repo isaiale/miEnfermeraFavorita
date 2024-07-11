@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { Productos_Renta } from "../url/urlSitioWeb";
 import { Link } from "react-router-dom";
 import "../css/colores.css";
+import '../css/spinner.css';
 
 function ProductoRentaCard({ producto }) {
   return (
@@ -33,6 +34,7 @@ function ProductoRentaCard({ producto }) {
 
 function ProductosRenta() {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Estado para controlar la carga
 
   const fetchProductosRenta = async () => {
     try {
@@ -42,9 +44,11 @@ function ProductosRenta() {
       }
       const jsonData = await response.json();
       setData(jsonData);
-      console.log(jsonData)
+      setIsLoading(false); // Detener la carga después de obtener los datos
+      console.log(jsonData);
     } catch (error) {
       Swal.fire({ title: "Error al hacer la solicitud.", icon: "error" });
+      setIsLoading(false); // Detener la carga en caso de error
     }
   }
 
@@ -57,18 +61,25 @@ function ProductosRenta() {
       <div className="flex container mx-auto justify-center">
         <Breadcrumb path={"Productos de Renta"} />
       </div>
-      <Row>
-        <Col lg={9}>
-          <Row xs={2} md={4}>
-            {data.map((producto) => (
-              <ProductoRentaCard
-                key={producto._id}
-                producto={producto}
-              />
-            ))}
-          </Row>
-        </Col>
-      </Row>
+      {isLoading ? (
+        <div className='mt-5 mb-5'>
+          <p className='name-spinner mt-5'>Cargando...</p>
+          <div className="spinner mb-5"></div>
+        </div>
+      ) : (
+        <Row>
+          <Col lg={9}>
+            <Row xs={2} md={4}>
+              {data.map((producto) => (
+                <ProductoRentaCard
+                  key={producto._id}
+                  producto={producto}
+                />
+              ))}
+            </Row>
+          </Col>
+        </Row>
+      )}
     </Container>
   );
 }
