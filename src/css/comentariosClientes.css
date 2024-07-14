@@ -1,38 +1,107 @@
-.opiniones .caja-contenedor{
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap');
+
+.opiniones .caja-contenedor {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
 }
-.opiniones .caja-contenedor .caja{
+
+.opiniones .caja-contenedor .caja {
     background: white;
     margin: .5rem;
     padding: .3rem;
-    text-align: center;
+    /* text-align: center; */
     position: relative;
     border: .1rem solid rgba(0, 0, 0, .2);
-    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);    
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
     flex: 1 1 20rem;
 }
-.opiniones .caja-contenedor .caja .user img{
+
+.opiniones .caja-contenedor .caja .user img {
     border-radius: 50%;
     object-fit: cover;
-    height: 4rem;
-    width: 4rem;
+    height: 3rem;
+    width: 3rem;
     padding: .2rem;
 }
-.opiniones .caja-contenedor .caja .user h3{
+
+.opiniones .caja-contenedor .caja .user .user-icon i {
+    border-radius: 50%;
+    object-fit: cover;
+    height: 3rem;
+    width: 3rem;
+    padding: .2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    font-size: 1.5rem;
+    color: #666;
+}
+
+
+/* .opiniones .caja-contenedor .caja .user h3{
     color: black;
     font-size: 1.5rem;  
     flex: 6rem;  
+} */
+
+/* .text-product {
+    color: #252525;
+    font-weight: 350;
+    line-height: 1.4;
+} */
+
+.comentario {
+    color: #252525;
+    color: inherit;
+    font-weight: inherit;
+    font-size: 15px;
 }
-/*.opiniones .caja-contenedor .caja .user .estrellas i{
+
+.opiniones .caja-contenedor .caja .user i {
     color: yellow;
-    font-size: 1rem;
-}*/
-.opiniones .caja-contenedor .caja .comentarios{
+    font-size: .8rem;
+}
+
+.opiniones .caja-contenedor .caja .user .fecha {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+.opiniones .caja-contenedor .caja .user i.fa-star.gray {
+    color: gray;
+    /* Color para las estrellas no calificadas */
+}
+
+.opiniones .caja-contenedor .caja .comentarios {
     color: #666;
     font-size: .9rem;
     text-align: start;
     padding: .5rem;
 }
+
+.center-button {
+    display: flex;
+    justify-content: center;
+    /* margin-bottom: 1rem; */
+  }
+  
+  .star-rating {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .star-rating i {
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: gray;
+  }
+  
+  .star-rating i.selected {
+    color: yellow;
+  }

@@ -1,130 +1,81 @@
-import React, { useState } from "react";
-import imgProduct from '../../img/enfermera-removebg-preview.png';
-import imgProduct1 from '../../img/enfermera-removebg-preview.png';
-import imgProduct2 from '../../img/imagenProductoAtuendo.jpg';
-import imgProduct3 from '../../img/imagenProductoAtuendoss.jpg';
-import "../../css/ProductosE.css";
+import React from "react";
+import '../../css/productos.css';
 
 const ProductosE = () => {
-  const [selectedImage, setSelectedImage] = useState(imgProduct); // Estado para controlar la imagen seleccionada
-  const [count, setCount] = useState(1); // Estado para controlar la cantidad de productos seleccionados
 
-  // Función para manejar el clic en una miniatura
-  const handleThumbnailClick = (image) => {
-    setSelectedImage(image);
-  };
-
-  const [selectedTalla, setSelectedTalla] = useState("S");
-
-  // Función para manejar el incremento o decremento de la cantidad de productos
-  const handleCountChange = (action) => {
-    if (action === "increment") {
-      setCount(count + 1);
-    } else if (action === "decrement" && count > 1) {
-      setCount(count - 1);
-    }
-  };
-
-  return (
-    <div>
-      <div className="product-container ">
-        <div className="images-description-wrapper">
-          <div className="thumbnails-container ">
-            <img
-              src={imgProduct}
-              alt="Producto"
-              onClick={() => handleThumbnailClick(imgProduct)}
-            />
-            <img
-              src={imgProduct1}
-              alt="Producto1"
-              onClick={() => handleThumbnailClick(imgProduct1)}
-            />
-            <img
-              src={imgProduct2}
-              alt="Producto2"
-              onClick={() => handleThumbnailClick(imgProduct2)}
-            />
-            <img
-              src={imgProduct3}
-              alt="Producto3"
-              onClick={() => handleThumbnailClick(imgProduct3)}
-            />
-          </div>
-          <div className="image-container border">
-            <img src={selectedImage} alt="Imagen principal" />
-          </div>
-        </div>
-
-        <div className="description-container">
-          <h3 className="display-4">Filipina Luisa para Dama</h3>
-          <p className="lead">
-            Disfruta de cada momento de tu trabajo junto a nuestra filipina
-            Luisa para dama. Contamos con un amplio surtido de estampados
-            brillantes, coloridos y llamativos.
-          </p>
-          <h4 className="precio mb-3">$ 500.00</h4>
-          <div>
-            <h4 className="cantidad lead">Cantidad</h4>
-            <div className="contenedor-cantidad mb-3">
-              <button
-                type="button"
-                className="menos"
-                onClick={() => handleCountChange("decrement")}
-              >
-                -
-              </button>
-              <input
-                id="quantity"
-                className=""
-                value={count}
-                min="1"
-                type="text"
-                name="quantity"
-              />
-              <button
-                type="button"
-                className="mas"
-                onClick={() => handleCountChange("increment")}
-              >
-                +
-              </button>
-            </div>
-          </div>
-          <h4 className="cantidad lead">Tallas:</h4>
-          <div className="talla-contenedor ">
-            <button
-              className={`talla-button ${selectedTalla === "S" ? "active" : ""
-                }`}
-              onClick={() => setSelectedTalla("S")}
-            >
-              S
-            </button>
-            <button
-              className={`talla-button ${selectedTalla === "M" ? "active" : ""
-                }`}
-              onClick={() => setSelectedTalla("M")}
-            >
-              M
-            </button>
-            <button
-              className={`talla-button ${selectedTalla === "L" ? "active" : ""
-                }`}
-              onClick={() => setSelectedTalla("L")}
-            >
-              L
-            </button>
-          </div>
-          <div className="">
-            <button className="agregar_carrito">Agregar al carrito</button>
-          </div>
-          <div>
-            <button className="comprar">Comprar ahora</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<div>
+			<section class="container-related-products">
+				<h2>Productos Relacionados</h2>
+				<div class="card-list-products">
+					<div class="card">
+						<div className="discount-icon"><i class="fa fa-ticket"> </i> 4 %</div> {/* Icono de descuento */}
+						<div class="card-img">
+							<img class='imagen'
+								src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1025&q=80"
+								alt="producto-1"
+							/>
+						</div>
+						<div class="info-card">
+							<div class="text-product">
+								<h3>Nike - Roshe Run</h3>
+								<p class="category"><i class="fa fa-solid fa-tag"></i>Footwear, Sneakers</p>
+							</div>
+							<div class="price">$85.00</div>
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-img">
+							<img className="imagen"
+								src="https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1131&q=80"
+								alt="producto-2"
+							/>
+						</div>
+						<div class="info-card">
+							<div class="text-product">
+								<h3>Common Projects Achilles</h3>
+								<p class="category">Footwear, Sneakers</p>
+							</div>
+							<div class="price">$255.00</div>
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-img">
+							<img className="imagen"
+								src="https://images.unsplash.com/flagged/photo-1556637640-2c80d3201be8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+								alt="producto-3"
+							/>
+						</div>
+						<div class="info-card">
+							<div class="text-product">
+								<h3>Adidas - Boston Super OG</h3>
+								<p class="category">Footwear, Sneakers</p>
+							</div>
+							<div class="price">$105.00</div>
+						</div>
+					</div>
+					<div class="card">
+						<div className="discount-icon">
+							4%
+						</div> {/* Icono de descuento */}
+						<div class="card-img">
+							<img className="imagen"
+								src="https://images.unsplash.com/photo-1617606002779-51d866bdd1d1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+								alt="producto-4"
+							/>
+						</div>
+						<div class="info-card">
+							<div class="text-product">
+								<h3>Common Projects Achilles</h3>
+								<p class="category">Footwear, Sneakers</p>
+							</div>
+							<div class="price">$250.00</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	);
 };
 
 export default ProductosE;

@@ -15,7 +15,7 @@ export const img = "https://back-end-enfermera.vercel.app/api/productos/imagenes
 export const Estado_Producto = "https://back-end-enfermera.vercel.app/api/productos/estado";//Para estado de productos
 export const CategoriaProducto = "https://back-end-enfermera.vercel.app/api/categorias/categoria";//Para categoria
 
-export const Api_Validacio_Correo ="https://disify.com/api/email";//Validacion de correos electronicos 
+export const Api_Validacio_Correo ="https://disify.com/api/email/";//Validacion de correos electronicos 
 export const urlCloudinary = "https://api.cloudinary.com/v1_1/droihhnng/image/upload";//imagenes
 
 // ***************************Carrito de compra*********************************************
@@ -30,6 +30,7 @@ export const ComprasUsuariosUrl = "https://back-end-enfermera.vercel.app/api/det
 // export const PagosRentas = "http://localhost:3000/api/pagos"
 // export const TiempoDeRenta = "http://localhost:3000/api/rentas"///66837fcbac9a828222b3c180/tiempo-restante de renta
 // export const RentaDeUsuarios = "http://localhost:3000/api/rentas/usuario/"// Para checar la renta de cada usuario
+export const comentarios = "https://back-end-enfermera.vercel.app/api/comentarios"
 
 export const servidor = "https://back-end-enfermera.vercel.app"
 // export const servidor ="http://localhost:3000"

@@ -6,33 +6,41 @@ import { categoria_productos } from "../url/urlSitioWeb";
 import { Link } from "react-router-dom";
 import "../css/colores.css";
 import '../css/spinner.css';
+import '../css/productos.css';
 
 function AccesorioEnfermeriaCard({ accesorio }) {
   return (
     <Col xs={6} lg={3}>
-      <Card className="mb-4 contentoruniformes" key={accesorio._id}>
-        {accesorio.descuento > 0 && (
-          <div className="position-absolute top-0 start-0">
-            <span className="badge bg-danger" title="Descuento">{accesorio.descuento} %</span>
-          </div>
-        )}
-        <div className="imgproducto">
-          {accesorio.imagenes.length > 0 && (
-            <img src={accesorio.imagenes[0].url} alt="" />
-          )}
-        </div>
-        <div className="descProducto">
-          <h3 className="lead">{accesorio.nombre}</h3>
-          <h4 className="lead">
-            $ <span className="lead" style={{ color: "#0171fa" }}>{accesorio.precio}</span>
-          </h4>
-          <div className="ms-3 d-grid mx-auto">
+      <section className="container-related-products">
+        <Card className="mb-4 card" key={accesorio._id}>
+          <Link className="text-decoration-none" to={`/detalle-producto/${accesorio._id}`}>
+
+            {accesorio.descuento > 0 && (
+              <div className="discount-icon"><i className="fa fa-ticket"> </i> {accesorio.descuento}%</div>
+            )}
+            <div className="card-img">
+              {accesorio.imagenes.length > 0 && (
+                <img className="imagen" src={accesorio.imagenes[0].url} alt="" />
+              )}
+            </div>
+            <div className="info-card">
+              <div class="text-product">
+                <h3>{accesorio.nombre}</h3>
+                <p class="category"><i class="fa fa-solid fa-tag"></i> Accesorios</p>
+              </div>
+              <div class="precio">${accesorio.precio}</div>
+            </div>
+
+          </Link>
+          {/* <div className="ms-1 me-1">
             <Link to={`/detalle-producto/${accesorio._id}`} className="btnvermas">
-              Ver más
+            <i class="fa fas fa-eye"></i>Ver más
             </Link>
-          </div>
-        </div>
-      </Card>
+          </div> */}
+        </Card>
+
+      </section>
+
     </Col>
   );
 }

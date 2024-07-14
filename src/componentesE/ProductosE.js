@@ -32,7 +32,7 @@ const ProductosE = () => {
   const [usuariosFiltro, setUsuariosFiltro] = useState([]);
   const currentItems = usuariosFiltro.slice(indexOfFirstItem, indexOfLastItem);
   const [selectedCategoriaFiltro, setSelectedCategoriaFiltro] = useState(''); // Nuevo estado para el filtro de categoría
-  const [tallasDisponibles, setTallasDisponibles] = useState(['Ch', 'M', 'G', 'XL']); // Estado para las tallas disponibles
+  const [tallasDisponibles, setTallasDisponibles] = useState([]); // Estado para las tallas disponibles
 
   const datosProducto = async () => {
     try {
@@ -100,16 +100,33 @@ const ProductosE = () => {
 
     // Encuentra la categoría seleccionada
     const categoriaSeleccionada = categoria.find(cat => cat._id === selectedCategoria);
-
-    if (categoriaSeleccionada && categoriaSeleccionada.nombre === 'Pantalones') {
-      setTallasDisponibles(['28', '30', '32', '34', '36', '38']);
-    } else {
-      setTallasDisponibles(['Ch', 'M', 'G', 'XL']);
-    }
+    actualizarTallasDisponibles(categoriaSeleccionada?.nombre, sexo);
 
     // Limpiar las tallas seleccionadas
     setTallasSeleccionadas([]);
-  }
+  };
+
+  const handleSexoChange = (e) => {
+    const selectedSexo = e.target.value;
+    setSexo(selectedSexo);
+
+    // Encuentra la categoría seleccionada
+    const categoriaSeleccionada = categoria.find(cat => cat._id === categoriaP);
+    actualizarTallasDisponibles(categoriaSeleccionada?.nombre, selectedSexo);
+
+    // Limpiar las tallas seleccionadas
+    setTallasSeleccionadas([]);
+  };
+
+  const actualizarTallasDisponibles = (categoriaNombre, sexo) => {
+    if (categoriaNombre === 'Pantalones') {
+      setTallasDisponibles(['28', '30', '32', '34', '36', '38', '40', '42', '44']);
+    } else if (categoriaNombre === 'Zapatos') {
+      setTallasDisponibles(sexo === 'Mujer' ? ['5', '6', '7', '8', '9', '10'] : ['23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33']);
+    } else {
+      setTallasDisponibles(['Ch', 'M', 'G', 'XL']);
+    }
+  };
 
   const abrirModal = (op, productos) => {
     setIdProductos('');
@@ -562,7 +579,7 @@ const ProductosE = () => {
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
-                      <select placeholder="Categoria" className="input-field" required value={sexo} onChange={(e) => setSexo(e.target.value)}>
+                      <select placeholder="Categoria" className="input-field" required value={sexo} onChange={handleSexoChange}>
                         <option value="" disabled selected>Selecciona genero</option>
                         <option value="Hombre">Hombre</option>
                         <option value="Mujer">Mujer</option>

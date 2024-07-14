@@ -1,54 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { Card, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import logo from '../img/Logo de mi enfermera favorita.jpg';
+import { CategoriaProducto } from '../url/urlSitioWeb';
 import '../css/categoria.css';
 import '../css/colores.css';
-
-const categoriaProducto = [
-  {
-    image: logo,
-    description: 'Batas',
-    to: '/productos',
-  },
-  {
-    image: logo,
-    description: 'Calzado',
-    to: '/zapatos',
-  },
-  {
-    image: logo,
-    description: 'Chalecos',
-    to: '/chalecos',
-  },
-  {
-    image: logo,
-    description: 'Filipinas',
-    to: '/filipina',
-  },
-  {
-    image: logo,
-    description: 'Sacos',
-    to: '/sacos',
-  },
-  {
-    image: logo,
-    description: 'Pantalones',
-    to: '/pantalones',
-  },
-  {
-    image: logo,
-    description: 'Sueter',
-    to: '/sueteres',
-  },
-  {
-    image: logo,
-    description: 'Scrubs',
-    to: '/scrubs',
-  },
-];
 
 const responsive = {
   desktop: {
@@ -66,22 +22,49 @@ const responsive = {
 };
 
 const TuComponente = () => {
+  const [categorias, setCategorias] = useState([]);
+
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const response = await fetch(CategoriaProducto); // Reemplaza 'URL_DE_TU_API' con la URL real de la API
+        if (!response.ok) {
+          throw new Error('La respuesta de la red no fue exitosa.');
+        }
+        const data = await response.json();
+        setCategorias(data);
+      } catch (error) {
+        console.error('Error al obtener las categorías:', error);
+      }
+    };
+
+    fetchCategorias();
+  }, []);
+
   return (
     <>
-      <div className='text-center mt-2 '>
+      <div className='text-center mt-2'>
         <h4 className='display-6'>Categorías de uniformes</h4>
       </div>
-      <Carousel responsive={responsive} infinite={true} autoPlaySpeed={1000} transitionDuration={500}>
-        {categoriaProducto.map((ProductoCategoria, index) => (
-          <Link key={index} to={ProductoCategoria.to} className='link-no-underline '>
+      <Carousel responsive={responsive} infinite={true} autoPlaySpeed={1000} transitionDuration={500} arrows={false}>
+        {categorias.map((categoria, index) => (
+          <Link key={index} to={`/productos/${categoria._id}`} className='link-no-underline'>
             <div className='content-categoria'>
-              <img className='d-block img-fluid w-100 ' src={ProductoCategoria.image} alt={ProductoCategoria.description} />
-              <div className='desdription'>
-                <h6 className='lead text-description-categoria'>{ProductoCategoria.description}</h6>
+              
+              <div className='description'>
+                <h6 className='lead text-description-categoria'><i class="fa fa-solid fa-tag"></i> {categoria.nombre}</h6>
               </div>
             </div>
           </Link>
         ))}
+        <Link to={`/accesorioss`} className='link-no-underline'>
+          <div className='content-categoria'>
+            
+            <div className='description'>
+              <h6 className='lead text-description-categoria'><i class="fa fa-solid fa-tag"></i> Accesorios</h6>
+            </div>
+          </div>
+        </Link>
       </Carousel>
     </>
   );

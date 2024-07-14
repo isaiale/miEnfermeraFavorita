@@ -1,15 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from 'react';
 import "../css/sidebar.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faHouse, faCog, faSignOutAlt, faShoppingBasket, faStore, faBars } from "@fortawesome/free-solid-svg-icons";
+import { AuthContext } from '../autenticar/AuthProvider';
 import logo from "../img/logo.jpg";
-
+import Swal from 'sweetalert2';
 
 const Sidebar = () => {
-
+    const { logout, user } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
+    const navigate = useNavigate();
+
+    const cerrarSesion = () => {
+        Swal.fire({
+            title: 'Salir',
+            text: `¡${user.nombre} estas seguro de salir!`,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, salir',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                logout();
+                navigate('/login');
+            }
+        });
+    };
 
     const menuItem = [
         {
@@ -41,11 +60,6 @@ const Sidebar = () => {
             path: "/Renta_productos",
             name: "Renta",
             icon: <FontAwesomeIcon icon={faStore} className="me-2" />,
-        },
-        {
-            path: "/",
-            name: "Salir",
-            icon: <FontAwesomeIcon icon={faSignOutAlt} className="me-2" />,
         }
     ]
 
@@ -72,7 +86,12 @@ const Sidebar = () => {
                         </NavLink>
                     ))
                 }
-            </div>            
+
+                <NavLink onClick={cerrarSesion} className="linkSidebar" activeclassName="active">
+                    <div className="icon"><FontAwesomeIcon icon={faSignOutAlt} /></div>
+                    <h2 style={{ display: isOpen ? "block" : "none" }} className="link_text lead">Salir</h2>
+                </NavLink>
+            </div>
         </div>
     );
 };

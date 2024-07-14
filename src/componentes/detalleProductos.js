@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import "../css/ProductosE.css";
 import { Productos } from "../url/urlSitioWeb";
 import { useParams } from "react-router-dom";
 import { AuthContext } from '../autenticar/AuthProvider';
 import { CarritoCompras } from '../url/urlSitioWeb';
+import Breadcrumb from "../utilidad/migapan";
 import Swal from "sweetalert2";
-import '../css/spinner.css'
+import '../css/spinner.css';
+import "../css/ProductosE.css";
 
 const DetalleProducto = () => {
     const [selectedImage, setSelectedImage] = useState('');
@@ -138,6 +139,9 @@ const DetalleProducto = () => {
 
     return (
         <div>
+            <div className="flex container mx-auto justify-center">
+                <Breadcrumb path='Detalles'/>
+            </div>
             {producto ? (
                 <div className="product-container mb-5 mt-4">
                     <div className="images-description-wrapper">
@@ -158,9 +162,9 @@ const DetalleProducto = () => {
 
                     <div className="col-md-4 me-5 description-container">
                         <h3 className="display-4">{producto.nombre}</h3>
-                        <p className="lead">
-                            {producto.descripcion}
-                        </p>
+                        <p className="lead">{producto.descripcion}</p>
+                        <p className="lead"><i class="fa fa-thin fa-user"></i> {producto.sexo}</p> 
+                        {/* <p className=""> <i class="fa fa-thin fa-user"></i> {accesorio.sexo}</p> */}
                         <h4 className="precio mb-3">${producto.precio}</h4>
                         <p className={`lead ${producto.inventario === 0 ? 'text-danger' : ''}`}>
                             Inventario: {producto.inventario === 0 ? 'Agotado' : producto.inventario}

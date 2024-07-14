@@ -47,7 +47,7 @@ const ProductosRenta = () => {
 
   const handleTallaChange = (e) => {
     const { value, checked } = e.target;
-    setTallasSeleccionadas(prevTallas => 
+    setTallasSeleccionadas(prevTallas =>
       checked ? [...prevTallas, value] : prevTallas.filter(talla => talla !== value)
     );
   };
@@ -195,6 +195,8 @@ const ProductosRenta = () => {
     (producto.descripcion || '').toLowerCase().includes(search.toLowerCase())
   );
 
+  // const tallaMap = ['Ch', 'M', 'G']
+
   return (
     <Container>
       <h3 className="text-center my-4">Servicio de Renta</h3>
@@ -234,7 +236,16 @@ const ProductosRenta = () => {
                 <td>{producto.descripcion}</td>
                 <td>${producto.precio}</td>
                 <td>{producto.disponible ? 'Sí' : 'No'}</td>
-                <td>{Array.isArray(producto.talla) ? producto.talla.join(', ') : producto.talla}</td>
+                {/* <td>{Array.isArray(producto.talla) ? producto.talla.join(',') : producto.talla}</td> */}
+                <td>
+                  {Array.isArray(producto.talla) ? (
+                    ['Ch', 'M', 'G', 'XL'].filter(size => producto.talla.includes(size)).map(size => (
+                      <span key={size}>{size}{', '}</span>
+                    ))
+                  ) : (
+                    producto.talla
+                  )}
+                </td>
                 <td>{producto.stock}</td>
                 <td>
                   {producto.imagenes.length > 0 && (
