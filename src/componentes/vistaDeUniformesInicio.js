@@ -51,7 +51,7 @@ const UniformesDestacados = () => {
 
   return (
     <div className="container-related-products mb-2">
-      <h2 className="text-center display-6">Productos Relacionados</h2>
+      <h2 className="text-center display-6">Uniformes</h2>
       <Carousel
         responsive={responsive}
         infinite={true}
@@ -75,7 +75,7 @@ const UniformesDestacados = () => {
               <div className="info-card">
                 <div className="text-product">
                   <h3>{product.nombre}</h3>
-                  <p className=""><i className="fa fa-solid fa-tag"></i> Productos de Renta</p>
+                  <p className=""><i className="fa fa-solid fa-tag"></i>{product.categoria.nombre}</p>
                   <p className=""> <i className="fa fa-thin fa-user"></i> {product.sexo}</p>
                 </div>
                 <div className="price">${product.precio}</div>

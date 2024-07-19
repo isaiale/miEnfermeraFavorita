@@ -16,6 +16,7 @@ const ProductosRenta = () => {
   const [imagenes, setImagenes] = useState([]);
   const [tallasSeleccionadas, setTallasSeleccionadas] = useState([]);
   const [stock, setStock] = useState('');
+  const [deposito, setDeposito] = useState('');
   const [editingProducto, setEditingProducto] = useState(null);
 
   useEffect(() => {
@@ -42,6 +43,7 @@ const ProductosRenta = () => {
     setImagenes([]);
     setTallasSeleccionadas([]);
     setStock('');
+    setDeposito('');
     setEditingProducto(null);
   };
 
@@ -109,7 +111,8 @@ const ProductosRenta = () => {
       disponible,
       imagenes,
       talla: tallasSeleccionadas,
-      stock
+      stock,
+      deposito
     };
 
     if (editingProducto) {
@@ -158,6 +161,7 @@ const ProductosRenta = () => {
     setImagenes(producto.imagenes);
     setTallasSeleccionadas(Array.isArray(producto.talla) ? producto.talla : [producto.talla]);
     setStock(producto.stock);
+    setDeposito(producto.deposito);
     setEditingProducto(producto);
     handleShowModal();
   };
@@ -195,11 +199,9 @@ const ProductosRenta = () => {
     (producto.descripcion || '').toLowerCase().includes(search.toLowerCase())
   );
 
-  // const tallaMap = ['Ch', 'M', 'G']
-
   return (
-    <Container>
-      <h3 className="text-center my-4">Servicio de Renta</h3>
+    <Container>      
+      <h3 className='text-center display-6'>Servicio de Renta</h3>
       <div className="d-flex justify-content-between align-items-center mb-3">
         <p className="lead">Total de productos: {productos.length}</p>
         <Button variant="primary" onClick={handleShowModal}>
@@ -222,6 +224,7 @@ const ProductosRenta = () => {
               <th>Nombre</th>
               <th>Descripción</th>
               <th>Precio</th>
+              <th>Depósito</th>
               <th>Disponibilidad</th>
               <th>Tallas</th>
               <th>Stock</th>
@@ -235,8 +238,8 @@ const ProductosRenta = () => {
                 <td>{producto.nombre}</td>
                 <td>{producto.descripcion}</td>
                 <td>${producto.precio}</td>
+                <td>${producto.deposito}</td>
                 <td>{producto.disponible ? 'Sí' : 'No'}</td>
-                {/* <td>{Array.isArray(producto.talla) ? producto.talla.join(',') : producto.talla}</td> */}
                 <td>
                   {Array.isArray(producto.talla) ? (
                     ['Ch', 'M', 'G', 'XL'].filter(size => producto.talla.includes(size)).map(size => (
@@ -296,6 +299,15 @@ const ProductosRenta = () => {
                 type="number"
                 value={precio}
                 onChange={(e) => setPrecio(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="deposito" className="mt-2">
+              <Form.Label>Depósito</Form.Label>
+              <Form.Control
+                type="number"
+                value={deposito}
+                onChange={(e) => setDeposito(e.target.value)}
                 required
               />
             </Form.Group>

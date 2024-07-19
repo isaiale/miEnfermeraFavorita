@@ -49,7 +49,7 @@ const CarritoCompra = () => {
             }
             const jsonData = await response.json();
             setProductosCarrito(jsonData);
-            // console.log(jsonData);
+            console.log(jsonData);
         } catch (error) {
             console.log(error);
         }

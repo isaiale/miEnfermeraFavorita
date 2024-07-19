@@ -212,7 +212,7 @@ const DetalleProducto = () => {
                             </div>
                         )}
                         <div>
-                            <button className="agregar_carrito" onClick={addToCart}>Agregar al carrito</button>
+                            <button className="btn w-100 " style={{ backgroundColor: '#FF4081', color: 'white', borderRadius: '0px' }} onClick={addToCart}>Agregar al carrito</button>
                         </div>
                     </div>
                 </div>

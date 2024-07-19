@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Container, Row, Col, Button, Pagination } from "react-bootstrap";
 import Breadcrumb from "../utilidad/migapan";
 import Swal from "sweetalert2";
-import { Productos_Renta } from "../url/urlSitioWeb";
+import { Productos_Renta_Disponible } from "../url/urlSitioWeb";
 import { Link } from "react-router-dom";
 import "../css/colores.css";
 import '../css/spinner.css';
@@ -13,26 +13,28 @@ function ProductoRentaCard({ producto }) {
     <Col xs={6} lg={3}>
       <section className="container-related-products">
         <Card className="mb-4 card" key={producto._id}>
-          {producto.descuento > 0 && (
-            <div className="discount-icon"><i className="fa fa-ticket"></i> {producto.descuento}%</div>
-          )}
-          <div className="card-img">
-            {producto.imagenes.length > 0 && (
-              <img className="imagen" src={producto.imagenes[0].url} alt="" />
+          <Link className="text-decoration-none " to={`/ProductoDetalleRenta/${producto._id}`} >
+            {producto.descuento > 0 && (
+              <div className="discount-icon"><i className="fa fa-ticket"></i> {producto.descuento}%</div>
             )}
-          </div>
-          <div className="info-card">
-            <div className="text-product">
-              <h3>{producto.nombre}</h3>
-              <p className="category"><i className="fa fa-solid fa-tag"></i> Productos de Renta</p>
+            <div className="card-img">
+              {producto.imagenes.length > 0 && (
+                <img className="imagen" src={producto.imagenes[0].url} alt="" />
+              )}
             </div>
-            <div className="precio">${producto.precio}</div>
-          </div>
-          <div className="me-1 ms-1">
-            <Link className="text-decoration-none btnvermas" to={`/ProductoDetalleRenta/${producto._id}`} >
-              Ver más
-            </Link>
-          </div>
+            <div className="info-card">
+              <div className="text-product">
+                <h3>{producto.nombre}</h3>
+                <p className="category"><i className="fa fa-solid fa-tag"></i> Productos de Renta</p>
+              </div>
+              <div className="precio">${producto.precio}</div>
+            </div>
+            <div className="me-1 ms-1">
+              {/* <Link className="text-decoration-none btnvermas" to={`/ProductoDetalleRenta/${producto._id}`} >
+                Ver más
+              </Link> */}
+            </div>
+          </Link>
         </Card>
       </section>
     </Col>
@@ -51,7 +53,7 @@ function ProductosRenta() {
 
   const fetchProductosRenta = async () => {
     try {
-      const response = await fetch(Productos_Renta);
+      const response = await fetch(Productos_Renta_Disponible);
       if (!response.ok) {
         throw new Error('La respuesta de la red no fue exitosa.');
       }

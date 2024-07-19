@@ -44,7 +44,7 @@ const TuComponente = () => {
   return (
     <>
       <div className='text-center mt-2'>
-        <h4 className='display-6'>Categorías de uniformes</h4>
+        <h4 className='display-6'>Categorías</h4>
       </div>
       <Carousel responsive={responsive} infinite={true} autoPlaySpeed={1000} transitionDuration={500} arrows={false}>
         {categorias.map((categoria, index) => (

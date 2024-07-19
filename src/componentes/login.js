@@ -31,8 +31,7 @@ function Login() {
             return;
         }
 
-        try {
-            //const url = 'http://localhost:3000/api/auth/login'
+        try {            
             const res = await fetch(UrlLoginUsuarios, {
                 method: 'POST',
                 headers: {
@@ -46,8 +45,10 @@ function Login() {
 
             if (res.ok) {
                 const data = await res.json();
+                const token = data.token;
+                localStorage.setItem('authToken', token);
                 window.location.href = data.redirect;// Verificar si la respuesta indica una redirección
-                const decodedToken = decodeToken(data.token); // Decodifica el token
+                const decodedToken = decodeToken(token); // Decodifica el token 
                 login(decodedToken); // Establece el usuario autenticado en el contexto                
             } else {
                 const data = await res.json();
