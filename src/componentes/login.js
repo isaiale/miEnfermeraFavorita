@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { decodeToken } from "react-jwt"; // Importa la función decodeToken
+import React, { useState, useContext, useEffect } from 'react';
+import { decodeToken } from "react-jwt";
 import { AuthContext } from '../autenticar/AuthProvider';
 import Form from 'react-bootstrap/Form';
 import { UrlLoginUsuarios } from '../url/urlSitioWeb';
@@ -8,7 +8,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import '../css/colores.css';
 import Swal from "sweetalert2";
-import Breadcrumb from '../utilidad/migapan'
+import Breadcrumb from '../utilidad/migapan';
+
+const vapidPublicKey = 'BL18qSRqj2Na9VxYd8_H7mXQ7MnrdUtB3ZXZ-3vTKMONi3qZZnDenBIU6nLOczFDr-EU5U7GwMHo0jIH-liA7Zk';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -16,6 +18,18 @@ function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const { login } = useContext(AuthContext);
     const [showError, setShowError] = useState(false);
+
+    useEffect(() => {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')        
+                .then(function(registration) {
+                    console.log('Service Worker registrado con éxito:', registration);
+                })
+                .catch(function(error) {
+                    console.log('Registro de Service Worker fallido:', error);
+                });
+        }
+    }, []);
 
     const handleShowPassword = () => {
         setShowPassword(!showPassword);
@@ -47,18 +61,55 @@ function Login() {
                 const data = await res.json();
                 const token = data.token;
                 localStorage.setItem('authToken', token);
-                window.location.href = data.redirect;// Verificar si la respuesta indica una redirección
-                const decodedToken = decodeToken(token); // Decodifica el token 
-                login(decodedToken); // Establece el usuario autenticado en el contexto                
+                window.location.href = data.redirect;
+                const decodedToken = decodeToken(token);
+                login(decodedToken);
+                subscribeUser();
             } else {
                 const data = await res.json();
                 Swal.fire({ title: `${data.message}`, icon: 'error', timer: 1500 });
             }
         } catch (error) {
-            // Manejar el error de red
             console.error('Error al realizar la solicitud:', error);
             Swal.fire({ title: 'Error al realizar la solicitud', icon: 'error', timer: 1500 });
         }
+    };
+
+    const subscribeUser = () => {
+        navigator.serviceWorker.ready.then(function(registration) {
+            registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
+            })
+            .then(function(subscription) {
+                console.log('Usuario suscrito:', subscription);
+                fetch('/subscribe', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(subscription)
+                });
+            })
+            .catch(function(error) {
+                console.log('Fallo en la suscripción:', error);
+            });
+        });
+    };
+
+    const urlBase64ToUint8Array = (base64String) => {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+            .replace(/\-/g, '+')
+            .replace(/_/g, '/');
+
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
     };
 
     return (

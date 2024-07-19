@@ -4,8 +4,8 @@ export const BloquearUsuario = "https://back-end-enfermera.vercel.app/api/usuari
 export const RecuperarPasswordEmail = "https://back-end-enfermera.vercel.app/api/forgot-password"; //Para recuperaciond de contraseñas
 export const VerificarCodigo = "https://back-end-enfermera.vercel.app/api/verify-code"; //Para verificar codigo
 export const NuevaPassword = "https://back-end-enfermera.vercel.app/api/reset-password"; //Para nueva contraseña
-// export const UrlLoginUsuarios = "https://back-end-enfermera.vercel.app/api/auth/login";//Para Login de usuarios
 export const UrlLoginUsuarios = "https://back-end-enfermera.vercel.app/api/auth/login";//Para Login de usuarios
+// export const UrlLoginUsuarios = "http://localhost:3000/api/auth/login";//Para Login de usuarios
 
 export const Productos = "https://back-end-enfermera.vercel.app/api/productos/productos";//Para productos 
 // export const Productos = "http://localhost:3000/api/productos/productos";//Para productos

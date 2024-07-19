@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import { AuthContextProvider } from './autenticar/AuthProvider';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration'; // Importar el service worker
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,7 +17,7 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// Registrar el service worker para que la aplicación funcione sin conexión y se cargue más rápido
+serviceWorkerRegistration.register();
+
 reportWebVitals();
