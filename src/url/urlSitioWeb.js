@@ -28,22 +28,22 @@ export const ComprasUsuariosUrl = "https://back-end-enfermera.vercel.app/api/det
 
 export const Productos_Renta = "https://back-end-enfermera.vercel.app/api/productos-renta"
 export const Productos_Renta_Disponible = "https://back-end-enfermera.vercel.app/api/productos-renta-disponible"
-export const Rentas =  "https://back-end-enfermera.vercel.app/api/rentas" //Para checar rentas del producto, CRUD
+// export const Rentas =  "https://back-end-enfermera.vercel.app/api/rentas" //Para checar rentas del producto, CRUD 
 export const Pagos_Rentas = "https://back-end-enfermera.vercel.app/api/pagos-renta/renta/"
 export const Pagos_Renta_Vista_Admin = "https://back-end-enfermera.vercel.app/api/admin/pagos-renta"
 export const Ventas_Vista_Admin = "https://back-end-enfermera.vercel.app/api/ventas-totales"
 // export const TiempoDeRenta = "http://localhost:3000/api/rentas"///66837fcbac9a828222b3c180/tiempo-restante de renta
-export const RentaDeUsuarios = "https://back-end-enfermera.vercel.app/api/rentas/usuario/"// Para checar la renta de cada usuario
+// export const RentaDeUsuarios = "https://back-end-enfermera.vercel.app/api/rentas/usuario/"// Para checar la renta de cada usuario 
 export const comentarios = "https://back-end-enfermera.vercel.app/api/comentarios"
 
 export const servidor = "https://back-end-enfermera.vercel.app"
 // export const servidor ="http://localhost:3000"
 
 // export const Productos_Renta = "https://back-end-enfermera.vercel.app/api/productos-renta"
-// export const Rentas =  "https://back-end-enfermera.vercel.app/api/rentas" //Para checar rentas del producto, CRUD
+export const Rentas =  "http://localhost:3000/api/rentas" //Para checar rentas del producto, CRUD
 // export const PagosRentas = "https://back-end-enfermera.vercel.app/api/pagos"
 // export const TiempoDeRenta = "https://back-end-enfermera.vercel.app/api/rentas"///66837fcbac9a828222b3c180/tiempo-restante de renta
-// export const RentaDeUsuarios = "https://back-end-enfermera.vercel.app/api/rentas/usuario/"// Para checar la renta de cada usuario
+export const RentaDeUsuarios = "http://localhost:3000/api/rentas/usuario/"// Para checar la renta de cada usuario
 //--------------------------- pago renta ------------------------------------------------------------------------------------------
 export const Verificar_Pago = "https://back-end-enfermera.vercel.app/api/rentas/verify-payment/" //verifica si el pago se realizó con exito
 export const Pagar_renta = "https://back-end-enfermera.vercel.app/api/rentas/create-checkout-session" //Para el pago de renta

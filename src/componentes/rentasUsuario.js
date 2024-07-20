@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle, faFilePdf, faDownload } from '@fortawesome/free-solid-svg-icons'; // Importa el ícono de PDF y el ícono de descarga
-import io from 'socket.io-client';
 import Pagination from 'react-bootstrap/Pagination';
 import Modal from 'react-bootstrap/Modal'; // Importa el componente Modal de Bootstrap
 import Button from 'react-bootstrap/Button';
@@ -57,22 +56,6 @@ const RentasUsuarios = () => {
   const [showModal, setShowModal] = useState(false); // Estado para controlar la visibilidad del modal
   const { isAuthenticated, user } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const socket = io(servidor); // Asegúrate de usar la URL correcta de tu servidor
-    socket.on('notificacion', (data) => {
-      if (data.usuarioId === user._id) {
-        Swal.fire({
-          title: 'Notificación',
-          text: data.mensaje,
-          icon: 'info',
-          confirmButtonText: 'OK'
-        });
-      }
-    });
-
-    return () => socket.disconnect();
-  }, [user]);
 
   const fetchRentas = async () => {
     if (user && user._id) {

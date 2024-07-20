@@ -46,6 +46,7 @@ function Login() {
         }
 
         try {            
+            console.log('Enviando solicitud de inicio de sesión...');
             const res = await fetch(UrlLoginUsuarios, {
                 method: 'POST',
                 headers: {
@@ -58,15 +59,20 @@ function Login() {
             });
 
             if (res.ok) {
+                console.log('Inicio de sesión exitoso.');
+                subscribeUser();
                 const data = await res.json();
                 const token = data.token;
+                console.log('Token recibido:', token);
                 localStorage.setItem('authToken', token);
                 window.location.href = data.redirect;
                 const decodedToken = decodeToken(token);
+                console.log('Token decodificado:', decodedToken);
                 login(decodedToken);
-                subscribeUser();
+                // subscribeUser();
             } else {
                 const data = await res.json();
+                console.log('Error en el inicio de sesión:', data.message);
                 Swal.fire({ title: `${data.message}`, icon: 'error', timer: 1500 });
             }
         } catch (error) {
@@ -76,26 +82,44 @@ function Login() {
     };
 
     const subscribeUser = () => {
+        console.log('Preparando suscripción a notificaciones push...');
         navigator.serviceWorker.ready.then(function(registration) {
-            registration.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
-            })
-            .then(function(subscription) {
-                console.log('Usuario suscrito:', subscription);
-                fetch('/subscribe', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(subscription)
-                });
-            })
-            .catch(function(error) {
-                console.log('Fallo en la suscripción:', error);
+            // Solicitar permisos de notificación
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    registration.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
+                    })
+                    .then(function(subscription) {
+                        console.log('Usuario suscrito:', subscription);
+                        fetch('http://localhost:3000/subscribe/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(subscription)
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                console.log('Suscripción enviada al servidor con éxito.');
+                            } else {
+                                console.log('Error al enviar la suscripción al servidor.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error al enviar la suscripción al servidor:', error);
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log('Fallo en la suscripción:', error);
+                    });
+                } else {
+                    console.log('Permiso de notificación no concedido.');
+                }
             });
         });
-    };
+    };    
 
     const urlBase64ToUint8Array = (base64String) => {
         const padding = '='.repeat((4 - base64String.length % 4) % 4);
