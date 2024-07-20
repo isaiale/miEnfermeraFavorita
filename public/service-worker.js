@@ -3,7 +3,7 @@ self.addEventListener('push', function(event) {
     const options = {
       body: data.body,
       icon: 'logo_transparent.png',
-      badge: 'badge.png'
+      badge: 'logo_transparent.png'
     };
   
     event.waitUntil(
