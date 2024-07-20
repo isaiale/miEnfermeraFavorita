@@ -5,9 +5,15 @@
   /* Mantiene el color del texto original */
 }
 
-/* Agrega un padding a los lados del Carousel */
-.custom-carousel {
-  padding: 0 15px;
+.content-categoria {
+  border: 1px solid var(--fondo-menos-importante);
+  margin: 10px;
+}
+
+.text-description-categoria {
+  text-align: center;
+  margin: 1px;
+  padding: 5px;
 }
 
 @media screen and (max-width: 447px) {

@@ -1,0 +1,27 @@
+.name-spinner{
+    text-align: center;
+    font-weight: bold;
+    font-family: 'Lato', 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, Sans-Serif;
+    margin-top: 50px;
+  }
+  
+  .spinner {
+    border: 5px solid rgba(0, 0, 0, 0.3);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border-left-color: #FF4081;
+    margin: 0 auto;
+    margin-top: 20px;
+    animation: spin 1s ease infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    100% {
+      transform: rotate(360deg);
+    }
+  }

@@ -8,7 +8,7 @@ const Error404 = () => {
         <div className='contenido mt-3'>
             <h2 className='titulo'>404 - Opps! Página no encontrada</h2>
             <div className='circulo'>
-                <img className='img-fluid w-100' src={imgError404} />
+                <img className='img-fluid w-100' src={imgError404} alt=''/>
             </div>
             <p className='texto2'>Lo sentimos, la página que buscas no existe.</p>
             <div className='text-center mt-0'>

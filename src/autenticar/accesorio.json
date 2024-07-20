@@ -1,0 +1,69 @@
+{
+    "accesorios": [
+        {
+            "id": 1,
+            "name": "Accesorio 1",
+            "category": "Estetoscopio",
+            "descripcion": "Estetoscopio de alta calidad",
+            "price": "49.99",
+            "imageUrl": "../img/chaleco.png",
+            "colors": [
+                "Negro",
+                "Azul",
+                "Rosa"
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Accesorio 2",
+            "category": "Reloj de bolsillo",
+            "descripcion": "Reloj de bolsillo para profesionales de la salud",
+            "price": "19.99",
+            "imageUrl": "../img/batas.png",
+            "colors": [
+                "Plateado",
+                "Dorado",
+                "Negro"
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Accesorio 3",
+            "category": "Linterna médica",
+            "descripcion": "Linterna para examinaciones detalladas",
+            "price": "14.99",
+            "imageUrl": "../img/batas.png",
+            "colors": [
+                "Blanco",
+                "Verde",
+                "Amarillo"
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Accesorio 4",
+            "category": "Linterna médica",
+            "descripcion": "Linterna para examinaciones detalladas",
+            "price": "14.99",
+            "imageUrl": "../img/batas.png",
+            "colors": [
+                "Blanco",
+                "Verde",
+                "Amarillo"
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Accesorio 5",
+            "category": "Linterna médica",
+            "descripcion": "Linterna para examinaciones detalladas",
+            "price": "14.99",
+            "imageUrl": "../img/batas.png",
+            "colors": [
+                "Blanco",
+                "Verde",
+                "Amarillo"
+            ]
+        }
+    ]
+}

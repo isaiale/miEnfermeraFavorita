@@ -1,0 +1,64 @@
+{
+    "productos": [
+        {
+            "id": 1,
+            "name": "Producto 1",
+            "category": "Filipina",
+            "descripcion": "Buen tipo de producto",
+            "price": "10.99",
+            "imageUrl": "imagenProducto1.jpg",
+            "sizes": [
+                "S",
+                "M",
+                "L",
+                "XL"
+            ],
+            "colors": [
+                "Azul",
+                "Rojo",
+                "Verde"
+            ],
+            "descuento": "50%"
+        },
+        {
+            "id": 2,
+            "name": "Producto 2",
+            "category": "Calzado",
+            "descripcion": "Otro producto para enfermería",
+            "price": "24.99",
+            "imageUrl": "imagenProducto2.jpg",
+            "sizes": [
+                "S",
+                "M",
+                "L",
+                "XL"
+            ],
+            "colors": [
+                "Blanco",
+                "Negro",
+                "Gris"
+            ],
+            "descuento": "20%"
+        },
+        {
+            "id": 3,
+            "name": "Producto 3",
+            "category": "Chaleco",
+            "descripcion": "Chaleco para enfermería",
+            "price": "15.99",
+            "imageUrl": "imagenProducto3.jpg",
+            "sizes": [
+                "S",
+                "M",
+                "L",
+                "XL"
+            ],
+            "colors": [
+                "Rosa",
+                "Amarillo",
+                "Morado"
+            ],
+            "descuento": "30%"
+        }
+    ]
+}

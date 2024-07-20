@@ -1,6 +1,6 @@
 import React from 'react';
 import NavbarUsuario from "../../componentes/navbarUsuario";
-import ReservaAtuendos from '../../componentes/Reservar';
+import ReservaAtuendos from '../../componentes/ProductosRenta';
 import Footer from "../../componentes/footer";
 
 const ReservarA = () => {
