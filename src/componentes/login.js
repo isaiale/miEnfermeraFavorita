@@ -21,7 +21,8 @@ function Login() {
 
     useEffect(() => {
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/js/service-worker.js')        
+            // navigator.serviceWorker.register('/service-worker.js')        
+            navigator.serviceWorker.register('/js/service-worker.js') 
                 .then(function(registration) {
                     console.log('Service Worker registrado con éxito:', registration);
                 })
@@ -89,7 +90,7 @@ function Login() {
             })
             .then(function(subscription) {
                 console.log('Usuario suscrito:', subscription);
-                fetch('http://localhost:3000/api/subscribe', {
+                fetch('https://back-end-enfermera.vercel.app/subscribe/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -102,6 +103,9 @@ function Login() {
                     } else {
                         console.log('Error al enviar la suscripción al servidor.');
                     }
+                })
+                .catch(error => {
+                    console.error('Error al enviar la suscripción al servidor:', error);
                 });
             })
             .catch(function(error) {
@@ -109,6 +113,7 @@ function Login() {
             });
         });
     };
+    
 
     const urlBase64ToUint8Array = (base64String) => {
         const padding = '='.repeat((4 - base64String.length % 4) % 4);
