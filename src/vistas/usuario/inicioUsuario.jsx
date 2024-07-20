@@ -7,8 +7,10 @@ import UniformesDestacados from '../../componentes/vistaDeUniformesInicio';
 import ComentariosClientes from '../../componentes/ComentariosClientes';
 import ProductosCalzado from '../../componentes/productosCalzado';
 
+
 function InicioUsuario() {
   return (
+
     <div>
       <NavbarUsuario />
       <Slider />

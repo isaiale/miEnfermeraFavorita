@@ -1,9 +1,31 @@
+:root {
+    --btn-importante: #FF4081;
+    /* Para botones o elementos importantes */
+    --btn-secundario: #FF79B0;
+    /* Para botones secundarios o elementos menos importantes */
+    --resaltar-brillo: #FFE4FF;
+    /* Para resaltes o brillos */
+    --elemento-destacar: #00E5FF;
+    /* Para elementos importantes que necesiten destacar */
+    --elemento-complementario: #00829b;
+    /* Como color de acento complementario */
+    --text-primario: #333333;
+    /* Color principal para el texto */
+    --text-secundario: #5C5C5C;
+    /* Color secundario para el texto */
+    --fondo-principal: white;
+    /* Fondo principal */
+    --fondo-secundario: #EBEBEB;
+    /* Fondo para secciones secundarias */
+    --fondo-menos-importante: #C2C2C2;
+    /* Fondo para elementos más pequeños o de menos importancia */
+}
 .border-3d {
     border: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 5px;
     box-shadow: 0 0rem 1rem 0rem rgba(0, 0, 0, 0.15);
 }
-.titulocarritocompra{
+/* .titulocarritocompra{
     font-size: 20px;
     color:black;
     font-family: 'Jost', sans-serif;
@@ -27,4 +49,57 @@
 .justificarTexto{
     justify-content: left;
     text-align: left;
+} */
+
+.btnCerrar {
+    background: var(--text-secundario);
+    color: var(--fondo-principal);
+    padding: 0.5em;
+    text-decoration: none;
+    
+}
+
+.btnCerrar:hover {
+    background: var(--text-secundario);
+    color: var(--fondo-principal);
+    padding: 0.5em;
+    text-decoration: none;
+}
+.btnPagar {
+    background: var(--fondo-principal);
+    color: var(--text-primario);
+    padding: 0.5em;
+    margin-top: 5px;
+    text-decoration: none;
+    border: 1px solid black;
+}
+
+.btnPagar:hover {
+    background: var(--btn-secundario);
+    color: var(--fondo-principal);
+    padding: 0.5em;
+    margin-top: 5px;
+    text-decoration: none;
+    border: 1px solid  white;
+}
+.btnVermas {
+    background: var(--btn-secundario);
+    color: var(--fondo-principal);
+    padding: 0.5em;
+    text-decoration: none;
+}
+
+.btnVermas:hover {
+    background: var(--btn-importante);
+    color: var(--fondo-principal);
+    padding: 0.5em;
+    text-decoration: none;
+}
+.btnRegresar {
+    background: var(--fondo-principal);
+    color: var(--text-primario);
+    padding: 0.5em;
+    margin-top: 5px;
+    text-decoration: none;
+    border: 1px solid black;
 }

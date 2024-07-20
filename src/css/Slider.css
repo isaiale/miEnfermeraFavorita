@@ -1,0 +1,238 @@
+:root {
+    --btn-importante: #FF4081;
+    /* Para botones o elementos importantes */
+    --btn-secundario: #FF79B0;
+    /* Para botones secundarios o elementos menos importantes */
+    --resaltar-brillo: #FFE4FF;
+    /* Para resaltes o brillos */
+    --elemento-destacar: #00E5FF;
+    /* Para elementos importantes que necesiten destacar */
+    --elemento-complementario: #00829b;
+    /* Como color de acento complementario */
+    --text-primario: #333333;
+    /* Color principal para el texto */
+    --text-secundario: #5C5C5C;
+    /* Color secundario para el texto */
+    --fondo-principal: white;
+    /* Fondo principal */
+    --fondo-secundario: #EBEBEB;
+    /* Fondo para secciones secundarias */
+    --fondo-menos-importante: #C2C2C2;
+    /* Fondo para elementos más pequeños o de menos importancia */
+}
+
+.free-shipping-notification {
+    display: flex;
+    align-items: center;
+    background-color: var(--fondo-principal);
+    padding: 16px;
+}
+
+.free-shipping-icon-container {
+    position: relative;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 6px;
+}
+
+.circle {
+    position: absolute;
+    background-color: var(--elemento-destacar);
+    width: 350px;
+    /* Cambia el ancho del círculo al 25% del contenedor */
+    height: 350px;
+    /* Altura automática para mantener la proporción */
+    padding-top: 50%;
+    /* Para asegurar que el alto sea igual al ancho y mantener la forma de círculo */
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.circle2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    z-index: 1; /* Menor para que el SVG quede detrás de la imagen */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle2 svg {
+    width: 90%; /* Ajusta el tamaño del SVG dentro del contenedor */
+    height: auto;
+}
+
+.free-shipping-icon {
+    width: 64%;
+    height: 530px;    
+    z-index: 2;    
+}
+
+.free-shipping-text-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.free-shipping-text-label {
+    color: var(--text-primario);
+    font-weight: bold;
+    font-size: 40px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.free-shipping-text-content {
+    color: var(--btn-importante);
+    font-size: 40px;
+}
+
+.free-shipping-text {
+    color: var(--text-secundario);
+    font-size: 30px;
+    width: 80%;
+}
+
+.btnVermas {
+    background: var(--btn-secundario);
+    color: var(--fondo-principal);
+    padding: 0.5em;
+    margin-top: 20px;
+    text-decoration: none;
+}
+
+.btnVermas:hover {
+    background: var(--btn-importante);
+    color: var(--fondo-principal);
+    padding: 0.5em;
+    margin-top: 20px;
+    text-decoration: none;
+}
+
+/* diseño del segundo slider  */
+.special-offer-notification {
+    display: flex;
+    flex-direction: row-reverse; /* Imagen a la izquierda, texto a la derecha */
+    align-items: center;
+    background-color: var(--fondo-principal);
+    padding: 16px;
+}
+
+.carousel-container {
+    width: 50%;
+}
+
+.special-offer-text-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding-left: 20px; /* Espacio entre el texto y el carrusel */
+}
+
+.special-offer-text-label {
+    color: var(--text-primario);
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.special-offer-text-content {
+    color: var(--btn-importante);
+    font-size: 24px;
+}
+
+.special-offer-text {
+    color: var(--text-secundario);
+    font-size: 20px;
+    width: 80%;
+}
+
+.btnVermas {
+    background: var(--btn-secundario);
+    color: var(--fondo-principal);
+    padding: 0.5em;
+    margin-top: 20px;
+    text-decoration: none;
+}
+
+.btnVermas:hover {
+    background: var(--btn-importante);
+    color: var(--fondo-principal);
+}
+
+
+/* Consultas de medios para hacer el diseño responsivo */
+
+@media only screen and (max-width: 950px) {
+
+    .circle {
+        width: 270px;
+        /* Ajusta el tamaño del círculo para pantallas más pequeñas */
+        height: 250px;
+    }
+
+    .free-shipping-icon {
+        width: 80%;
+        /* Cambia el ancho al 80% en pantallas más pequeñas */
+        height: auto;
+        /* Cambia la altura a automático para mantener la proporción */
+    }
+
+    .free-shipping-text-label {
+        font-size: 25px;
+        /* Reduce el tamaño del texto en pantallas más pequeñas */
+    }
+
+    .free-shipping-text-content {
+        font-size: 25px;
+        /* Reduce el tamaño del texto en pantallas más pequeñas */
+    }
+
+    .free-shipping-text {
+        font-size: 20px;
+        /* Reduce el tamaño del texto en pantallas más pequeñas */
+    }
+}
+@media only screen and (max-width: 550px) {
+    .free-shipping-text-container {
+        width: 100%;
+        /* Cambia el ancho al 100% en pantallas más pequeñas */
+
+    }
+
+    .circle {
+        width: 150px;
+        /* Ajusta el tamaño del círculo para pantallas más pequeñas */
+        height: 150px;
+    }
+
+    .free-shipping-icon {
+        width: 100%;
+        /* Cambia el ancho al 80% en pantallas más pequeñas */
+        height: 200px;
+        /* Cambia la altura a automático para mantener la proporción */
+    }
+
+    .free-shipping-text-label {
+        font-size: 20px;
+        /* Reduce el tamaño del texto en pantallas más pequeñas */
+    }
+
+    .free-shipping-text-content {
+        font-size: 20px;
+        /* Reduce el tamaño del texto en pantallas más pequeñas */
+    }
+
+    .free-shipping-text {
+        font-size: 15px;
+        /* Reduce el tamaño del texto en pantallas más pequeñas */
+    }
+}

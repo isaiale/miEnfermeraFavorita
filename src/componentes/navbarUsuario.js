@@ -1,94 +1,186 @@
-import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Navbar, Nav, Container, Image, Button, Dropdown } from 'react-bootstrap';
-import logo from '../img/logo.jpg';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState, useContext, useEffect } from 'react';
+import logoU from '../img/Logo de mi enfermera favorita.jpg';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link, useNavigate } from "react-router-dom";
+import { faHouse, faShirt, faRightFromBracket, faShoppingBasket, faTag, faBars, faXmark, faSearch, faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import '../css/navbar.css';
 import { AuthContext } from '../autenticar/AuthProvider';
-import '../css/colores.css';
-import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { Dropdown, Nav } from 'react-bootstrap';
+import Swal from 'sweetalert2';
+import { CategoriaProducto } from '../url/urlSitioWeb';
 
-function NavbarUsuario() {
+const NavbarUsuario = () => {
+    const [menuVisible, setMenuVisible] = useState(false);
     const { isAuthenticated, logout, user } = useContext(AuthContext);
-    const history = useNavigate();
+    const [abrirDrop, setAbrirDrop] = useState(false);
+    const [abrirDrop1, setAbrirDrop1] = useState(false);
+    const [abrirDrop2, setAbrirDrop2] = useState(false);
+    const [categorias, setCategorias] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchCategorias = async () => {
+            try {
+                const response = await fetch(CategoriaProducto);
+                if (!response.ok) {
+                    throw new Error('La respuesta de la red no fue exitosa.');
+                }
+                const data = await response.json();
+                setCategorias(data);
+            } catch (error) {
+                Swal.fire({ title: "Error al hacer la solicitud.", icon: "error" });
+            }
+        };
+
+        fetchCategorias();
+    }, []);
 
     const cerrarSesion = () => {
         logout();
-        history('/login');
-
+        navigate('/login');
     };
 
+    const toggleMenu = () => {
+        setMenuVisible(!menuVisible);
+    };
+
+    const menuItem = [
+        {
+            path: "/",
+            name: "Inicio",
+            icon: <FontAwesomeIcon icon={faHouse} className="me-2" />,
+        },
+        {
+            path: "/reservarA",
+            name: "Rentar",
+            icon: <FontAwesomeIcon icon={faShoppingBasket} className="me-2" />,
+        },
+        {
+            path: "/accesorioss",
+            name: "Accesorios",
+            icon: <FontAwesomeIcon icon={faTag} className="me-2" />,
+        }
+    ];
+
     return (
-        <Navbar className='navbar-dark-text' style={{ fontSize: '15px', color: 'black' }} bg="light" expand="lg">
-            <Container>
-                {/* Logo a la izquierda */}
-                <Navbar.Brand className='espacioImg'>
-                    <Image src={logo} className='rounded-circle' alt="" width="70" height="70" style={{margin:'-12px'}}/>
-                </Navbar.Brand>
+        <div className='headerNavbar'>
+            <div className='bordeNavbar'>
+                <img className="logoNavbar rounded-circle" src={logoU} alt="Logo" />
+                <button className="abrir-menu" onClick={toggleMenu}>
+                    <FontAwesomeIcon icon={faBars} className="me-2" />
+                </button>
 
-                {/* Espacio entre elementos */}
-                <Nav className="ms-auto me-4">
-                    &nbsp;
-                </Nav>
+                <nav className={`nav ${menuVisible ? 'visible' : ''}`}>
 
-                {/* Navegaciones */}
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="me-auto ">
-                        <Nav.Link as={Link} to="/" >INICIO</Nav.Link>
-                        <Dropdown as={Nav.Item}>
-                            <Dropdown.Toggle as={Nav.Link} id="uniformes-dropdown">
-                                UNIFORMES
+                    <button className="cerrar-menu" onClick={toggleMenu}>
+                        <FontAwesomeIcon icon={faXmark} className="me-2" />
+                    </button>
+
+                    {menuItem.map((item, index) => (
+                        <Link to={item.path} key={index} className={` ${menuVisible ? 'navLinkTrue ' : 'navLinkFalse lead ms-3'}`}>
+                            <div style={{ display: menuVisible ? "block" : "none" }} >{item.icon}</div>
+                            <h2 className=' lead '>{item.name}</h2>
+                        </Link>
+                    ))}
+                    <>
+                        <Dropdown className='Dropdown lead'
+                            show={abrirDrop}
+                            onMouseOver={() => setAbrirDrop(true)}
+                            onMouseOut={() => setAbrirDrop(false)}
+                            as={Nav.Item}>
+                            <Dropdown.Toggle className='text-toggle' as={Nav.Link} id="dropdown">
+                                {menuVisible ? (
+                                    <>
+                                        <FontAwesomeIcon icon={faShirt} className="me-2" />
+                                        Uniformes
+                                    </>
+                                ) : (
+                                    <>
+                                        Uniformes
+                                    </>
+                                )}
                             </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                <Dropdown.Item as={Link} to="/productos">FILIPINAS</Dropdown.Item>
-                                <Dropdown.Item as={Link} to="#zapatos">CALZADO</Dropdown.Item>
-                                <Dropdown.Item as={Link} to="#chalecos">CHALECOS</Dropdown.Item>
-                                <Dropdown.Item as={Link} to="#batas">BATAS</Dropdown.Item>
-                                <Dropdown.Item as={Link} to="#otros">SACOS</Dropdown.Item>
-                                <Dropdown.Item as={Link} to="#otros">PANTALONES</Dropdown.Item>
-                                <Dropdown.Item as={Link} to="#otros">SUÉTERES</Dropdown.Item>
-                                <Dropdown.Item as={Link} to="#otros">SCRUBS</Dropdown.Item>
-
+                            <Dropdown.Menu className='lead'>
+                                {categorias.map((categoria) => (
+                                    <Dropdown.Item as={Link} to={`/productos/${categoria._id}`} key={categoria._id}>
+                                        {categoria.nombre}
+                                    </Dropdown.Item>
+                                ))}
                             </Dropdown.Menu>
                         </Dropdown>
-                        <Nav.Link as={Link} to="/accesorioss">ACCESORIOS</Nav.Link>
-                        <Nav.Link as={Link} to="/reservarA">RESERVAR</Nav.Link>
-                    </Nav>
-                    <Nav.Link as={Link} to="/carritoDeCompras" className='fs-5 me-3'> <i className='fa fa-shopping-cart ' style={{fontSize:'25px'}} ></i></Nav.Link>
+                        <Dropdown className='Dropdown lead'
+                            show={abrirDrop1}
+                            onMouseOver={() => setAbrirDrop1(true)}
+                            onMouseOut={() => setAbrirDrop1(false)}
+                            as={Nav.Item}>
+                            <Dropdown.Toggle className='' as={Nav.Link} id="dropdown">
+                                {menuVisible ? (
+                                    <>
+                                        <FontAwesomeIcon icon={faSearch} className="me-2" />Buscar
+                                    </>
+                                ) : (
+                                    <>
+                                        Buscar
+                                    </>
+                                )}
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item as={Link} to="/busquedasimple">Busqueda Simple</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="/busquedaAvanzada">Busqueda Avanzada</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="/contacto">Contacto</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="/ayuda">Ayuda</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        {isAuthenticated !== null && user?.rol === "User" ? (
+                            <>
+                                <Link to='/carritoDeCompras' className={` ${menuVisible ? 'navLinkFalse ' : 'navLinkFalse lead ms-3'}`}>
+                                    <div ><FontAwesomeIcon icon={faCartShopping} className="me-2" /></div>
+                                </Link>
+                            </>
+                        ) : (
+                            <></>
+                        )}
 
-                    <Dropdown>
-                        {isAuthenticated !== null ? (
-                            isAuthenticated ? (
+                        <Dropdown className='Dropdown lead' as={Nav.Item}
+                            show={abrirDrop2}
+                            onMouseOver={() => setAbrirDrop2(true)}
+                            onMouseOut={() => setAbrirDrop2(false)}>
+
+                            {isAuthenticated !== null && user?.rol === "User" ? (
                                 <>
-                                    <Dropdown.Toggle as={Button} variant="light" id="dropdown-basic">
-                                    <i className=''>Bienvenido, {user.nombre} </i>
+                                    <Dropdown.Toggle className='text-dark' as={Nav.Link} variant="light" id="dropdown">
+                                        <span>Bienvenido <i className=''>{user.nombre}</i></span>
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
-                                        <Dropdown.Item as={Link} to="#perfil"><i className='fa fa-user'></i> PERFIL </Dropdown.Item>
-                                        <Dropdown.Item as={Link} to="#compras"><i className="fa fa-shopping-bag"></i> COMPRAS</Dropdown.Item>
-                                        <Dropdown.Item className='text-danger' onClick={cerrarSesion}><FontAwesomeIcon icon={faRightFromBracket} /> CERRAR SESIÓN</Dropdown.Item>
+                                        <Dropdown.Item as={Link} to="/perfil"><i className='fa fa-user'></i> PERFIL</Dropdown.Item>
+                                        <Dropdown.Item as={Link} to="/Compras"><i className="fa fa-shopping-bag"></i> COMPRAS</Dropdown.Item>
+                                        <Dropdown.Item as={Link} to="/RentasUser"><i className="fa fa-shopping-bag"></i> RENTAS</Dropdown.Item>
+                                        <Dropdown.Item className='text-danger' onClick={cerrarSesion}>
+                                            <FontAwesomeIcon icon={faRightFromBracket} /> CERRAR SESIÓN
+                                        </Dropdown.Item>
                                     </Dropdown.Menu>
                                 </>
                             ) : (
-                                <>
-                                    <Nav className="me-auto">
-                                        <Nav.Link as={Link} to="/registroUsuario"> REGISTRO</Nav.Link>
-                                        <div className='botonLogin'>
-                                            <Link className='color' to="/login">
-                                                <button className='btn rounded-pill' id="login-button" >
-                                                    INICIAR SESIÓN
-                                                </button>
-                                            </Link>
-                                        </div>
-                                    </Nav>
-                                </>
-                            )
-                        ) : null}
-                    </Dropdown>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
+                                <div className='botonLogin ms-3'>
+                                    <Link className='colorRegistro me-1' to="/registroUsuario">
+                                        <button className='btn lead' id="login-button" >
+                                            Registro
+                                        </button>
+                                    </Link>
+                                    <Link className='colorrIniciarSesion me-1' to="/login">
+                                        <button className='btn lead' id="login-button" >
+                                            Iniciar sesión
+                                        </button>
+                                    </Link>
+                                </div>
+                            )}
+
+                        </Dropdown>
+                    </>
+                </nav>
+            </div>
+        </div>
     );
-}
+};
 
 export default NavbarUsuario;

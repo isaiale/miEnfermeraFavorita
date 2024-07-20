@@ -1,82 +1,70 @@
-import React, { useState } from 'react';
-import { Card, Row, Col, Carousel } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 import { Link } from 'react-router-dom';
-import logo from '../img/Logo de mi enfermera favorita.jpg';
+import { CategoriaProducto } from '../url/urlSitioWeb';
 import '../css/categoria.css';
+import '../css/colores.css';
 
-const categoriaProducto = [
-  {
-    image: logo,
-    description: 'Batas',
-    to: '/productos',
+const responsive = {
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 5,
   },
-  {
-    image: logo,
-    description: 'Calzado',
-    to: '/zapatos',
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 4,
   },
-  {
-    image: logo,
-    description: 'Chalecos',
-    to: '/chalecos',
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 3,
   },
-  {
-    image: logo,
-    description: 'Filipinas',
-    to: '/filipina',
-  },
-  {
-    image: logo,
-    description: 'Sacos',
-    to: '/sacos',
-  },
-  {
-    image: logo,
-    description: 'Pantalones',
-    to: '/pantalones',
-  },
-  {
-    image: logo,
-    description: 'Sueter',
-    to: '/sueteres',
-  },
-  {
-    image: logo,
-    description: 'Scrubs',
-    to: '/scrubs',
-  },
-];
+};
 
 const TuComponente = () => {
-  const itemsPorSlide = 5;
+  const [categorias, setCategorias] = useState([]);
 
-  const totalSlides = Math.ceil(categoriaProducto.length / itemsPorSlide);
-  const categoriasRepetidas = Array.from({ length: totalSlides * itemsPorSlide }, (_, index) => categoriaProducto[index % categoriaProducto.length]);
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const response = await fetch(CategoriaProducto); // Reemplaza 'URL_DE_TU_API' con la URL real de la API
+        if (!response.ok) {
+          throw new Error('La respuesta de la red no fue exitosa.');
+        }
+        const data = await response.json();
+        setCategorias(data);
+      } catch (error) {
+        console.error('Error al obtener las categorías:', error);
+      }
+    };
+
+    fetchCategorias();
+  }, []);
 
   return (
     <>
       <div className='text-center mt-2'>
-          <h4>Categorías de uniformes</h4>
+        <h4 className='display-6'>Categorías</h4>
       </div>
-      <Carousel className='carousel slider' interval={null} indicators={true}>
-        {Array.from({ length: totalSlides }).map((_, indice) => (
-          <Carousel.Item key={indice}>
-            <div className='d-flex justify-content-center '> {/* Agrega una clase personalizada a la fila */}
-              {categoriasRepetidas.slice(indice * itemsPorSlide, indice * itemsPorSlide + itemsPorSlide).map((ProductoCategoria, indiceInterno) => (
-                <Col className='m-1' key={indiceInterno} xs={2} sm={2} md={2} lg={2} xl={15}>
-                  <Link to={ProductoCategoria.to} className='link-no-underline'>
-                  <Card className='text-center'>
-                      <img className='d-block img-fluid w-100' src={ProductoCategoria.image} />
-                      <div className='desdription'>
-                        <h6 className='text-center mt-1'><span className='fw-bold letra'>{ProductoCategoria.description}</span></h6>
-                      </div>
-                    </Card>
-                  </Link>
-                </Col>
-              ))}
+      <Carousel responsive={responsive} infinite={true} autoPlaySpeed={1000} transitionDuration={500} arrows={false}>
+        {categorias.map((categoria, index) => (
+          <Link key={index} to={`/productos/${categoria._id}`} className='link-no-underline'>
+            <div className='content-categoria'>
+              
+              <div className='description'>
+                <h6 className='lead text-description-categoria'><i class="fa fa-solid fa-tag"></i> {categoria.nombre}</h6>
+              </div>
             </div>
-          </Carousel.Item>
+          </Link>
         ))}
+        <Link to={`/accesorioss`} className='link-no-underline'>
+          <div className='content-categoria'>
+            
+            <div className='description'>
+              <h6 className='lead text-description-categoria'><i class="fa fa-solid fa-tag"></i> Accesorios</h6>
+            </div>
+          </div>
+        </Link>
       </Carousel>
     </>
   );
