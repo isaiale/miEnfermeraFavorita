@@ -1,11 +1,12 @@
 name: Qodana
+
 on:
   workflow_dispatch:
   pull_request:
   push:
-    branches: # Specify your branches here
-      - main # The 'main' branch
-      - 'releases/*' # The release branches
+    branches:
+      - main
+      - 'releases/*'
 
 jobs:
   qodana:
@@ -15,11 +16,33 @@ jobs:
       pull-requests: write
       checks: write
     steps:
-      - uses: actions/checkout@v3
+      - name: Check out repository
+        uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
-          fetch-depth: 0  # a full history is required for pull request analysis
-      - name: 'Qodana Scan'
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+
+      - name: Qodana Scan
         uses: JetBrains/qodana-action@v2023.3
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+        with:
+          linter: jetbrains/qodana-jvm:2023.3
+          results-dir: qodana-results
+          cache-dir: qodana-cache
+          fail-threshold: 10
+          fail-on-problems: true
+
+      - name: Upload Qodana Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: qodana-results
+          path: qodana-results
+
+      - name: Show Qodana Logs
+        run: cat qodana-results/qodana.log
