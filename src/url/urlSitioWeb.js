@@ -9,6 +9,7 @@ export const UrlLoginUsuarios = "https://back-end-enfermera.vercel.app/api/auth/
 
 export const Productos = "https://back-end-enfermera.vercel.app/api/productos/productos";//Para productos 
 // export const Productos = "http://localhost:3000/api/productos/productos";//Para productos
+export const descuentos_productos = 'https://back-end-enfermera.vercel.app/api/productos/descuentos';
 
 export const categoria_productos = "https://back-end-enfermera.vercel.app/api/productos/productos/categoria/";
 export const img = "https://back-end-enfermera.vercel.app/api/productos/imagenes"; //Para subir imgenes de productos
@@ -21,6 +22,7 @@ export const urlCloudinary = "https://api.cloudinary.com/v1_1/droihhnng/image/up
 
 // ***************************Carrito de compra*********************************************
 export const CarritoCompras = "https://back-end-enfermera.vercel.app/api/carrito";//Para Carrito
+// export const CarritoCompras = "http://localhost:3000/api/carrito";//Para Carrito
 // para Realizar pagos con stripe
 export const Stripe = "https://back-end-enfermera.vercel.app/api/stripe/create-checkout-session";//Para Carrito
 // export const Stripe = "http://localhost:3000/api/stripe/create-checkout-session";//Para Carrito
@@ -47,4 +49,5 @@ export const servidor = "https://back-end-enfermera.vercel.app"
 //--------------------------- pago renta ------------------------------------------------------------------------------------------
 export const Verificar_Pago = "https://back-end-enfermera.vercel.app/api/rentas/verify-payment/" //verifica si el pago se realizó con exito
 export const Pagar_renta = "https://back-end-enfermera.vercel.app/api/rentas/create-checkout-session" //Para el pago de renta
+// export const Pagar_renta = "http://localhost:3000/api/rentas/create-checkout-session" //Para el pago de renta
 export const pagos_Cancelados_Renta = "https://back-end-enfermera.vercel.app/api/rentas/cancelado/" //verifica si el pago se realizó con exito

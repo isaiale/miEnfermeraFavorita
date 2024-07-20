@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { decodeToken } from "react-jwt";
 import { AuthContext } from '../autenticar/AuthProvider';
 import Form from 'react-bootstrap/Form';
-import { UrlLoginUsuarios } from '../url/urlSitioWeb';
+import { UrlLoginUsuarios, servidor, descuentos_productos } from '../url/urlSitioWeb';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -22,11 +22,10 @@ function Login() {
     useEffect(() => {
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/js/service-worker.js')
-                .then(function(registration) {
+                .then(function (registration) {
                     console.log('Service Worker registrado con éxito:', registration);
-                    subscribeUser(registration);
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     console.log('Registro de Service Worker fallido:', error);
                 });
         }
@@ -65,10 +64,15 @@ function Login() {
                 const token = data.token;
                 console.log('Token recibido:', token);
                 localStorage.setItem('authToken', token);
-                window.location.href = data.redirect;
                 const decodedToken = decodeToken(token);
                 console.log('Token decodificado:', decodedToken);
+                await subscribeUser(decodedToken._id);
                 login(decodedToken);
+
+                // Obtener productos con descuento
+                await fetchDescuentos(decodedToken._id);
+
+                window.location.href = data.redirect;
             } else {
                 const data = await res.json();
                 console.log('Error en el inicio de sesión:', data.message);
@@ -80,41 +84,59 @@ function Login() {
         }
     };
 
-    const subscribeUser = (registration) => {
+    const subscribeUser = async (userId) => {
         console.log('Preparando suscripción a notificaciones push...');
-        Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-                registration.pushManager.subscribe({
+        const registration = await navigator.serviceWorker.ready;
+        const permission = await Notification.requestPermission();
+
+        if (permission === 'granted') {
+            try {
+                const subscription = await registration.pushManager.subscribe({
                     userVisibleOnly: true,
                     applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
-                })
-                .then(function(subscription) {
-                    console.log('Usuario suscrito:', subscription);
-                    fetch('https://back-end-enfermera.vercel.app/subscribe/', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(subscription)
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            console.log('Suscripción enviada al servidor con éxito.');
-                        } else {
-                            console.log('Error al enviar la suscripción al servidor.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error al enviar la suscripción al servidor:', error);
-                    });
-                })
-                .catch(function(error) {
-                    console.log('Fallo en la suscripción:', error);
                 });
-            } else {
-                console.log('Permiso de notificación no concedido.');
+                console.log('Usuario suscrito:', subscription);
+
+                const response = await fetch(`${servidor}/subscribe/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId, subscription })
+                });
+
+                if (response.ok) {
+                    console.log('Suscripción enviada al servidor con éxito.');
+                } else {
+                    console.log('Error al enviar la suscripción al servidor.');
+                }
+            } catch (error) {
+                console.log('Fallo en la suscripción:', error);
             }
-        });
+        } else {
+            console.log('Permiso de notificación no concedido.');
+        }
+    };
+
+    const fetchDescuentos = async (userId) => {
+        console.log('Obteniendo productos con descuento...');
+        try {
+            const response = await fetch(descuentos_productos, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId })
+            });
+
+            if (response.ok) {
+                console.log('Productos con descuento obtenidos con éxito.');
+            } else {
+                console.log('Error al obtener productos con descuento.');
+            }
+        } catch (error) {
+            console.error('Error al obtener productos con descuento:', error);
+        }
     };
 
     const urlBase64ToUint8Array = (base64String) => {
@@ -141,12 +163,12 @@ function Login() {
                 <div className="col-md-5 border">
                     <Form onSubmit={handleSubmit}>
                         <h2 className="m-2 text-center">Inicio de Sesión</h2>
-                        <Form.Group >
+                        <Form.Group>
                             <Form.Label>Correo Electrónico</Form.Label>
-                            <div className="input-group" >
+                            <div className="input-group">
                                 <span className="input-group-text" id="basic-addon1"><i className="fa fa-envelope"></i></span>
                                 <input type="email"
-                                    id='cajaTexto'
+                                    id='cajaTextoEmail'
                                     className={`form-control ${showError && !email ? 'is-invalid' : ''}`}
                                     placeholder="Ingresa tu correo electrónico"
                                     aria-describedby="basic-addon1" value={email}
@@ -159,7 +181,7 @@ function Login() {
                             )}
                         </Form.Group>
 
-                        <Form.Group className="input-group mb-1" >
+                        <Form.Group className="input-group mb-1">
                             <Form.Label className='mt-1'>Contraseña</Form.Label>
                             <div className="input-group">
                                 <span className="input-group-text" id="basic-addon1"><i className="fa fa-lock"></i></span>
@@ -168,7 +190,7 @@ function Login() {
                                     placeholder="Ingresa tu contraseña"
                                     aria-describedby="basic-addon1"
                                     value={password}
-                                    id='cajaTexto'
+                                    id='cajaTextoPassword'
                                     onChange={(e) => setPassword(e.target.value)}
                                     className={`form-control ${showError && !password ? 'is-invalid' : ''}`}
                                 />
@@ -194,7 +216,7 @@ function Login() {
                         </div>
 
                         <div className='text-center m-2 mb-3'>
-                            <Link className="link-primary " to="/recuperarPassword">
+                            <Link className="link-primary" to="/recuperarPassword">
                                 ¿Olvidaste tu contraseña?
                             </Link>
                         </div>
