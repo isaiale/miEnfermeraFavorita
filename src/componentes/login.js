@@ -21,10 +21,10 @@ function Login() {
 
     useEffect(() => {
         if ('serviceWorker' in navigator) {
-            // navigator.serviceWorker.register('/service-worker.js')        
-            navigator.serviceWorker.register('/js/service-worker.js') 
+            navigator.serviceWorker.register('/js/service-worker.js')
                 .then(function(registration) {
                     console.log('Service Worker registrado con éxito:', registration);
+                    subscribeUser(registration);
                 })
                 .catch(function(error) {
                     console.log('Registro de Service Worker fallido:', error);
@@ -46,7 +46,7 @@ function Login() {
             return;
         }
 
-        try {            
+        try {
             console.log('Enviando solicitud de inicio de sesión...');
             const res = await fetch(UrlLoginUsuarios, {
                 method: 'POST',
@@ -69,7 +69,6 @@ function Login() {
                 const decodedToken = decodeToken(token);
                 console.log('Token decodificado:', decodedToken);
                 login(decodedToken);
-                subscribeUser();
             } else {
                 const data = await res.json();
                 console.log('Error en el inicio de sesión:', data.message);
@@ -81,39 +80,42 @@ function Login() {
         }
     };
 
-    const subscribeUser = () => {
+    const subscribeUser = (registration) => {
         console.log('Preparando suscripción a notificaciones push...');
-        navigator.serviceWorker.ready.then(function(registration) {
-            registration.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
-            })
-            .then(function(subscription) {
-                console.log('Usuario suscrito:', subscription);
-                fetch('https://back-end-enfermera.vercel.app/subscribe/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(subscription)
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
                 })
-                .then(response => {
-                    if (response.ok) {
-                        console.log('Suscripción enviada al servidor con éxito.');
-                    } else {
-                        console.log('Error al enviar la suscripción al servidor.');
-                    }
+                .then(function(subscription) {
+                    console.log('Usuario suscrito:', subscription);
+                    fetch('https://back-end-enfermera.vercel.app/subscribe/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(subscription)
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('Suscripción enviada al servidor con éxito.');
+                        } else {
+                            console.log('Error al enviar la suscripción al servidor.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al enviar la suscripción al servidor:', error);
+                    });
                 })
-                .catch(error => {
-                    console.error('Error al enviar la suscripción al servidor:', error);
+                .catch(function(error) {
+                    console.log('Fallo en la suscripción:', error);
                 });
-            })
-            .catch(function(error) {
-                console.log('Fallo en la suscripción:', error);
-            });
+            } else {
+                console.log('Permiso de notificación no concedido.');
+            }
         });
     };
-    
 
     const urlBase64ToUint8Array = (base64String) => {
         const padding = '='.repeat((4 - base64String.length % 4) % 4);
