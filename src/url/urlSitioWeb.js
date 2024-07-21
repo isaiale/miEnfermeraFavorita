@@ -10,6 +10,7 @@ export const UrlLoginUsuarios = "https://back-end-enfermera.vercel.app/api/auth/
 export const Productos = "https://back-end-enfermera.vercel.app/api/productos/productos";//Para productos 
 // export const Productos = "http://localhost:3000/api/productos/productos";//Para productos
 export const descuentos_productos = 'https://back-end-enfermera.vercel.app/api/productos/descuentos';
+// export const descuentos_productos = 'http://localhost:3000/api/productos/descuentos'; 
 
 export const categoria_productos = "https://back-end-enfermera.vercel.app/api/productos/productos/categoria/";
 export const img = "https://back-end-enfermera.vercel.app/api/productos/imagenes"; //Para subir imgenes de productos
@@ -38,8 +39,8 @@ export const Ventas_Vista_Admin = "https://back-end-enfermera.vercel.app/api/ven
 export const RentaDeUsuarios = "https://back-end-enfermera.vercel.app/api/rentas/usuario/"// Para checar la renta de cada usuario 
 export const comentarios = "https://back-end-enfermera.vercel.app/api/comentarios"
 
-export const servidor = "https://back-end-enfermera.vercel.app"
-// export const servidor ="http://localhost:3000"
+export const Subcripcioness = "https://back-end-enfermera.vercel.app/subscribe/"
+// export const Subcripcioness ="http://localhost:3000/subscribe/"
 
 // export const Productos_Renta = "https://back-end-enfermera.vercel.app/api/productos-renta"
 // export const Rentas =  "http://localhost:3000/api/rentas" //Para checar rentas del producto, CRUD

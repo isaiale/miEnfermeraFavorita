@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { decodeToken } from "react-jwt";
 import { AuthContext } from '../autenticar/AuthProvider';
 import Form from 'react-bootstrap/Form';
-import { UrlLoginUsuarios, servidor, descuentos_productos } from '../url/urlSitioWeb';
+import { UrlLoginUsuarios, Subcripcioness, descuentos_productos } from '../url/urlSitioWeb';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -97,7 +97,7 @@ function Login() {
                 });
                 console.log('Usuario suscrito:', subscription);
 
-                const response = await fetch(`${servidor}/subscribe/`, {
+                const response = await fetch(Subcripcioness, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -108,7 +108,7 @@ function Login() {
                 if (response.ok) {
                     console.log('Suscripción enviada al servidor con éxito.');
                 } else {
-                    console.log('Error al enviar la suscripción al servidor.');
+                    console.log(`Error al enviar la suscripción al servidor. ${response}`);
                 }
             } catch (error) {
                 console.log('Fallo en la suscripción:', error);
