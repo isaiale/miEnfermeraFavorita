@@ -84,6 +84,7 @@ function Login() {
         }
     };
 
+
     const subscribeUser = async (userId) => {
         console.log('Preparando suscripción a notificaciones push...');
         if ('serviceWorker' in navigator) {
@@ -92,13 +93,29 @@ function Login() {
 
             if (permission === 'granted') {
                 try {
+                    // Verificar suscripción existente
+                    const existingSubscription = await registration.pushManager.getSubscription();
+                    if (existingSubscription) {
+                        console.log('Suscripción existente encontrada:', existingSubscription);
+                        const currentKey = existingSubscription.options.applicationServerKey;
+                        const newKey = urlBase64ToUint8Array(vapidPublicKey);
+
+                        // Comparar claves
+                        if (!compareKeys(currentKey, newKey)) {
+                            console.log('Claves diferentes, anulando suscripción existente...');
+                            await existingSubscription.unsubscribe();
+                            console.log('Suscripción existente anulada.');
+                        }
+                    }
+
+                    // Crear nueva suscripción
                     const subscription = await registration.pushManager.subscribe({
                         userVisibleOnly: true,
                         applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
                     });
                     console.log('Usuario suscrito:', subscription);
 
-                    const response = await fetch(Subcripcioness, { 
+                    const response = await fetch(Subcripcioness, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -122,6 +139,32 @@ function Login() {
         }
     };
 
+    const compareKeys = (key1, key2) => {
+        if (key1.byteLength !== key2.byteLength) return false;
+        const view1 = new DataView(key1);
+        const view2 = new DataView(key2);
+        for (let i = 0; i !== key1.byteLength; i++) {
+            if (view1.getUint8(i) !== view2.getUint8(i)) return false;
+        }
+        return true;
+    };
+
+    const urlBase64ToUint8Array = (base64String) => {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+            .replace(/\-/g, '+')
+            .replace(/_/g, '/');
+
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+    };
+
+
     const fetchDescuentos = async (userId) => {
         console.log('Obteniendo productos con descuento...');
         try {
@@ -141,21 +184,6 @@ function Login() {
         } catch (error) {
             console.error('Error al obtener productos con descuento:', error);
         }
-    };
-
-    const urlBase64ToUint8Array = (base64String) => {
-        const padding = '='.repeat((4 - base64String.length % 4) % 4);
-        const base64 = (base64String + padding)
-            .replace(/\-/g, '+')
-            .replace(/_/g, '/');
-
-        const rawData = window.atob(base64);
-        const outputArray = new Uint8Array(rawData.length);
-
-        for (let i = 0; i < rawData.length; ++i) {
-            outputArray[i] = rawData.charCodeAt(i);
-        }
-        return outputArray;
     };
 
     return (
