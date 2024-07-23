@@ -39,8 +39,8 @@ export const Ventas_Vista_Admin = "https://back-end-enfermera.vercel.app/api/ven
 export const RentaDeUsuarios = "https://back-end-enfermera.vercel.app/api/rentas/usuario/"// Para checar la renta de cada usuario 
 export const comentarios = "https://back-end-enfermera.vercel.app/api/comentarios"
 
-export const Subcripcioness = "https://back-end-enfermera.vercel.app/subscripcion/registro_sub"
-// export const Subcripcioness ="http://localhost:3000/subscripcion/registro_sub"
+export const Subcripcioness = "https://back-end-enfermera.vercel.app/suscripciones/logeo"
+// export const Subcripcioness ="https://back-end-enfermera.vercel.app/suscripciones/logeo"
 
 // export const Productos_Renta = "https://back-end-enfermera.vercel.app/api/productos-renta"
 // export const Rentas =  "http://localhost:3000/api/rentas" //Para checar rentas del producto, CRUD

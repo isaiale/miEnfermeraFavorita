@@ -86,35 +86,39 @@ function Login() {
 
     const subscribeUser = async (userId) => {
         console.log('Preparando suscripción a notificaciones push...');
-        const registration = await navigator.serviceWorker.ready;
-        const permission = await Notification.requestPermission();
+        if ('serviceWorker' in navigator) {
+            const registration = await navigator.serviceWorker.ready;
+            const permission = await Notification.requestPermission();
 
-        if (permission === 'granted') {
-            try {
-                const subscription = await registration.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
-                });
-                console.log('Usuario suscrito:', subscription);
+            if (permission === 'granted') {
+                try {
+                    const subscription = await registration.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
+                    });
+                    console.log('Usuario suscrito:', subscription);
 
-                const response = await fetch(Subcripcioness, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ userId, subscription })
-                });
+                    const response = await fetch(Subcripcioness, { 
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ userId, subscription })
+                    });
 
-                if (response.ok) {
-                    console.log('Suscripción enviada al servidor con éxito.');
-                } else {
-                    console.log(`Error al enviar la suscripción al servidor. ${response}`);
+                    if (response.ok) {
+                        console.log('Suscripción enviada al servidor con éxito.');
+                    } else {
+                        console.log(`Error al enviar la suscripción al servidor: ${response.statusText}`);
+                    }
+                } catch (error) {
+                    console.log('Fallo en la suscripción:', error);
                 }
-            } catch (error) {
-                console.log('Fallo en la suscripción:', error);
+            } else {
+                console.log('Permiso de notificación no concedido.');
             }
         } else {
-            console.log('Permiso de notificación no concedido.');
+            console.log('Service Worker no soportado en este navegador.');
         }
     };
 
