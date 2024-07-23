@@ -10,7 +10,7 @@ import '../css/colores.css';
 import Swal from "sweetalert2";
 import Breadcrumb from '../utilidad/migapan';
 
-const vapidPublicKey = 'BL18qSRqj2Na9VxYd8_H7mXQ7MnrdUtB3ZXZ-3vTKMONi3qZZnDenBIU6nLOczFDr-EU5U7GwMHo0jIH-liA7Zk';
+const vapidPublicKey = 'BPuoxpP6by2PsT6vp3o_ohnBE7fqeQq9O5-xZ1WWwbs34UbDTDJaI_hAe1CFq9CdWViG764lIiRpK68xHiuO15c';
 
 function Login() {
     const [email, setEmail] = useState('');
