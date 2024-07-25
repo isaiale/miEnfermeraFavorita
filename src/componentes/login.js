@@ -10,7 +10,7 @@ import '../css/colores.css';
 import Swal from "sweetalert2";
 import Breadcrumb from '../utilidad/migapan';
 
-const vapidPublicKey = 'BL18qSRqj2Na9VxYd8_H7mXQ7MnrdUtB3ZXZ-3vTKMONi3qZZnDenBIU6nLOczFDr-EU5U7GwMHo0jIH-liA7Zk';
+const vapidPublicKey = 'BG60RQWPyG2ENxTZGNN0A4gu4iBltktL8X5keD1Qp6d-laxrtViyba3WppAKI-nj1RJZOvvw3s71sNngCxjCSVo';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -76,14 +76,13 @@ function Login() {
             } else {
                 const data = await res.json();
                 console.log('Error en el inicio de sesión:', data.message);
-                Swal.fire({ title: `${data.message}`, icon: 'error', timer: 1500 });
+                Swal.fire({ title: data.message, icon: 'error', timer: 1500 });
             }
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
             Swal.fire({ title: 'Error al realizar la solicitud', icon: 'error', timer: 1500 });
         }
     };
-
 
     const subscribeUser = async (userId) => {
         console.log('Preparando suscripción a notificaciones push...');
@@ -97,15 +96,8 @@ function Login() {
                     const existingSubscription = await registration.pushManager.getSubscription();
                     if (existingSubscription) {
                         console.log('Suscripción existente encontrada:', existingSubscription);
-                        const currentKey = existingSubscription.options.applicationServerKey;
-                        const newKey = urlBase64ToUint8Array(vapidPublicKey);
-
-                        // Comparar claves
-                        if (!compareKeys(currentKey, newKey)) {
-                            console.log('Claves diferentes, anulando suscripción existente...');
-                            await existingSubscription.unsubscribe();
-                            console.log('Suscripción existente anulada.');
-                        }
+                        await existingSubscription.unsubscribe();
+                        console.log('Suscripción existente anulada.');
                     }
 
                     // Crear nueva suscripción
@@ -139,16 +131,6 @@ function Login() {
         }
     };
 
-    const compareKeys = (key1, key2) => {
-        if (key1.byteLength !== key2.byteLength) return false;
-        const view1 = new DataView(key1);
-        const view2 = new DataView(key2);
-        for (let i = 0; i !== key1.byteLength; i++) {
-            if (view1.getUint8(i) !== view2.getUint8(i)) return false;
-        }
-        return true;
-    };
-
     const urlBase64ToUint8Array = (base64String) => {
         const padding = '='.repeat((4 - base64String.length % 4) % 4);
         const base64 = (base64String + padding)
@@ -163,7 +145,6 @@ function Login() {
         }
         return outputArray;
     };
-
 
     const fetchDescuentos = async (userId) => {
         console.log('Obteniendo productos con descuento...');

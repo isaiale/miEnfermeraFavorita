@@ -1,26 +1,65 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import img from '../img/AdminIsai.jpg';
 
-const StripeComponent = () => {
-  const handleCheckout = async () => {
-    const response = await fetch('http://localhost:3001/create-checkout-session', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+const Ayuda = () => {
+  const notificarBtnRef = useRef(null);
+  const verNotificacionBtnRef = useRef(null);
 
-    const data = await response.json();
-    window.location.href = `https://checkout.stripe.com/pay/${data.sessionId}`;
-  };
+  useEffect(() => {
+    const notificarBtn = notificarBtnRef.current;
+    const verNotificacionBtn = verNotificacionBtnRef.current;
+
+    const handleNotificarClick = () => {
+      Notification.requestPermission().then(resultado => {
+        console.log('Respuesta: ', resultado);
+      });
+    };
+
+    const handleVerNotificacionClick = () => {
+      if (Notification.permission === 'granted') {
+        const notificacion = new Notification('Esta es la notificación', {
+          icon: img,
+          body: 'Tutoriales de js con blackCode'
+        });
+
+        notificacion.onclick = function () {
+          window.open('http://google.com');
+        };
+      }
+    };
+
+    if (notificarBtn) {
+      notificarBtn.addEventListener('click', handleNotificarClick);
+    }
+
+    if (verNotificacionBtn) {
+      verNotificacionBtn.addEventListener('click', handleVerNotificacionClick);
+    }
+
+    // Cleanup event listeners on component unmount
+    return () => {
+      if (notificarBtn) {
+        notificarBtn.removeEventListener('click', handleNotificarClick);
+      }
+      if (verNotificacionBtn) {
+        verNotificacionBtn.removeEventListener('click', handleVerNotificacionClick);
+      }
+    };
+  }, []);
 
   return (
-    <div>
-      <button onClick={handleCheckout}>Pagar</button>
-    </div>
+    <section className='mt-3 text-center'>
+      <button className='btn btn-success' ref={notificarBtnRef} id="notificar">
+        Notificar...
+      </button>
+      <button className='btn btn-danger' ref={verNotificacionBtnRef} id="vernotificacion">
+        Ver Notificación...
+      </button>
+    </section>
   );
 };
 
-export default StripeComponent;
+export default Ayuda;
 
 // import React, { useState } from 'react';
 
@@ -33,10 +72,10 @@ export default StripeComponent;
 //     e.preventDefault();
 //     try {
 //       // Realizar la solicitud a la API para verificar si el correo existe
-//       const response = await fetch(`https://disify.com/api/email/${email}`);   
+//       const response = await fetch(`https://disify.com/api/email/${email}`);
 //       const data = await response.json();
 
-//       if (data.disposable=== false && data.dns===true) { 
+//       if (data.disposable=== false && data.dns===true) {
 //         // Si la propiedad "format" es true, el correo electrónico es válido
 //         alert(`Correo electrónico válido.\nDominio: ${data.domain}`);
 //         setEmailExists(true);
@@ -50,16 +89,16 @@ export default StripeComponent;
 //     } catch (error) {
 //       console.error('Error al verificar el correo electrónico:', error);
 //     }
-//   };  
+//   };
 
 //   return (
-//     <div className='m-auto'> 
+//     <div className='m-auto'>
 //     <div className='col-md-10 text-center'>
 //       <h2>Formulario de Correo prueba</h2>
 //       <form onSubmit={handleSubmit}>
 //         <label className="mb-2">
 //           Correo Electrónico:
-//           <input 
+//           <input
 //           className='text-center'
 //             type="email"
 //             value={email}
@@ -90,7 +129,7 @@ export default StripeComponent;
 //           alt="AirPods Max"
 //           style={{
 //             width: '100%',
-//             height: '450px',  
+//             height: '450px',
 
 //           }}
 //         />

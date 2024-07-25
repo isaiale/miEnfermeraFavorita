@@ -2,25 +2,27 @@
 
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
-    window.location.hostname === '[::1]' ||
-    window.location.hostname.match(
-      /^127(?:\.(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}$/
-    )
+  window.location.hostname === '[::1]' ||
+  window.location.hostname.match(
+    /^127(?:\.(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}$/
+  )
 );
 
 export function register(config) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
-    const publicUrl = new URL('https://mi-enfermera-favorita.vercel.app', window.location.href);
+    const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
     if (publicUrl.origin !== window.location.origin) {
       return;
     }
 
     window.addEventListener('load', () => {
-      const swUrl = `https://mi-enfermera-favorita.vercel.app/service-worker.js`;
+      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
 
       if (isLocalhost) {
+        // Esto es localhost. Comprobamos si el service worker existe realmente.
         checkValidServiceWorker(swUrl, config);
 
+        // Añade mensajes adicionales para localhost.
         navigator.serviceWorker.ready.then(() => {
           console.log(
             'This web app is being served cache-first by a service ' +
@@ -28,6 +30,7 @@ export function register(config) {
           );
         });
       } else {
+        // No es localhost. Solo registramos el service worker.
         registerValidSW(swUrl, config);
       }
     });
