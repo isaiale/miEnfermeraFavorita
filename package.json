@@ -13,7 +13,7 @@
     "jspdf": "^2.5.1",
     "rc-slider": "^10.3.1",
     "react": "^18.2.0",
-    "react-bootstrap": "^2.9.2",
+    "react-bootstrap": "^2.10.4",
     "react-dom": "^18.2.0",
     "react-google-recaptcha": "^3.1.0",
     "react-helmet": "^6.1.0",
