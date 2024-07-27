@@ -1,3 +1,94 @@
+// import React, { useState, useEffect } from 'react';
+
+// const publicVapidKey = 'BG60RQWPyG2ENxTZGNN0A4gu4iBltktL8X5keD1Qp6d-laxrtViyba3WppAKI-nj1RJZOvvw3s71sNngCxjCSVo';
+
+// const urlBase64ToUint8Array = (base64String) => {
+//   const padding = '='.repeat((4 - base64String.length % 4) % 4);
+//   const base64 = (base64String + padding)
+//     .replace(/-/g, '+')
+//     .replace(/_/g, '/');
+
+//   const rawData = window.atob(base64);
+//   const outputArray = new Uint8Array(rawData.length);
+
+//   for (let i = 0; i < rawData.length; ++i) {
+//     outputArray[i] = rawData.charCodeAt(i);
+//   }
+//   return outputArray;
+// };
+
+// const App = () => {
+//   const [permission, setPermission] = useState(Notification.permission);
+
+//   useEffect(() => {
+//     if ('serviceWorker' in navigator) {
+//       navigator.serviceWorker.register('/service-worker.js').then(registration => {
+//         console.log('Service Worker registered:', registration);
+//       }).catch(error => {
+//         console.error('Service Worker registration failed:', error);
+//       });
+//     }
+//   }, []);
+
+//   const subscribe = async () => {
+//     try {
+//       const register = await navigator.serviceWorker.ready;
+//       console.log('Service Worker ready:', register);
+
+//       const subscription = await register.pushManager.subscribe({
+//         userVisibleOnly: true,
+//         applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+//       });
+//       console.log('Subscription creada:', subscription);
+
+//       if (subscription) {
+//         const response = await fetch('http://localhost:3000/subscribeUsuario', {
+//           method: 'POST',
+//           headers: {
+//             'Content-Type': 'application/json'
+//           },
+//           body: JSON.stringify(subscription)
+//         });
+
+//         if (response.ok) {
+//           console.log('suscrito para notificaciones aceptado.');
+//         } else {
+//           console.error('suscrito para notificaciones negado:', response.statusText);
+//         }
+//       } else {
+//         console.error('La suscripción es undefined.');
+//       }
+//     } catch (error) {
+//       console.error('Error durante la suscripción:', error);
+//     }
+//   };
+
+//   const solicitarPermiso = () => {
+//     Notification.requestPermission().then(result => {
+//       console.log('resultado de notificación:', result);
+//       setPermission(result);
+//       if (result === 'granted') {
+//         console.log('permiso aceptado.');
+//         subscribe();
+//       } else {
+//         console.log('Permiso denegado.');
+//       }
+//     }).catch(error => {
+//       console.error('Error requesting notification permission:', error);
+//     });
+//   };
+
+//   return (
+//     <div className="App">
+//       <h1>Notificaciones PWA</h1>
+//       <button onClick={solicitarPermiso}>Solicitar permiso de notificación</button>
+//     </div>
+//   );
+// };
+
+// export default App;
+
+
 import React, { useEffect, useRef } from 'react';
 import img from '../img/AdminIsai.jpg';
 

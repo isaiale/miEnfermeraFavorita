@@ -21,3 +21,4 @@ root.render(
 serviceWorkerRegistration.register();
 
 reportWebVitals();
+// reportWebVitals(console.log);

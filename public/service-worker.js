@@ -1,46 +1,60 @@
-self.addEventListener('push', event => {
-  const data = event.data.json();
-  self.registration.showNotification(data.title, {
-    body: data.body,
-    icon: 'https://mi-enfermera-favorita.vercel.app/static/media/Logo%20de%20mi%20enfermera%20favorita.63ec5381f06c2c8431ee.jpg'
-  });
+const CACHE_NAME = 'my-app-cache-v1';
+const urlsToCache = [
+  '/',
+  '/index.html',
+  '/static/js/bundle.js',
+  '/static/js/0.chunk.js',
+  '/static/js/main.chunk.js',
+  '/static/css/main.chunk.css'
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => {
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
+      })
+  );
 });
 
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request)
+      .then((response) => {
+        if (response) {
+          return response;
+        }
+        return fetch(event.request);
+      }
+    )
+  );
+});
 
-// // public/js/service-worker.js
+self.addEventListener('activate', (event) => {
+  const cacheWhitelist = [CACHE_NAME];
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
 
-// self.addEventListener('push', function(event) {
-//   let data = {};
-//   if (event.data) {
-//     data = event.data.json();
-//   }
+self.addEventListener('push', (event) => {
+  const data = event.data.json();
+  const options = {
+    body: data.body,
+    icon: data.icon,
+    badge: data.badge,
+  };
 
-//   const title = data.notification.title || 'Sin título';
-//   const options = {
-//     body: data.notification.body || 'Sin cuerpo',
-//     icon: data.notification.icon || 'https://mi-enfermera-favorita.vercel.app/static/media/Logo%20de%20mi%20enfermera%20favorita.63ec5381f06c2c8431ee.jpg',
-//     vibrate: data.notification.vibrate || [200, 50, 200],
-//     actions: data.notification.actions || []
-//   };
-
-//   event.waitUntil(
-//     self.registration.showNotification(title, options)
-//   );
-// });
-
-// self.addEventListener('notificationclick', function(event) {
-//   event.notification.close();
-//   event.waitUntil(
-//     clients.matchAll({ type: 'window' }).then(windowClients => {
-//       for (let i = 0; i < windowClients.length; i++) {
-//         const client = windowClients[i];
-//         if (client.url === '/' && 'focus' in client) {
-//           return client.focus();
-//         }
-//       }
-//       if (clients.openWindow) {
-//         return clients.openWindow(event.notification.data.url);
-//       }
-//     })
-//   );
-// });
+  event.waitUntil(
+    self.registration.showNotification(data.title, options)
+  );
+});
