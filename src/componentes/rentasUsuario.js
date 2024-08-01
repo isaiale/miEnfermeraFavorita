@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../autenticar/AuthProvider';
-import { RentaDeUsuarios, Rentas, servidor } from '../url/urlSitioWeb';
-import Swal from 'sweetalert2';
+import { RentaDeUsuarios, Rentas } from '../url/urlSitioWeb';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle, faFilePdf, faDownload } from '@fortawesome/free-solid-svg-icons'; // Importa el ícono de PDF y el ícono de descarga
@@ -54,7 +53,8 @@ const RentasUsuarios = () => {
   const [mostrarDetalles, setMostrarDetalles] = useState({}); // Estado para controlar la visibilidad de los detalles
   const [pdf, setPdf] = useState(null); // Estado para almacenar el PDF generado
   const [showModal, setShowModal] = useState(false); // Estado para controlar la visibilidad del modal
-  const { isAuthenticated, user } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true); // Estado para indicar si los datos están cargando
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const fetchRentas = async () => {
@@ -69,9 +69,10 @@ const RentasUsuarios = () => {
         const sortedData = data.sort((a, b) => new Date(b.fechaInicio) - new Date(a.fechaInicio));
         setRentas(sortedData);
         fetchTiempos(sortedData);
-        console.log(sortedData);
+        setLoading(false); // Indicar que los datos se han cargado
       } catch (error) {
         console.error('Error al obtener las rentas:', error);
+        setLoading(false); // Indicar que los datos se han cargado incluso en caso de error
       }
     }
   };
@@ -85,7 +86,6 @@ const RentasUsuarios = () => {
           throw new Error(`Error al obtener el tiempo de renta para la renta con ID ${renta._id}`);
         }
         const data = await response.json();
-        console.log('respuesta tiempos: ', data);
         tiemposData[renta._id] = data;
       }
       setTiempos(tiemposData);
@@ -106,11 +106,19 @@ const RentasUsuarios = () => {
     return () => clearInterval(interval); // Limpiar el intervalo cuando el componente se desmonte
   }, [user]);
 
-  if (!rentas || rentas.length === 0) {
+  if (loading) {
     return (
       <div className='mt-5 mb-5'>
         <p className='name-spinner mt-5'>Cargando...</p>
         <div className="spinner mb-5"></div>
+      </div>
+    );
+  }
+
+  if (rentas.length === 0) {
+    return (
+      <div className='mt-5 mb-5'>
+        <p className='text-center mt-5'>No tienes rentas disponibles.</p>
       </div>
     );
   }
@@ -137,22 +145,22 @@ const RentasUsuarios = () => {
       console.error('Renta o productoRentaId no definido');
       return;
     }
-  
+
     const doc = new jsPDF();
-  
+
     // Agregar logo
     doc.addImage(logo, 'jpg', 92, 20, 30, 30); // Ajusta la posición y el tamaño según sea necesario
-  
+
     // Título
     doc.setFontSize(16);
     doc.setTextColor(0);
     doc.text('Mi enfermera favorita', 105, 60, { align: 'center' });
-  
+
     // Descripción
     doc.setFontSize(12);
     doc.text('Ticket de renta de productos.', 105, 70, { align: 'center' });
     doc.text('Huejutla, Hgo.', 105, 75, { align: 'center' });
-  
+
     // Detalles de compra
     doc.setFontSize(12);
     doc.text('UNID.', 20, 90);
@@ -160,7 +168,7 @@ const RentasUsuarios = () => {
     doc.text('IMPORTE', 190, 90, { align: 'right' });
     doc.setLineWidth(0.5);
     doc.line(10, 92, 200, 92);
-  
+
     // Datos de compra
     const items = [
       {
@@ -169,7 +177,7 @@ const RentasUsuarios = () => {
         importe: renta.productoRentaId.precio !== undefined ? renta.productoRentaId.precio.toString() : 'N/A'
       }
     ];
-  
+
     doc.setFontSize(10);
     items.forEach((item, index) => {
       const y = 100 + (index * 10);
@@ -177,49 +185,48 @@ const RentasUsuarios = () => {
       doc.text(`${item.descripcion} talla ${renta.tallaSeleccionada || 'N/A'}`, 105, y, { align: 'center' });
       doc.text(`$${item.importe} c/u`, 190, y, { align: 'right' });
     });
-  
-    doc.setFontSize(11); 
+
+    doc.setFontSize(11);
     doc.text(`Desposito total por ${renta.Cantidad ? renta.Cantidad.toString() : 'N/A'} producto: $${renta.deposito !== undefined ? renta.deposito.toString() : 'N/A'}`, 190, 130, { align: 'right' });
-  
+
     // Total
     doc.setFontSize(12);
     doc.text(`TOTAL: $${renta.montoPago !== undefined ? renta.montoPago.toString() : 'N/A'}`, 190, 140, { align: 'right' });
-  
+
     // Mensaje del usuario
     doc.setFontSize(10);
     doc.text(`Mensaje del Usuario: ${tiempos[renta._id] ? tiempos[renta._id].mensajeUser : ''}`, 20, 150);
-  
+
     // Estado de Pago y Fecha de Pago
     doc.setFontSize(10);
     doc.text(`Estado de Pago: ${renta.estadoPago || 'N/A'}`, 20, 160);
     doc.text(`Fecha de Pago: ${renta.fechaPago || 'N/A'}`, 20, 170);
-  
+
     // Mensaje de agradecimiento
     doc.setFontSize(10);
     doc.text(`GRACIAS POR SU PREFERENCIA.`, 105, 180, { align: 'center' });
-  
+
     // Dirección de recogida
     doc.setFontSize(10);
     doc.text(`Dirección de recogida: calle C. San Luis Potosi #30, colonia Tahuizan, Huejutla de Reyes, Hgo.`, 20, 190);
-  
+
     // URL
     doc.text('https://mi-enfermera-favorita.vercel.app', 105, 200, { align: 'center' });
-  
+
     setPdf(doc);
     setShowModal(true); // Mostrar el modal al generar el PDF
   };
-  
-  
+
   const guardarPdf = () => {
     pdf.save('ticket-de-compra.pdf');
   };
 
   return (
     <div className="container mt-2">
-      <h2 className="mb-2">Rentas del Usuario</h2>
+      <h3 className='text-center display-6'>Rentas del Usuario</h3>
       <div className="row">
         {currentItems.map(renta => (
-          <div className="col-md-3 mb-4" key={renta._id}>
+          <div  className="col-4 col-sm-2 col-md-3 mb-4" style={{  marginRight: '-1px' }} key={renta._id}>
             <div className="card h-100 position-relative">
               <div className='card-img'>
                 <EstadoEtiqueta estado={renta.estado} />
@@ -268,7 +275,7 @@ const RentasUsuarios = () => {
                     <p className="card-text">Talla: {renta.tallaSeleccionada}</p>
                     <p className="card-text">
                       {tiempos[renta._id] ? tiempos[renta._id].mensajeUser : ''}
-                    </p>                    
+                    </p>
                     <p className="card-text">Hora de Entrega: {renta.horarioRecogida}</p>
                     <p className="card-text">Pago: {renta.estadoPago}</p>
                   </>
@@ -277,6 +284,7 @@ const RentasUsuarios = () => {
             </div>
           </div>
         ))}
+
       </div>
       <Pagination>
         {Array.from({ length: Math.ceil(rentas.length / itemsPerPage) }, (_, index) => (

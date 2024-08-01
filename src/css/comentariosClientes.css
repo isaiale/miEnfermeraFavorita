@@ -61,7 +61,7 @@
 }
 
 .opiniones .caja-contenedor .caja .user i {
-    color: yellow;
+    color: #FFFF00;
     font-size: .8rem;
 }
 
@@ -103,5 +103,5 @@
   }
   
   .star-rating i.selected {
-    color: yellow;
+    color: #FFA500;
   }

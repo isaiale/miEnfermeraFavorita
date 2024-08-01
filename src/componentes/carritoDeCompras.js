@@ -4,9 +4,10 @@ import { CarritoCompras, Stripe, Productos } from '../url/urlSitioWeb';
 import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCreditCard, faTrash, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faCreditCard, faTrash, faMoneyCheck, faMoneyBill1Wave } from '@fortawesome/free-solid-svg-icons';
 import "../css/colores.css";
 import '../css/carritoCompras.css'
+import { BtnRosaIcono } from '../utilidad/botones';
 
 
 const CarritoCompra = () => {
@@ -240,58 +241,61 @@ const CarritoCompra = () => {
 
     const renderProducts = () => {
         return productosCarrito.map(product => (
-            <div className="d-flex justify-content-between align-items-center mb-2" style={{ border: '0.5px solid #cac6c6', padding: '10px' }}>
-                {product.imagenes.length > 0 && (
-                    <img
-                        alt="Shirt"
-                        className="aspect-square rounded-lg object-cover"
-                        height="50"
-                        src={product.imagenes[0].url}
-                        width="50"
-                    />
-                )}
-                <div className="grid gap-1">
-                    <h2 className="font-semibold text-lg">{product.cantidad} {product.nombre}</h2>
-                </div>
-                <div className="btn-group ms-5">
-                    <button className="btn btn-secondary font-semibold" onClick={() => handleDecreaseQuantity(product)}>-</button>
-                    <span className="btn font-semibold">{product.cantidad}</span>
-                    <button className="btn btn-secondary font-semibold" onClick={() => handleIncreaseQuantity(product)}>+</button>
-                </div>
-
-                <div className="ml-auto font-semibold me-4">${product.precio}</div>
-                <div>
-                    <FontAwesomeIcon onClick={() => removeProduct(product)} icon={faTrash} />
-                </div>
+          <div
+            className="d-flex justify-content-between align-items-center mb-2"
+            style={{ border: '0.5px solid #cac6c6', padding: '10px' }}
+            key={product.id} // Asegúrate de que cada producto tenga un identificador único
+          >
+            {product.imagenes.length > 0 && (
+              <img
+                alt="Shirt"
+                className="aspect-square rounded-lg object-cover"
+                height="50"
+                src={product.imagenes[0].url}
+                width="50"
+              />
+            )}
+            <div className="grid gap-1">
+              <h2 className="font-semibold text-lg">{product.cantidad} {product.nombre}</h2>
             </div>
+            <div className="d-flex align-items-center ms-auto">
+              <div className="btn-group me-3">
+                <button className="btn btn-secondary font-semibold" onClick={() => handleDecreaseQuantity(product)}>-</button>
+                <span className="btn font-semibold">{product.cantidad}</span>
+                <button className="btn btn-secondary font-semibold" onClick={() => handleIncreaseQuantity(product)}>+</button>
+              </div>
+              <div className="font-semibold me-4">${product.precio}</div>
+              <div>
+                <FontAwesomeIcon onClick={() => removeProduct(product)} icon={faTrash} style={{ cursor: 'pointer' }} />
+              </div>
+            </div>
+          </div>
         ));
-    };
+      };
+      
 
     return (
         <div className="container">
-            <div className="row">
-                <div className="col-md-8">
-                    <h2>Productos en tu carrito</h2>
+            <div className="row mb-3">
+                <div className="col-md-8">                    
+                    <h3 className='text-center display-6'>Productos en tu carrito</h3>
                     {renderProducts()}
                 </div>
                 <div className="col-md-4 mt-5">
                     <div className="card">
                         <div className="card-body d-flex justify-content-between">
-                            <h2>Total:</h2><h2>${total}</h2>
+                            <h5 className='font-semibold'>Total: ${total}</h5>
                         </div>
                     </div>
                     <div className="d-grid mx-auto">
-                        {showPagar && (
-                            <button className="btnvermas  font-semibold" onClick={handleOpenPaymentOptions}>
-                                Pagar
-                            </button>
+                        {showPagar && (                            
+                            <BtnRosaIcono onClick={handleOpenPaymentOptions} nombre='Pagar' icon={faMoneyBill1Wave} />
                         )}
                         {showPaymentOptions && (
                             <>
                                 <button className="btnCerrar font-semibold" onClick={handleClosePaymentOptions}>
                                     Cancelar
-                                </button>
-                                {/* Otros métodos de pago */}
+                                </button>                                
                             </>
                         )}
                         {showPaymentOptions && (
@@ -301,8 +305,7 @@ const CarritoCompra = () => {
                                 </button>
                                 <button className="btnPagar font-semibold">
                                     <i class="fa fa-paypal" aria-hidden="true"></i> Paypal
-                                </button>
-                                {/* Otros métodos de pago */}
+                                </button>                                
                             </>
                         )}
                     </div>

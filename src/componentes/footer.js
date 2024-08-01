@@ -22,7 +22,12 @@ const Footer = () => {
 
           {/* Categorías de uniformes (centro) */}
           <Col xs={12} md={6} lg={3}>
-            <h6 style={{ color: '#e36db4' }}>Categorías de Uniformes</h6>
+            <h6 style={{
+              color: '#FF4081',
+              /* textShadow:'-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff' */}}>
+              Categorías de Uniformes
+            </h6>
+
             <ul>
               <li>Zapatos</li>
               <li>Atuendos</li>
@@ -34,7 +39,7 @@ const Footer = () => {
 
           {/* Datos de la empresa (derecha) */}
           <Col xs={12} md={6} lg={3}>
-            <h6 style={{ color: '#e36db4' }}>Datos de la Empresa</h6>
+            <h6 style={{ color: '#FF4081' }}>Datos de la Empresa</h6>
             <p><FontAwesomeIcon icon={faHome} className="me-2" /> Dirección de la empresa</p>
             <p><FontAwesomeIcon icon={faPhone} className="me-2" /> (123) 456-7890</p>
             <p><FontAwesomeIcon icon={faEnvelope} className="me-2" /> info@empresa.com</p>
@@ -42,7 +47,7 @@ const Footer = () => {
 
           {/* Redes de la empresa (derecha) */}
           <Col xs={12} md={6} lg={3}>
-            <h6 style={{ color: '#e36db4' }}>Redes de la Empresa</h6>
+            <h6 style={{ color: '#FF4081' }}>Redes de la Empresa</h6>
             <div className='wrapper'>
               <ul>
                 <li className='facebook'><a href='#'><i className='fa fa-facebook fa-2x' aria-hidden='true'></i></a></li>
@@ -64,11 +69,11 @@ const Footer = () => {
         <p className="ms-4 m-0">© 2023 Empresa. Todos los derechos reservados.</p>
         <div className="d-flex me-4">
           <Link className='text-white ms-3' to="/politicaDeCookies">Políticas de cookies</Link>
-          <Link className='text-white ms-3' to="/terminosYcondiciones">Términos y condiciones</Link>
+          {/* <Link className='text-white ms-3' to="/terminosYcondiciones">Términos y condiciones</Link> */}
           <Link className='text-white ms-3' to="/avisoPrivacidad">Política de Privacidad</Link>
         </div>
       </div>
-    </footer>
+    </footer >
   );
 };
 

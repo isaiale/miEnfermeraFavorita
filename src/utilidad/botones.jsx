@@ -1,27 +1,25 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const Elementos = (prop) => {
+const BtnColorRosa = ({ nombre, onClick }) => {
   return (
-    <button onClick={prop.funcion} style={{ backgroundColor: prop.color, borderRadius: '5px', padding: '5px' }}>
-      <span style={{ fontSize: '15px', color: 'black' }}>{prop.titulo}</span>
-    </button>
-  );
-};
-
-const Btn = (val) => {
-  return (
-    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-      <button style={{ width: '130px', height: '40px', backgroundColor: '#6a9cde', borderRadius: '5px', alignItems: 'center', padding: '5px' }} onClick={val.funcion}>
-        <span style={{ fontSize: '15px', color: 'white' }}>Iniciar sesion</span>
+    <div>
+      <button className="btn w-100" style={{ backgroundColor: '#FF4081', color: 'white', borderRadius: '0px' }} onClick={onClick}>
+        {nombre}
       </button>
     </div>
   );
 };
 
-const Input = (val) => {
+const BtnRosaIcono = ({ nombre, onClick, icon }) => {
   return (
-    <input placeholder={val.place} style={{ /* Add any specific styles for your input */ }} />
+    <div>
+      <button className="btn w-100" style={{ backgroundColor: '#FF4081', color: 'white', borderRadius: '0px' }} onClick={onClick}>
+        {icon && <FontAwesomeIcon icon={icon} />}&nbsp;
+        { nombre}
+      </button>
+    </div>
   );
 };
 
-export { Elementos, Btn, Input };
+export { BtnColorRosa, BtnRosaIcono };

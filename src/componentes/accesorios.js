@@ -32,11 +32,6 @@ function AccesorioEnfermeriaCard({ accesorio }) {
             </div>
 
           </Link>
-          {/* <div className="ms-1 me-1">
-            <Link to={`/detalle-producto/${accesorio._id}`} className="btnvermas">
-            <i class="fa fas fa-eye"></i>Ver más
-            </Link>
-          </div> */}
         </Card>
 
       </section>
@@ -69,7 +64,6 @@ function Accesorios() {
       setFilteredData(jsonData);
       setIsLoading(false); // Detener la carga después de obtener los datos
     } catch (error) {
-      Swal.fire({ title: "Error al hacer la solicitud.", icon: "error" });
       setIsLoading(false); // Detener la carga en caso de error
     }
   }
@@ -198,7 +192,7 @@ function Accesorios() {
               <p className='name-spinner mt-5'>Cargando...</p>
               <div className="spinner mb-5"></div>
             </div>
-          ) : (
+          ) : currentItems.length > 0 ? (
             <Row xs={2} md={4}>
               {currentItems.map((accesorio) => (
                 <AccesorioEnfermeriaCard
@@ -207,15 +201,22 @@ function Accesorios() {
                 />
               ))}
             </Row>
+          ) : (
+            <div className="text-center mt-4">
+              <p>No hay productos disponibles.</p>
+            </div>
           )}
-          <Pagination className="mt-3">
-            {pageNumbers.map(number => (
-              <Pagination.Item key={number} active={number === currentPage} onClick={() => setCurrentPage(number)}>
-                {number}
-              </Pagination.Item>
-            ))}
-          </Pagination>
+          {filteredData.length > 0 && (
+            <Pagination className="mt-3">
+              {pageNumbers.map(number => (
+                <Pagination.Item key={number} active={number === currentPage} onClick={() => setCurrentPage(number)}>
+                  {number}
+                </Pagination.Item>
+              ))}
+            </Pagination>
+          )}
         </Col>
+
       </Row>
     </Container>
   );

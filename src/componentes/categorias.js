@@ -27,7 +27,7 @@ const TuComponente = () => {
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await fetch(CategoriaProducto); // Reemplaza 'URL_DE_TU_API' con la URL real de la API
+        const response = await fetch(CategoriaProducto);
         if (!response.ok) {
           throw new Error('La respuesta de la red no fue exitosa.');
         }
@@ -49,8 +49,7 @@ const TuComponente = () => {
       <Carousel responsive={responsive} infinite={true} autoPlaySpeed={1000} transitionDuration={500} arrows={false}>
         {categorias.map((categoria, index) => (
           <Link key={index} to={`/productos/${categoria._id}`} className='link-no-underline'>
-            <div className='content-categoria'>
-              
+            <div className='content-categoria'>              
               <div className='description'>
                 <h6 className='lead text-description-categoria'><i class="fa fa-solid fa-tag"></i> {categoria.nombre}</h6>
               </div>

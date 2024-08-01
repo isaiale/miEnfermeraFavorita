@@ -127,13 +127,13 @@ const NavbarUsuario = () => {
                             <Dropdown.Menu>
                                 {/* <Dropdown.Item as={Link} to="/busquedasimple">Busqueda Simple</Dropdown.Item> */}
                                 <Dropdown.Item as={Link} to="/busquedaAvanzada">Busqueda Avanzada</Dropdown.Item>
-                                <Dropdown.Item as={Link} to="/contacto">Contacto</Dropdown.Item>
-                                <Dropdown.Item as={Link} to="/ayuda">Ayuda</Dropdown.Item>
+                                {/* <Dropdown.Item as={Link} to="/contacto">Contacto</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="/ayuda">Ayuda</Dropdown.Item> */}
                             </Dropdown.Menu>
                         </Dropdown>
                         {isAuthenticated !== null && user?.rol === "User" ? (
                             <>
-                                <Link to='/carritoDeCompras' className={` ${menuVisible ? 'navLinkFalse ' : 'navLinkFalse lead ms-3'}`}>
+                                <Link to='/carritoDeCompras' className={` ${menuVisible ? 'navLinkFalse lead ms-3' : 'navLinkFalse lead ms-3'}`}>
                                     <div ><FontAwesomeIcon icon={faCartShopping} className="me-2" /></div>
                                 </Link>
                             </>

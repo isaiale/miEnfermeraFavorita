@@ -1,6 +1,6 @@
 import React from 'react';
-import img1 from '../img/batas.png';
-import { NavLink } from 'react-bootstrap';
+// import img1 from '../img/batas.png';
+// import { NavLink } from 'react-bootstrap';
 
 const ProductosCalzado = () => {
     return (

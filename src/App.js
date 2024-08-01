@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { AuthContext } from "./autenticar/AuthProvider";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ScrollTop from "./utilidad/ScroollTop";
+import AlertaConexionInternet from "./utilidad/AlertaConexionInternet";
 
 import InicioUsuario from './vistas/usuario/inicioUsuario';
 import AvisoPrivacida from './vistas/usuario/avisoPrivacidad';
@@ -45,7 +46,8 @@ export default function App() {
   return (
     <div>
       <BrowserRouter>
-        <ScrollTop/>
+        <AlertaConexionInternet />
+        <ScrollTop />
         <Routes>
           <Route path='/' element={<InicioUsuario />} />
           <Route path="productos/:categoriaId" element={<Producto />} />
@@ -69,10 +71,10 @@ export default function App() {
           <Route path="cancelado" element={<Cancelado />} />
           <Route path="verificacion-correcta" element={<Verificacion_correcta />} />
           <Route path="perfil" element={<Perfil />} />
-          <Route path="Compras" element={<Compras />} /> 
+          <Route path="Compras" element={<Compras />} />
           <Route path="detalle-producto/:idProductos" element={<ProductoDetalle />} />
           <Route path="ProductoDetalleRenta/:idRentas" element={<ProductoDetalleRenta />} />
-          <Route path="RentasUser" element={<RentasUsuario/>}/>
+          <Route path="RentasUser" element={<RentasUsuario />} />
           {/* Routes for Admin */}
 
           {isAuthenticated !== null && user?.rol === "Admin" && (

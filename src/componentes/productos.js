@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Container, Row, Col, Button, Pagination } from "react-bootstrap";
 import Breadcrumb from "../utilidad/migapan";
 import "../css/colores.css";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import { categoria_productos } from "../url/urlSitioWeb";
 import { useParams, Link } from "react-router-dom";
 import '../css/spinner.css';
@@ -24,8 +24,8 @@ function AccesorioEnfermeriaCard({ accesorio, categoriaNombre }) {
             </div>
             <div className="info-card">
               <div className="text-product">
-                <h3>{accesorio.nombre}</h3>                
-                <p className=""><i className="fa fa-solid fa-tag" ></i> {categoriaNombre}</p>                 
+                <h3>{accesorio.nombre}</h3>
+                <p className=""><i className="fa fa-solid fa-tag" ></i> {categoriaNombre}</p>
                 <p className=""> <i className="fa fa-thin fa-user"></i> {accesorio.sexo}</p>
               </div>
               <div className="precio">${accesorio.precio}</div>
@@ -52,8 +52,8 @@ function Productoss() {
   const [isLoading, setIsLoading] = useState(true); // Estado para controlar la carga
   const [tallas, setTallas] = useState(['Ch', 'M', 'G', 'XL']); // Estado para las tallas disponibles
 
-  const minPrice = 0;
-  const maxPrice = 1000;
+  // const minPrice = 0;
+  // const maxPrice = 1000;
 
   const datosProducto = async () => {
     try {
@@ -80,7 +80,7 @@ function Productoss() {
       }
 
     } catch (error) {
-      Swal.fire({ title: "Error al hacer la solicitud.", icon: "error" });
+      // Swal.fire({ title: "Error al hacer la solicitud.", icon: "error" });
       setIsLoading(false); // Detener la carga en caso de error
     }
   }
@@ -160,7 +160,7 @@ function Productoss() {
   return (
     <Container>
       <div className="flex container mx-auto justify-center">
-        <Breadcrumb path={categoriaNombre}/>
+        <Breadcrumb path={categoriaNombre} />
       </div>
       <Row>
         <Col lg={3}>
@@ -241,7 +241,7 @@ function Productoss() {
               <p className='name-spinner mt-5'>Cargando...</p>
               <div className="spinner mb-5"></div>
             </div>
-          ) : (
+          ) : currentItems.length > 0 ? (
             <Row xs={2} md={4}>
               {currentItems.map((accesorio) => (
                 <AccesorioEnfermeriaCard
@@ -251,15 +251,22 @@ function Productoss() {
                 />
               ))}
             </Row>
+          ) : (
+            <div className="text-center">
+              <p>No hay productos disponibles.</p>
+            </div>
           )}
-          <Pagination className="m-2">
-            {pageNumbers.map(number => (
-              <Pagination.Item key={number} active={number === currentPage} onClick={() => setCurrentPage(number)}>
-                {number}
-              </Pagination.Item>
-            ))}
-          </Pagination>
+          {filteredData.length > 0 && (
+            <Pagination className="m-2">
+              {pageNumbers.map(number => (
+                <Pagination.Item key={number} active={number === currentPage} onClick={() => setCurrentPage(number)}>
+                  {number}
+                </Pagination.Item>
+              ))}
+            </Pagination>
+          )}
         </Col>
+
       </Row>
     </Container>
   );

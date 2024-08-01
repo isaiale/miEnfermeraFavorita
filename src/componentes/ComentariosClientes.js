@@ -3,6 +3,9 @@ import Swal from 'sweetalert2';
 import imgUser from '../img/AdminIsai.jpg';
 import '../css/comentariosClientes.css';
 import { comentarios, Api_Validacio_Correo } from '../url/urlSitioWeb';
+import { BtnRosaIcono } from '../utilidad/botones';
+import { faSave } from '@fortawesome/free-solid-svg-icons';
+
 
 const ComentariosClientes = () => {
     const [comments, setComments] = useState([]);
@@ -17,7 +20,7 @@ const ComentariosClientes = () => {
     const [scrollPosition, setScrollPosition] = useState(0);
 
     useEffect(() => {
-        fetchComments();        
+        fetchComments();
     }, []);
 
     useEffect(() => {
@@ -166,7 +169,7 @@ const ComentariosClientes = () => {
                                                     <i
                                                         key={i}
                                                         className="fa fa-star"
-                                                        style={{ color: i < comment.estrellas ? 'yellow' : 'gray' }}
+                                                        style={{ color: i < comment.estrellas ? '#FFA500' : 'gray' }}
                                                     ></i>
                                                 ))}
                                             </p>
@@ -244,7 +247,7 @@ const ComentariosClientes = () => {
                                             required
                                         ></textarea>
                                     </div>
-                                    <div className="form-group">
+                                    <div className="form-group mb-3">
                                         <label htmlFor="estrellas">Estrellas</label>
                                         <div className="star-rating">
                                             {Array(5).fill().map((_, i) => (
@@ -256,9 +259,7 @@ const ComentariosClientes = () => {
                                             ))}
                                         </div>
                                     </div>
-                                    <button type="submit" className="btnvermas mt-3">
-                                        <i className="fa fa-save" title="Guardar"></i> Guardar
-                                    </button>
+                                    <BtnRosaIcono onClick={() => console.log('guardar')} nombre='Guardar' icon={faSave} />
                                 </form>
                             </div>
                         </div>

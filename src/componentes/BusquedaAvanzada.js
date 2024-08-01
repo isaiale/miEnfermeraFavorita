@@ -8,13 +8,19 @@ import '../css/spinner.css';
 import '../css/productos.css';
 
 function AccesorioEnfermeriaCard({ accesorio }) {
-  const categoriaNombre = accesorio.categoria && accesorio.categoria[0] ? accesorio.categoria[0].nombre : 'Sin categoría';
-  
+  const categoriaNombre = accesorio.categoria && accesorio.categoria[0] ? accesorio.categoria[0].nombre : 'Rentas';
+
+  let linkTo = `/detalle-producto/${accesorio._id}`;
+  if (!categoriaNombre || categoriaNombre.toLowerCase() === 'rentas') {
+    linkTo = `/ProductoDetalleRenta/${accesorio._id}`;
+  }
+
   return (
     <Col xs={6} lg={3}>
       <section className="container-related-products">
         <Card className="mb-4 card" key={accesorio._id}>
-          <Link className="text-decoration-none" to={`/detalle-producto/${accesorio._id}`}>
+          {/* <Link className="text-decoration-none" to={`/detalle-producto/${accesorio._id}`}> */}
+          <Link className="text-decoration-none" to={linkTo}>
             {accesorio.descuento > 0 && (
               <div className="discount-icon"><i className="fa fa-ticket"> </i> {accesorio.descuento}%</div>
             )}
@@ -25,16 +31,18 @@ function AccesorioEnfermeriaCard({ accesorio }) {
             </div>
             <div className="info-card">
               <div className="text-product">
-                <h3>{accesorio.nombre}</h3>                
-                <p className=""><i className="fa fa-solid fa-tag" ></i> {categoriaNombre}</p>                 
-                <p className=""> <i className="fa fa-thin fa-user"></i> {accesorio.sexo}</p>
+                <h3>{accesorio.nombre}</h3>
+                <p className=""><i className="fa fa-solid fa-tag" ></i> {categoriaNombre}</p>
+                {categoriaNombre !== 'Accesorios' && (
+                  <p className=""><i className="fa fa-thin fa-user"></i> {accesorio.sexo}</p>
+                )}
               </div>
               <div className="precio">${accesorio.precio}</div>
             </div>
           </Link>
         </Card>
       </section>
-    </Col>
+    </Col >
   );
 }
 
@@ -52,8 +60,8 @@ function BusquedaAvanzada() {
   const [isLoading, setIsLoading] = useState(true); // Estado para controlar la carga
   const [tallas, setTallas] = useState(['Ch', 'M', 'G', 'XL']); // Estado para las tallas disponibles
 
-  const minPrice = 0;
-  const maxPrice = 1000;
+  // const minPrice = 0;
+  // const maxPrice = 1000;
 
   const datosProducto = async () => {
     try {
@@ -167,7 +175,7 @@ function BusquedaAvanzada() {
   return (
     <Container>
       <div className="flex container mx-auto justify-center">
-        <Breadcrumb path={categoriaNombre}/>
+        <Breadcrumb path={categoriaNombre} />
       </div>
       <Row>
         <Col lg={3}>
