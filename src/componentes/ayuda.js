@@ -1,69 +1,87 @@
-import React, { useEffect, useRef } from 'react';
-import img from '../img/AdminIsai.jpg';
+import React from 'react';
 
-const Ayuda = () => {
-  const notificarBtnRef = useRef(null);
-  const verNotificacionBtnRef = useRef(null);
-
-  useEffect(() => {
-    const notificarBtn = notificarBtnRef.current;
-    const verNotificacionBtn = verNotificacionBtnRef.current;
-
-    const handleNotificarClick = () => {
-      Notification.requestPermission().then(resultado => {
-        console.log('Respuesta: ', resultado);
-      });
-    };
-
-    const handleVerNotificacionClick = () => {
-      if (Notification.permission === 'granted') {
-        const notificacion = new Notification('Esta es la notificación', {
-          icon: img,
-          body: 'Tutoriales de js con blackCode'
-        });
-
-        notificacion.onclick = function () {
-          window.open('http://google.com');
-        };
-      }
-    };
-
-    if (notificarBtn) {
-      notificarBtn.addEventListener('click', handleNotificarClick);
-    }
-
-    if (verNotificacionBtn) {
-      verNotificacionBtn.addEventListener('click', handleVerNotificacionClick);
-    }
-
-    // Cleanup event listeners on component unmount
-    return () => {
-      if (notificarBtn) {
-        notificarBtn.removeEventListener('click', handleNotificarClick);
-      }
-      if (verNotificacionBtn) {
-        verNotificacionBtn.removeEventListener('click', handleVerNotificacionClick);
-      }
-    };
-  }, []);
-
-  const agregar = () => {
-    alert('boton clickeado');
-  }
-
+function Ayuda() {
   return (
-    <section className='mt-3 text-center'>
-      <button className='btn btn-success' ref={notificarBtnRef} id="notificar">
-        Notificar...
-      </button>
-      <button className='btn btn-danger' ref={verNotificacionBtnRef} id="vernotificacion">
-        Ver Notificación...
-      </button>      
-    </section>
+    <div>      
+      <iframe
+        src="https://proyectmodel.onrender.com/"
+        // title="Predecir diabetes"
+        width="100%"
+        height="800px"
+        style={{ border: 'none' }}
+      ></iframe>
+    </div>
   );
-};
+}
 
 export default Ayuda;
+
+// import React, { useEffect, useRef } from 'react';
+// import img from '../img/AdminIsai.jpg';
+
+// const Ayuda = () => {
+//   const notificarBtnRef = useRef(null);
+//   const verNotificacionBtnRef = useRef(null);
+
+//   useEffect(() => {
+//     const notificarBtn = notificarBtnRef.current;
+//     const verNotificacionBtn = verNotificacionBtnRef.current;
+
+//     const handleNotificarClick = () => {
+//       Notification.requestPermission().then(resultado => {
+//         console.log('Respuesta: ', resultado);
+//       });
+//     };
+
+//     const handleVerNotificacionClick = () => {
+//       if (Notification.permission === 'granted') {
+//         const notificacion = new Notification('Esta es la notificación', {
+//           icon: img,
+//           body: 'Tutoriales de js con blackCode'
+//         });
+
+//         notificacion.onclick = function () {
+//           window.open('http://google.com');
+//         };
+//       }
+//     };
+
+//     if (notificarBtn) {
+//       notificarBtn.addEventListener('click', handleNotificarClick);
+//     }
+
+//     if (verNotificacionBtn) {
+//       verNotificacionBtn.addEventListener('click', handleVerNotificacionClick);
+//     }
+
+//     // Cleanup event listeners on component unmount
+//     return () => {
+//       if (notificarBtn) {
+//         notificarBtn.removeEventListener('click', handleNotificarClick);
+//       }
+//       if (verNotificacionBtn) {
+//         verNotificacionBtn.removeEventListener('click', handleVerNotificacionClick);
+//       }
+//     };
+//   }, []);
+
+//   const agregar = () => {
+//     alert('boton clickeado');
+//   }
+
+//   return (
+//     <section className='mt-3 text-center'>
+//       <button className='btn btn-success' ref={notificarBtnRef} id="notificar">
+//         Notificar...
+//       </button>
+//       <button className='btn btn-danger' ref={verNotificacionBtnRef} id="vernotificacion">
+//         Ver Notificación...
+//       </button>      
+//     </section>
+//   );
+// };
+
+// export default Ayuda;
 
 // import React, { useState } from 'react';
 

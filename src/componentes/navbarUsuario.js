@@ -132,8 +132,8 @@ const NavbarUsuario = () => {
                             <Dropdown.Menu>
                                 {/* <Dropdown.Item as={Link} to="/busquedasimple">Busqueda Simple</Dropdown.Item> */}
                                 <Dropdown.Item as={Link} to="/busquedaAvanzada">Busqueda Avanzada</Dropdown.Item>
-                                {/* <Dropdown.Item as={Link} to="/contacto">Contacto</Dropdown.Item>
-                                <Dropdown.Item as={Link} to="/ayuda">Ayuda</Dropdown.Item> */}
+                                {/* <Dropdown.Item as={Link} to="/contacto">Contacto</Dropdown.Item>*/}
+                                <Dropdown.Item as={Link} to="/ayuda">Diabetes</Dropdown.Item> 
                             </Dropdown.Menu>
                         </Dropdown>
                         {isAuthenticated !== null && user?.rol === "User" ? (

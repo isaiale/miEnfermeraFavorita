@@ -2,8 +2,7 @@ import React from 'react';
 
 function Catalog() {
   return (
-    <div>
-      <h1>Catálogo de Productos</h1>
+    <div>      
       <iframe
         src="https://model-recomendacion.onrender.com/catalog"
         title="Catálogo de Productos"
