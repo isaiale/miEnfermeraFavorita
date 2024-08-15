@@ -69,12 +69,17 @@ const ProductosE = () => {
     const files = e.target.files;
     const formData = new FormData();
 
-    try {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        formData.append('imagen', file);
+    // Validación inicial para verificar si todos los archivos son imágenes
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (!file.type.match('image.*')) {
+        alert('Solo se permiten archivos de imagen.');
+        return; // Detiene la función si algún archivo no es una imagen
       }
+      formData.append('imagen', file);
+    }
 
+    try {
       const response = await fetch(img, {
         method: 'POST',
         body: formData
@@ -89,7 +94,7 @@ const ProductosE = () => {
       setImagenes(prevImageUrls => [...prevImageUrls, { url: data.url, publicId: data.publicId }]);
       console.log(data.url, data.publicId);
     } catch (error) {
-      console.error(error.message);
+      console.error('Error al subir la imagen: ' + error.message);
     }
   };
 
@@ -219,7 +224,7 @@ const ProductosE = () => {
   const validar = () => {
     if (!validarNombre(nombre)) {
       Swal.fire({
-        title: "Nombre invalido.", icon: "info", timer: 1500, showConfirmButton: false
+        title: "Nombre invalido ingresa solo letras.", icon: "info", timer: 1500, showConfirmButton: false
       });
       return;
     }
@@ -410,6 +415,40 @@ const ProductosE = () => {
     setSelectedCategoriaFiltro(e.target.value);
   };
 
+  // Función para manejar el cambio en el campo del nombre.
+  const handleNombreChange = (e) => {
+    const value = e.target.value;
+    if (/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/.test(value)) {
+      setNombre(value);
+    }
+  };
+
+  // Función para manejar el cambio en el campo del precio.
+  const handlePrecioChange = (e) => {
+    const value = e.target.value;
+    // Esta expresión regular asegura que sólo se acepten números enteros
+    if (/^\d*$/.test(value)) {
+      setPrecio(value);
+    }
+  };
+
+  // Función para manejar el cambio en el campo del descuento.
+  const handleDescuentoChange = (e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {
+      setDescuento(value);
+    }
+  };
+
+  // Función para manejar el cambio en el campo del inventario.
+  const handleInventarioChange = (e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {
+      setInventario(value);
+    }
+  };
+
+
   useEffect(() => {
     const filtrarProductos = () => {
       let filtro = dataProductos.filter(productos =>
@@ -589,35 +628,50 @@ const ProductosE = () => {
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
-                      <input placeholder="Nombre" className="input-field" id="nombre" type="text" required
-                        value={nombre} onChange={(e) => setNombre(e.target.value)} />
+                      {/* <input placeholder="Nombre" className="input-field" id="nombre" type="text" required value={nombre} onChange={(e) => setNombre(e.target.value)} /> */}
+                      <input placeholder="Nombre" className="input-field" id="nombre" type="text" required value={nombre} onChange={handleNombreChange}
+                      />
                       <label for="input-field" className="input-label">Nombre:</label>
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
-                      <input placeholder="Descripción" className="input-field" type="text" required
-                        value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
+                      <input placeholder="Descripción" className="input-field" type="text" required value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
                       <label for="input-field" className="input-label">Descripción:</label>
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
-                      <input placeholder="Precio" className="input-field" type="number" required
-                        value={precio} onChange={(e) => setPrecio(e.target.value)} />
+                      {/* <input placeholder="Precio" className="input-field" type="number" required value={precio} onChange={(e) => setPrecio(e.target.value)} /> */}
+                      <input placeholder="Precio" className="input-field" type="text" required value={precio} onChange={handlePrecioChange} />
                       <label for="input-field" className="input-label">Precio:</label>
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
-                      <input placeholder="Descuento" className="input-field" type="number" required
-                        value={descuento} onChange={(e) => setDescuento(e.target.value)} />
+                      {/* <input placeholder="Descuento" className="input-field" type="number" required value={descuento} onChange={(e) => setDescuento(e.target.value)} /> */}
+                      <input
+                        placeholder="Descuento"
+                        className="input-field"
+                        type="text"
+                        required
+                        value={descuento}
+                        onChange={handleDescuentoChange}
+                      />
                       <label for="input-field" className="input-label">Descuento:</label>
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
-                      <input placeholder="Inventario" className="input-field" type="number" required
-                        value={inventario} onChange={(e) => setInventario(e.target.value)} />
+                      {/* <input placeholder="Inventario" className="input-field" type="number" required value={inventario} onChange={(e) => setInventario(e.target.value)} /> */}
+                      <input
+                        placeholder="Inventario"
+                        className="input-field"
+                        type="text"
+                        required
+                        value={inventario}
+                        onChange={handleInventarioChange}
+                      />
                       <label for="input-field" className="input-label">Inventario:</label>
                       <span className="input-highlight"></span>
                     </div>
+
                     <div className="input-container">
                       <label htmlFor="input-field" className="">
                         Seleccione las tallas o talla:
@@ -625,12 +679,7 @@ const ProductosE = () => {
                       <div className="d-flex">
                         {tallasDisponibles.map(size => (
                           <label key={size} style={{ display: 'inline-block', marginRight: '10px' }}>
-                            <input
-                              type="checkbox"
-                              value={size}
-                              checked={tallasSeleccionadas.includes(size)}
-                              onChange={tallasSeleccionadasFuncion}
-                            />
+                            <input type="checkbox" value={size} checked={tallasSeleccionadas.includes(size)} onChange={tallasSeleccionadasFuncion} />
                             {size}
                           </label>
                         ))}
@@ -709,32 +758,60 @@ const ProductosE = () => {
                 <div className="row">
                   <div className="col-md-12">
                     <div className="input-container">
-                      <input placeholder="Nombre" className="input-field" id="nombree" type="text" required
-                        value={nombre} onChange={(e) => setNombre(e.target.value)} />
+                      {/* <input placeholder="Nombre" className="input-field" id="nombree" type="text" required value={nombre} onChange={(e) => setNombre(e.target.value)} /> */}
+                      <input
+                        placeholder="Nombre"
+                        className="input-field"
+                        id="nombre"
+                        type="text"
+                        required
+                        value={nombre}
+                        onChange={handleNombreChange}
+                      />
                       <label for="input-field" className="input-label">Nombre:</label>
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
-                      <input placeholder="Descripción" className="input-field" type="text" required
-                        value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
+                      <input placeholder="Descripción" className="input-field" type="text" required value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
                       <label for="input-field" className="input-label">Descripción:</label>
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
-                      <input placeholder="Precio" className="input-field" type="number" required
-                        value={precio} onChange={(e) => setPrecio(e.target.value)} />
+                      {/* <input placeholder="Precio" className="input-field" type="number" required value={precio} onChange={(e) => setPrecio(e.target.value)} /> */}
+                      <input
+                        placeholder="Precio"
+                        className="input-field"
+                        type="text"
+                        required
+                        value={precio}
+                        onChange={handlePrecioChange}
+                      />
                       <label for="input-field" className="input-label">Precio:</label>
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
-                      <input placeholder="Es opcional el descuento" className="input-field" type="number" required
-                        value={descuento} onChange={(e) => setDescuento(e.target.value)} />
+                      {/* <input placeholder="Es opcional el descuento" className="input-field" type="number" required value={descuento} onChange={(e) => setDescuento(e.target.value)} /> */}
+                      <input
+                        placeholder="Descuento"
+                        className="input-field"
+                        type="text"
+                        required
+                        value={descuento}
+                        onChange={handleDescuentoChange}
+                      />
                       <label for="input-field" className="input-label">Descuento:</label>
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
-                      <input placeholder="Inventario" className="input-field" type="number" required
-                        value={inventario} onChange={(e) => setInventario(e.target.value)} />
+                      {/* <input placeholder="Inventario" className="input-field" type="number" required value={inventario} onChange={(e) => setInventario(e.target.value)} /> */}
+                      <input
+                        placeholder="Inventario"
+                        className="input-field"
+                        type="text"
+                        required
+                        value={inventario}
+                        onChange={handleInventarioChange}
+                      />
                       <label for="input-field" className="input-label">Inventario:</label>
                       <span className="input-highlight"></span>
                     </div>

@@ -59,12 +59,12 @@ const NavbarUsuario = () => {
             path: "/accesorioss",
             name: "Accesorios",
             icon: <FontAwesomeIcon icon={faTag} className="me-2" />,
-        },
+        }/* ,
         {
             path: "/contacto",
             name: "Catalogo",
             icon: <FontAwesomeIcon icon={faTag} className="me-2" />,
-        }
+        } */
     ];
 
     return (

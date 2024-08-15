@@ -251,12 +251,12 @@ const Clientes = () => {
                   <p className="lead ">Total de usuarios: {dataUser.length}</p>
                 </div>
                 &nbsp;&nbsp;
-                <div className="ms-5 text-center">
+                {/* <div className="ms-5 text-center">
                   <button onClick={() => abrirModal(1)} type="button" className="buttonAgregar ms-3" data-bs-toggle='modal' data-bs-target='#modalUsuarios'>
                     <span className="button__text">Agregar</span>
                     <span className="button__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="24" fill="none" class="svg"><line y2="19" y1="5" x2="12" x1="12"></line><line y2="12" y1="12" x2="19" x1="5"></line></svg></span>
                   </button>
-                </div>
+                </div> */}
                 <div className="ms-auto">
                   <div className="input-group">
                     <input type="text" className="form-control" placeholder="Buscar usuario" value={buscar} onChange={handleSearch} />
@@ -347,32 +347,27 @@ const Clientes = () => {
                     {operacionModal === 1 ?
                       <>
                         <div className="input-container">
-                          <input placeholder="Nombre" className="input-field" id="nombre" type="text" required
-                            value={nombre} onChange={(e) => setNombre(e.target.value)} />
+                          <input placeholder="Nombre" className="input-field" id="nombre" type="text" required value={nombre} onChange={(e) => setNombre(e.target.value)} />
                           <label htmlFor="input-field" className="input-label">Nombre:</label>
                           <span className="input-highlight"></span>
                         </div>
                         <div className="input-container">
-                          <input placeholder="Apellido" className="input-field" type="text" required
-                            onChange={(e) => setApellido(e.target.value)} />
+                          <input placeholder="Apellido" className="input-field" type="text" required onChange={(e) => setApellido(e.target.value)} />
                           <label htmlFor="input-field" className="input-label">Apellido:</label>
                           <span className="input-highlight"></span>
                         </div>
                         <div className="input-container">
-                          <input placeholder="Telefono" className="input-field" type="number" required
-                            onChange={(e) => setTelefono(e.target.value)} />
+                          <input placeholder="Telefono" className="input-field" type="number" required onChange={(e) => setTelefono(e.target.value)} />
                           <label htmlFor="input-field" className="input-label">Telefono:</label>
                           <span className="input-highlight"></span>
                         </div>
                         <div className="input-container">
-                          <input placeholder="Correo Electrónico:" className="input-field" type="email" required
-                            onChange={(e) => setCorreo(e.target.value)} />
+                          <input placeholder="Correo Electrónico:" className="input-field" type="email" required onChange={(e) => setCorreo(e.target.value)} />
                           <label htmlFor="input-field" className="input-label">Correo Electrónico:</label>
                           <span className="input-highlight"></span>
                         </div>
                         <div className="input-container">
-                          <input placeholder="Contraseña" className="input-field" type="password" required
-                            onChange={(e) => setContraseña(e.target.value)} />
+                          <input placeholder="Contraseña" className="input-field" type="password" required onChange={(e) => setContraseña(e.target.value)} />
                           <label htmlFor="input-field" className="input-label">Contraseña:</label>
                           <span className="input-highlight"></span>
                         </div>
