@@ -35,68 +35,18 @@ function Login() {
         setShowPassword(!showPassword);
     };
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-
-    //     setShowError(false);
-
-    //     if (!email || !password) {
-    //         setShowError(true);
-    //         return;
-    //     }
-
-    //     try {
-    //         console.log('Enviando solicitud de inicio de sesión...');
-    //         const res = await fetch(UrlLoginUsuarios, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({
-    //                 correo: email,
-    //                 contraseña: password,
-    //             }),
-    //         });
-
-    //         if (res.ok) {
-    //             console.log('Inicio de sesión exitoso.');
-    //             const data = await res.json();
-    //             const token = data.token;
-    //             console.log('Token recibido:', token);
-    //             localStorage.setItem('authToken', token);
-    //             const decodedToken = decodeToken(token);
-    //             console.log('Token decodificado:', decodedToken);
-    //             // await subscribeUser(decodedToken._id);
-    //             login(decodedToken);
-
-    //             // Obtener productos con descuento
-    //             // await fetchDescuentos(decodedToken._id);
-
-    //             window.location.href = data.redirect;
-    //         } else {
-    //             const data = await res.json();
-    //             console.log('Error en el inicio de sesión:', data.message);
-    //             Swal.fire({ title: data.message, icon: 'error', timer: 1500 });
-    //         }
-    //     } catch (error) {
-    //         console.error('Error al realizar la solicitud:', error);
-    //         Swal.fire({ title: 'Error al realizar la solicitud', icon: 'error', timer: 1500 });
-    //     }
-    // };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        setShowError(false); // Resetear el estado de error
-    
+
+        setShowError(false);
+
         if (!email || !password) {
-            setShowError(true); // Mostrar mensaje si falta el correo o la contraseña
+            setShowError(true);
             return;
         }
-    
+
         try {
             console.log('Enviando solicitud de inicio de sesión...');
-            
             const res = await fetch(UrlLoginUsuarios, {
                 method: 'POST',
                 headers: {
@@ -107,39 +57,28 @@ function Login() {
                     contraseña: password,
                 }),
             });
-    
-            const data = await res.json(); // Obtener el mensaje de respuesta de la API
-    
+
             if (res.ok) {
                 console.log('Inicio de sesión exitoso.');
+                const data = await res.json();
                 const token = data.token;
                 console.log('Token recibido:', token);
                 localStorage.setItem('authToken', token);
                 const decodedToken = decodeToken(token);
-                console.log('Token decodificado:', decodedToken);
-    
-                // Redirigir a la URL basada en el rol
+                console.log('Token decodificado:', decodedToken);                
+                login(decodedToken);                            
+
                 window.location.href = data.redirect;
             } else {
-                // Mostrar el mensaje de error recibido de la API
+                const data = await res.json();
                 console.log('Error en el inicio de sesión:', data.message);
-                Swal.fire({ 
-                    title: data.message, 
-                    icon: 'error', 
-                    timer: 1500 
-                });
+                Swal.fire({ title: data.message, icon: 'error', timer: 1500 });
             }
         } catch (error) {
-            // Manejar cualquier otro error inesperado durante la solicitud
             console.error('Error al realizar la solicitud:', error);
-            Swal.fire({ 
-                title: 'Error al realizar la solicitud', 
-                icon: 'error', 
-                timer: 1500 
-            });
+            Swal.fire({ title: 'Error al realizar la solicitud', icon: 'error', timer: 1500 });
         }
     };
-    
 
     return (
         <div className="container">
