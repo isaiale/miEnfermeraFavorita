@@ -35,18 +35,68 @@ function Login() {
         setShowPassword(!showPassword);
     };
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+
+    //     setShowError(false);
+
+    //     if (!email || !password) {
+    //         setShowError(true);
+    //         return;
+    //     }
+
+    //     try {
+    //         console.log('Enviando solicitud de inicio de sesión...');
+    //         const res = await fetch(UrlLoginUsuarios, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({
+    //                 correo: email,
+    //                 contraseña: password,
+    //             }),
+    //         });
+
+    //         if (res.ok) {
+    //             console.log('Inicio de sesión exitoso.');
+    //             const data = await res.json();
+    //             const token = data.token;
+    //             console.log('Token recibido:', token);
+    //             localStorage.setItem('authToken', token);
+    //             const decodedToken = decodeToken(token);
+    //             console.log('Token decodificado:', decodedToken);
+    //             // await subscribeUser(decodedToken._id);
+    //             login(decodedToken);
+
+    //             // Obtener productos con descuento
+    //             // await fetchDescuentos(decodedToken._id);
+
+    //             window.location.href = data.redirect;
+    //         } else {
+    //             const data = await res.json();
+    //             console.log('Error en el inicio de sesión:', data.message);
+    //             Swal.fire({ title: data.message, icon: 'error', timer: 1500 });
+    //         }
+    //     } catch (error) {
+    //         console.error('Error al realizar la solicitud:', error);
+    //         Swal.fire({ title: 'Error al realizar la solicitud', icon: 'error', timer: 1500 });
+    //     }
+    // };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        setShowError(false);
-
+    
+        setShowError(false); // Resetear el estado de error
+    
         if (!email || !password) {
-            setShowError(true);
+            setShowError(true); // Mostrar mensaje si falta el correo o la contraseña
             return;
         }
-
+    
         try {
             console.log('Enviando solicitud de inicio de sesión...');
+            
             const res = await fetch(UrlLoginUsuarios, {
                 method: 'POST',
                 headers: {
@@ -57,115 +107,39 @@ function Login() {
                     contraseña: password,
                 }),
             });
-
+    
+            const data = await res.json(); // Obtener el mensaje de respuesta de la API
+    
             if (res.ok) {
                 console.log('Inicio de sesión exitoso.');
-                const data = await res.json();
                 const token = data.token;
                 console.log('Token recibido:', token);
                 localStorage.setItem('authToken', token);
                 const decodedToken = decodeToken(token);
                 console.log('Token decodificado:', decodedToken);
-                await subscribeUser(decodedToken._id);
-                login(decodedToken);
-
-                // Obtener productos con descuento
-                await fetchDescuentos(decodedToken._id);
-
+    
+                // Redirigir a la URL basada en el rol
                 window.location.href = data.redirect;
             } else {
-                const data = await res.json();
+                // Mostrar el mensaje de error recibido de la API
                 console.log('Error en el inicio de sesión:', data.message);
-                Swal.fire({ title: data.message, icon: 'error', timer: 1500 });
+                Swal.fire({ 
+                    title: data.message, 
+                    icon: 'error', 
+                    timer: 1500 
+                });
             }
         } catch (error) {
+            // Manejar cualquier otro error inesperado durante la solicitud
             console.error('Error al realizar la solicitud:', error);
-            Swal.fire({ title: 'Error al realizar la solicitud', icon: 'error', timer: 1500 });
-        }
-    };
-
-    const subscribeUser = async (userId) => {
-        console.log('Preparando suscripción a notificaciones push...');
-        if ('serviceWorker' in navigator) {
-            const registration = await navigator.serviceWorker.ready;
-            const permission = await Notification.requestPermission();
-
-            if (permission === 'granted') {
-                try {
-                    // Verificar suscripción existente
-                    const existingSubscription = await registration.pushManager.getSubscription();
-                    if (existingSubscription) {
-                        console.log('Suscripción existente encontrada:', existingSubscription);
-                        await existingSubscription.unsubscribe();
-                        console.log('Suscripción existente anulada.');
-                    }
-
-                    // Crear nueva suscripción
-                    const subscription = await registration.pushManager.subscribe({
-                        userVisibleOnly: true,
-                        applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
-                    });
-                    console.log('Usuario suscrito:', subscription);
-
-                    const response = await fetch(Subcripcioness, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ userId, subscription })
-                    });
-
-                    if (response.ok) {
-                        console.log('Suscripción enviada al servidor con éxito.');
-                    } else {
-                        console.log(`Error al enviar la suscripción al servidor: ${response.statusText}`);
-                    }
-                } catch (error) {
-                    console.log('Fallo en la suscripción:', error);
-                }
-            } else {
-                console.log('Permiso de notificación no concedido.');
-            }
-        } else {
-            console.log('Service Worker no soportado en este navegador.');
-        }
-    };
-
-    const urlBase64ToUint8Array = (base64String) => {
-        const padding = '='.repeat((4 - base64String.length % 4) % 4);
-        const base64 = (base64String + padding)
-            .replace(/\-/g, '+')
-            .replace(/_/g, '/');
-
-        const rawData = window.atob(base64);
-        const outputArray = new Uint8Array(rawData.length);
-
-        for (let i = 0; i < rawData.length; ++i) {
-            outputArray[i] = rawData.charCodeAt(i);
-        }
-        return outputArray;
-    };
-
-    const fetchDescuentos = async (userId) => {
-        console.log('Obteniendo productos con descuento...');
-        try {
-            const response = await fetch(descuentos_productos, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ userId })
+            Swal.fire({ 
+                title: 'Error al realizar la solicitud', 
+                icon: 'error', 
+                timer: 1500 
             });
-
-            if (response.ok) {
-                console.log('Productos con descuento obtenidos con éxito.');
-            } else {
-                console.log('Error al obtener productos con descuento.');
-            }
-        } catch (error) {
-            console.error('Error al obtener productos con descuento:', error);
         }
     };
+    
 
     return (
         <div className="container">
