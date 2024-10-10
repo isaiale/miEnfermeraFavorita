@@ -61,8 +61,8 @@ const NavbarUsuario = () => {
             icon: <FontAwesomeIcon icon={faTag} className="me-2" />,
         }/* ,
         {
-            path: "/contacto",
-            name: "Catalogo",
+            path: "/prueba",
+            name: "prueba",
             icon: <FontAwesomeIcon icon={faTag} className="me-2" />,
         } */
     ];
