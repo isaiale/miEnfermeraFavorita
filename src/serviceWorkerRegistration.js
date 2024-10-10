@@ -1,10 +1,9 @@
 // src/serviceWorkerRegistration.js
-
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
   window.location.hostname === '[::1]' ||
   window.location.hostname.match(
-    /^127(?:\.(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}$/
+    /^127(?:\.(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}$/ 
   )
 );
 
@@ -19,20 +18,24 @@ export function register(config) {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
 
       if (isLocalhost) {
-        // Esto es localhost. Comprobamos si el service worker existe realmente.
         checkValidServiceWorker(swUrl, config);
-
-        // Añade mensajes adicionales para localhost.
         navigator.serviceWorker.ready.then(() => {
           console.log(
-            'This web app is being served cache-first by a service ' +
-            'worker. To learn more, visit https://cra.link/PWA'
+            'This web app is being served cache-first by a service worker. To learn more, visit https://cra.link/PWA'
           );
         });
       } else {
-        // No es localhost. Solo registramos el service worker.
         registerValidSW(swUrl, config);
       }
+
+      // Solicitar permiso para las notificaciones push
+      askPermission().then((permission) => {
+        if (permission === 'granted') {
+          navigator.serviceWorker.ready.then((registration) => {
+            subscribeUserToPush(registration); // Suscribir al usuario
+          });
+        }
+      });
     });
   }
 }
@@ -50,13 +53,11 @@ function registerValidSW(swUrl, config) {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
               console.log('New content is available and will be used when all tabs for this page are closed.');
-
               if (config && config.onUpdate) {
                 config.onUpdate(registration);
               }
             } else {
               console.log('Content is cached for offline use.');
-
               if (config && config.onSuccess) {
                 config.onSuccess(registration);
               }
@@ -104,4 +105,75 @@ export function unregister() {
         console.error(error.message);
       });
   }
+}
+
+// ------------------------------------
+// Funciones adicionales para notificaciones push
+// ------------------------------------
+
+export function askPermission() {
+  return new Promise((resolve, reject) => {
+    const permissionResult = Notification.requestPermission((result) => {
+      resolve(result);
+    });
+
+    if (permissionResult) {
+      permissionResult.then(resolve, reject);
+    }
+  });
+}
+
+export function subscribeUserToPush(registration) {
+  const vapidPublicKey = 'TU_CLAVE_PUBLICA_VAPID'; // Debes reemplazarla con tu clave pública VAPID
+  const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
+
+  return registration.pushManager
+    .subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: convertedVapidKey
+    })
+    .then((subscription) => {
+      // Aquí puedes enviar esta suscripción a tu backend para almacenarla
+      console.log('Usuario suscrito a notificaciones push:', subscription);
+      // Enviar suscripción al servidor
+      return sendSubscriptionToBackend(subscription);
+    })
+    .catch((err) => {
+      console.error('Error al suscribir al usuario a notificaciones push:', err);
+    });
+}
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+// Enviar la suscripción al backend
+function sendSubscriptionToBackend(subscription) {
+  return fetch('/api/subscribe', {
+    method: 'POST',
+    body: JSON.stringify(subscription),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Error al guardar la suscripción en el servidor.');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log('Suscripción guardada en el servidor:', data);
+    })
+    .catch((err) => {
+      console.error('Error al enviar la suscripción al servidor:', err);
+    });
 }

@@ -2,7 +2,7 @@ const CACHE_NAME = 'mi-enfermera-favorita-cache-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/logo_transparent.png',  
+  '/logo_transparent.png',
   '/manifest.json',
   // Agrega aquí otros archivos que quieras cachear, como CSS o JS
 ];
@@ -46,74 +46,36 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
+// ----------------------------
+// Funcionalidad de Push Notifications
+// ----------------------------
 
+// Escuchar evento de Push
+self.addEventListener('push', (event) => {
+  const data = event.data.json(); // Parseamos los datos del mensaje
 
+  const options = {
+    body: data.body,
+    icon: '/logo192.png', // Ícono de la notificación
+    badge: '/logo192.png', // Badge de la notificación
+    data: {
+      url: data.url // Se puede incluir una URL para abrir al hacer clic en la notificación
+    }
+  };
 
+  event.waitUntil(
+    self.registration.showNotification(data.title, options)
+  );
+});
 
+// Manejar clic en la notificación
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close(); // Cierra la notificación cuando el usuario hace clic
 
-
-
-
-
-
-
-// const CACHE_NAME = 'my-app-cache-v1';
-// const urlsToCache = [
-//   '/',
-//   '/index.html',
-//   '/static/js/bundle.js',
-//   '/static/js/0.chunk.js',
-//   '/static/js/main.chunk.js',
-//   '/static/css/main.chunk.css'
-// ];
-
-// self.addEventListener('install', (event) => {
-//   event.waitUntil(
-//     caches.open(CACHE_NAME)
-//       .then((cache) => {
-//         console.log('Opened cache');
-//         return cache.addAll(urlsToCache);
-//       })
-//   );
-// });
-
-// self.addEventListener('fetch', (event) => {
-//   event.respondWith(
-//     caches.match(event.request)
-//       .then((response) => {
-//         if (response) {
-//           return response;
-//         }
-//         return fetch(event.request);
-//       }
-//     )
-//   );
-// });
-
-// self.addEventListener('activate', (event) => {
-//   const cacheWhitelist = [CACHE_NAME];
-//   event.waitUntil(
-//     caches.keys().then((cacheNames) => {
-//       return Promise.all(
-//         cacheNames.map((cacheName) => {
-//           if (cacheWhitelist.indexOf(cacheName) === -1) {
-//             return caches.delete(cacheName);
-//           }
-//         })
-//       );
-//     })
-//   );
-// });
-
-// self.addEventListener('push', (event) => {
-//   const data = event.data.json();
-//   const options = {
-//     body: data.body,
-//     icon: data.icon,
-//     badge: data.badge,
-//   };
-
-//   event.waitUntil(
-//     self.registration.showNotification(data.title, options)
-//   );
-// });
+  // Navegar a la URL proporcionada si hay una
+  if (event.notification.data && event.notification.data.url) {
+    event.waitUntil(
+      clients.openWindow(event.notification.data.url)
+    );
+  }
+});

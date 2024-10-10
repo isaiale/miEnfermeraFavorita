@@ -2,7 +2,7 @@
   "name": "Mi app",
   "short_name": "Mi app",
   "description": "Aplicación web para enfermeras",
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",
