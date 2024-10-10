@@ -20,7 +20,7 @@ const UserProfile = () => {
   useEffect(() => {
     // Asegurarse que 'useEffect' se llama siempre y manejar las condiciones dentro de este.
     if (!isAuthenticated) {
-      navigate('/login'); // Redirige al usuario si no está autenticado
+      navigate('/'); // Redirige al usuario si no está autenticado
     } else if (user) {
       getFotoPerfil(); // Llama a la función para obtener la foto de perfil si hay un usuario
     }
@@ -187,8 +187,8 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-start vh-100">
-      <div className="card text-center mt-5 p-4 shadow" style={{ width: '18rem' }}>
+    <div className="container d-flex justify-content-center align-items-start mb-4">
+      <div className="card text-center mt-2 p-6 shadow" style={{ width: '20rem' }}>
         <div className="position-relative mb-3">
           {showCamera ? (
             <>
@@ -199,7 +199,7 @@ const UserProfile = () => {
               <button className="btn btn-secondary mt-2" onClick={stopCamera}>
                 Cancelar
               </button>
-              <canvas ref={canvasRef} style={{ display: 'none' }} width="640" height="480"></canvas>
+              <canvas ref={canvasRef} style={{ display: 'none' }} width="640" height="640"></canvas>
             </>
           ) : (
             <>
@@ -212,7 +212,7 @@ const UserProfile = () => {
               />
               <div
                 className="profile-image-container"
-                onClick={() => setShowOptions(true)}
+                // onClick={() => setShowOptions(true)}
                 style={{ width: '150px', height: '150px', margin: '0 auto' }}
               >
                 {fotoPerfil ? (
@@ -233,41 +233,28 @@ const UserProfile = () => {
               </div>
             </>
           )}
-          {!showCamera && (
+          {/* {!showCamera && (
             <div
               className="position-absolute"
               style={{
                 backgroundColor: 'green',
                 borderRadius: '50%',
-                width: '30px',
-                height: '30px',
+                width: '40px',
+                height: '40px',
                 top: '10px',
                 right: '10px',
                 cursor: 'pointer',
               }}
               onClick={() => setShowOptions(true)}
             >
-              <span style={{ color: 'white', fontSize: '16px', textAlign: 'center' }}>+</span>
+              <span style={{ color: 'white', fontSize: '25px', textAlign: 'center' }}>+</span>
             </div>
-          )}
+          )} */}
         </div>
 
-        {showOptions && (
-          <div className="position-absolute bg-light p-3" style={{ borderRadius: '10px', top: '160px', right: '50px', zIndex: '1' }}>
-            <button className="btn btn-secondary mb-2" onClick={openCamera}>
-              Tomar Foto
-            </button>
-            <button className="btn btn-secondary mb-2" onClick={openFileInput}>
-              Seleccionar de Archivos
-            </button>
-            <button className="btn btn-danger" onClick={() => setShowOptions(false)}>
-              Cerrar
-            </button>
-          </div>
-        )}
 
         <div className="card-body">
-          <h5 className="card-title">
+            <h5 className="card-title">
             {user.nombre}&nbsp;{user.apellido}
           </h5>
           <p className="card-text">{user.correo}</p>
@@ -278,13 +265,30 @@ const UserProfile = () => {
             <i
               className="icono fa fa-circle"
               style={{ color: user.estado === 'ACTIVO' ? 'green' : 'red' }}
-            ></i>{' '}
+              ></i>{' '}
             {user.estado}
           </p>
           <p className="card-text">
             <i className="icono fa fa-calendar"></i>&nbsp;{user.fechaCreado.split('T')[0]}
           </p>
           {/* <a href="#" className="btn btn-primary">Edit Profile</a> */}
+              {showOptions && (
+                <div className="position-absolute bg-light p-2" style={{ borderRadius: '10px', top: '200px', right: '30px', left: '40px', zIndex: '1' }}>
+                  <button className="btn btn-secondary mb-2" onClick={openCamera}>
+                    Tomar Foto
+                  </button>
+                  <button className="btn btn-secondary mb-2" onClick={openFileInput}>
+                    Seleccionar de Archivos
+                  </button>
+                       <button className="btn btn-danger" onClick={() => setShowOptions(false)}>
+                    Cerrar
+                  </button>
+                </div>
+              )}
+          <button className="btn btn-primary mt-2" onClick={() => setShowOptions(true)}>
+                Agregar perfil
+              </button>
+
         </div>
       </div>
     </div>
