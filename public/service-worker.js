@@ -4,8 +4,10 @@ const urlsToCache = [
   '/index.html',
   '/logo_transparent.png',
   '/manifest.json',
-  // Agrega aquí otros archivos que quieras cachear, como CSS o JS
+  '/styles.css', // Agregar tu CSS aquí
+  '/app.js', // Tu archivo JavaScript aquí
 ];
+
 
 // Instalación del Service Worker y cacheo de archivos
 self.addEventListener('install', (event) => {
