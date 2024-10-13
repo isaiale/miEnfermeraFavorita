@@ -1,9 +1,8 @@
-// src/serviceWorkerRegistration.js
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
   window.location.hostname === '[::1]' ||
   window.location.hostname.match(
-    /^127(?:\.(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}$/ 
+    /^127(?:\.(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}$/
   )
 );
 
@@ -19,23 +18,15 @@ export function register(config) {
 
       if (isLocalhost) {
         checkValidServiceWorker(swUrl, config);
+
         navigator.serviceWorker.ready.then(() => {
           console.log(
-            'This web app is being served cache-first by a service worker. To learn more, visit https://cra.link/PWA'
+            'Esta aplicación está siendo servida por un service worker.'
           );
         });
       } else {
         registerValidSW(swUrl, config);
       }
-
-      // Solicitar permiso para las notificaciones push
-      askPermission().then((permission) => {
-        if (permission === 'granted') {
-          navigator.serviceWorker.ready.then((registration) => {
-            subscribeUserToPush(registration); // Suscribir al usuario
-          });
-        }
-      });
     });
   }
 }
@@ -44,6 +35,18 @@ function registerValidSW(swUrl, config) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
+      console.log('Service Worker registrado correctamente:', registration);
+
+      // Pregunta al usuario si desea recibir notificaciones push
+      askPermission().then((permissionResult) => {
+        if (permissionResult === 'granted') {
+          console.log('Permiso concedido para notificaciones');
+          subscribeUserToPush(registration); // Suscribir al usuario
+        } else {
+          console.log('Permiso denegado para notificaciones');
+        }
+      });
+
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {
@@ -52,12 +55,14 @@ function registerValidSW(swUrl, config) {
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
-              console.log('New content is available and will be used when all tabs for this page are closed.');
+              console.log(
+                'Nuevo contenido está disponible y se utilizará cuando todas las pestañas de esta página se cierren.'
+              );
               if (config && config.onUpdate) {
                 config.onUpdate(registration);
               }
             } else {
-              console.log('Content is cached for offline use.');
+              console.log('El contenido está cacheado para uso offline.');
               if (config && config.onSuccess) {
                 config.onSuccess(registration);
               }
@@ -67,14 +72,12 @@ function registerValidSW(swUrl, config) {
       };
     })
     .catch((error) => {
-      console.error('Error during service worker registration:', error);
+      console.error('Error durante la instalación del Service Worker:', error);
     });
 }
 
 function checkValidServiceWorker(swUrl, config) {
-  fetch(swUrl, {
-    headers: { 'Service-Worker': 'script' },
-  })
+  fetch(swUrl, { headers: { 'Service-Worker': 'script' } })
     .then((response) => {
       const contentType = response.headers.get('content-type');
       if (
@@ -91,89 +94,116 @@ function checkValidServiceWorker(swUrl, config) {
       }
     })
     .catch(() => {
-      console.log('No internet connection found. App is running in offline mode.');
+      console.log(
+        'No se encontró conexión a Internet. La aplicación está funcionando en modo offline.'
+      );
     });
 }
 
 export function unregister() {
+  // Registramos el Service Worker
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.ready
-      .then((registration) => {
-        registration.unregister();
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
-  }
+    navigator.serviceWorker.register('/service-worker.js')
+        .then(function (registration) {
+            console.log('Service Worker registrado con éxito:', registration);
+        })
+        .catch(function (error) {
+            console.log('Registro de Service Worker fallido:', error);
+        });
+}
 }
 
-// ------------------------------------
-// Funciones adicionales para notificaciones push
-// ------------------------------------
 
-export function askPermission() {
-  return new Promise((resolve, reject) => {
-    const permissionResult = Notification.requestPermission((result) => {
-      resolve(result);
-    });
+// // ------------------------------------
+// // Funciones adicionales para notificaciones push
+// // ------------------------------------
 
-    if (permissionResult) {
-      permissionResult.then(resolve, reject);
-    }
-  });
-}
+// export function askPermission() {
+//   return new Promise((resolve, reject) => {
+//     const permissionResult = Notification.requestPermission((result) => {
+//       resolve(result);
+//     });
 
-export function subscribeUserToPush(registration) {
-  const vapidPublicKey = 'TU_CLAVE_PUBLICA_VAPID'; // Debes reemplazarla con tu clave pública VAPID
-  const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
+//     if (permissionResult) {
+//       permissionResult.then(resolve, reject);
+//     }
+//   });
+// }
 
-  return registration.pushManager
-    .subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: convertedVapidKey
-    })
-    .then((subscription) => {
-      // Aquí puedes enviar esta suscripción a tu backend para almacenarla
-      console.log('Usuario suscrito a notificaciones push:', subscription);
-      // Enviar suscripción al servidor
-      return sendSubscriptionToBackend(subscription);
-    })
-    .catch((err) => {
-      console.error('Error al suscribir al usuario a notificaciones push:', err);
-    });
-}
+// export function subscribeUserToPush(registration) {
+//   // Verifica si el usuario está en el localStorage
+//   const storedUser = localStorage.getItem('user');
+  
+//   if (storedUser) {
+//     const user = JSON.parse(storedUser);
+//     console.log('Usuario encontrado en localStorage:', user);
 
-function urlBase64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
+//     if (user.id) {
+//       console.log(`El ID del usuario es: ${user.id}`);
+      
+//       const vapidPublicKey = 'BG60RQWPyG2ENxTZGNN0A4gu4iBltktL8X5keD1Qp6d-laxrtViyba3WppAKI-nj1RJZOvvw3s71sNngCxjCSVo'; // Reemplazar con la clave pública VAPID real
+//       const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
 
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
-}
+//       return registration.pushManager
+//         .subscribe({
+//           userVisibleOnly: true,
+//           applicationServerKey: convertedVapidKey
+//         })
+//         .then((subscription) => {
+//           console.log('Usuario suscrito a notificaciones push:', subscription);
+//           // Envía la suscripción junto con el userId al backend
+//           return sendSubscriptionToBackend(subscription, user.id);
+//         })
+//         .catch((err) => {
+//           console.error('Error al suscribir al usuario a notificaciones push:', err);
+//         });
+//     } else {
+//       console.log('El ID del usuario no está disponible en localStorage.');
+//       return;
+//     }
+//   } else {
+//     console.log('No se encontró ningún usuario en el localStorage.');
+//     return;
+//   }
+// }
 
-// Enviar la suscripción al backend
-function sendSubscriptionToBackend(subscription) {
-  return fetch('/api/subscribe', {
-    method: 'POST',
-    body: JSON.stringify(subscription),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Error al guardar la suscripción en el servidor.');
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log('Suscripción guardada en el servidor:', data);
-    })
-    .catch((err) => {
-      console.error('Error al enviar la suscripción al servidor:', err);
-    });
-}
+// // Convierte base64 a Uint8Array
+// function urlBase64ToUint8Array(base64String) {
+//   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+//   const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+//   const rawData = window.atob(base64);
+//   const outputArray = new Uint8Array(rawData.length);
+
+//   for (let i = 0; i < rawData.length; ++i) {
+//     outputArray[i] = rawData.charCodeAt(i);
+//   }
+//   return outputArray;
+// }
+
+// // Enviar la suscripción al backend junto con el userId
+// function sendSubscriptionToBackend(subscription, userId) {
+//   const payload = {
+//     subscription,
+//     userId  // Envía el ID del usuario junto con la suscripción
+//   };
+
+//   return fetch('/api/subscribe', {
+//     method: 'POST',
+//     body: JSON.stringify(payload),
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//   })
+//     .then((response) => {
+//       if (!response.ok) {
+//         throw new Error('Error al guardar la suscripción en el servidor.');
+//       }
+//       return response.json();
+//     })
+//     .then((data) => {
+//       console.log('Suscripción guardada en el servidor:', data);
+//     })
+//     .catch((err) => {
+//       console.error('Error al enviar la suscripción al servidor:', err);
+//     });
+// }

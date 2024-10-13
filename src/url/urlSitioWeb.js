@@ -40,7 +40,7 @@ export const Ventas_Vista_Admin = "https://back-end-enfermera.vercel.app/api/ven
 export const RentaDeUsuarios = "https://back-end-enfermera.vercel.app/api/rentas/usuario/"// Para checar la renta de cada usuario 
 export const comentarios = "https://back-end-enfermera.vercel.app/api/comentarios"
 
-export const Subcripcioness = "https://back-end-enfermera.vercel.app/subscribeUsuario/subscribe"
+export const Subcripcioness = "https://back-end-enfermera.vercel.app/api/suscripciones/logeo"
 // export const Subcripcioness ="http://localhost:3000/subscribeUsuario/"
 
 // export const Productos_Renta = "https://back-end-enfermera.vercel.app/api/productos-renta"

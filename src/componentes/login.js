@@ -2,15 +2,14 @@ import React, { useState, useContext, useEffect } from 'react';
 import { decodeToken } from "react-jwt";
 import { AuthContext } from '../autenticar/AuthProvider';
 import Form from 'react-bootstrap/Form';
-import { UrlLoginUsuarios, Subcripcioness, descuentos_productos } from '../url/urlSitioWeb';
+import { UrlLoginUsuarios, Subcripcioness } from '../url/urlSitioWeb';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import '../css/colores.css';
 import Swal from "sweetalert2";
 import Breadcrumb from '../utilidad/migapan';
 
-const vapidPublicKey = 'BG60RQWPyG2ENxTZGNN0A4gu4iBltktL8X5keD1Qp6d-laxrtViyba3WppAKI-nj1RJZOvvw3s71sNngCxjCSVo';
+const vapidPublicKey = 'BFYtOg9-LQWHmObZKXm4VIV2BImn5nBrhz4h37GQpbdj0hSBcghJG7h-wldz-fx9aTt7oaqKSS3KXhA4nXf32pY';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -19,17 +18,18 @@ function Login() {
     const { login } = useContext(AuthContext);
     const [showError, setShowError] = useState(false);
 
-    useEffect(() => {
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then(function (registration) {
-                    console.log('Service Worker registrado con éxito:', registration);
-                })
-                .catch(function (error) {
-                    console.log('Registro de Service Worker fallido:', error);
-                });
-        }
-    }, []);
+    // useEffect(() => {
+    //     // Registramos el Service Worker
+    //     if ('serviceWorker' in navigator) {
+    //         navigator.serviceWorker.register('/service-worker.js')
+    //             .then(function (registration) {
+    //                 console.log('Service Worker registrado con éxito:', registration);
+    //             })
+    //             .catch(function (error) {
+    //                 console.log('Registro de Service Worker fallido:', error);
+    //             });
+    //     }
+    // }, []);
 
     const handleShowPassword = () => {
         setShowPassword(!showPassword);
@@ -65,8 +65,11 @@ function Login() {
                 console.log('Token recibido:', token);
                 localStorage.setItem('authToken', token);
                 const decodedToken = decodeToken(token);
-                console.log('Token decodificado:', decodedToken);                
-                login(decodedToken);                            
+                console.log('Token decodificado:', decodedToken);
+                login(decodedToken); // Guardamos el usuario autenticado
+
+                // Después de iniciar sesión, intentamos suscribir a notificaciones push
+                await registerPushSubscription(decodedToken._id); // Pasamos el userId
 
                 window.location.href = data.redirect;
             } else {
@@ -79,6 +82,67 @@ function Login() {
             Swal.fire({ title: 'Error al realizar la solicitud', icon: 'error', timer: 1500 });
         }
     };
+
+    // Función para suscribir al usuario a notificaciones push
+    const registerPushSubscription = async (userId) => {
+        try {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                console.log('Permiso de notificaciones concedido.');
+                
+                const registration = await navigator.serviceWorker.ready; // Esperamos que el Service Worker esté listo
+                
+                const subscription = await registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
+                });
+
+                console.log('Suscripción de notificaciones creada:', subscription);
+                await sendSubscriptionToBackend(subscription, userId);
+            } else {
+                console.log('Permiso de notificaciones denegado.');
+            }
+        } catch (error) {
+            console.error('Error al suscribir al usuario:', error);
+        }
+    };
+
+    // Función para enviar la suscripción al backend
+    const sendSubscriptionToBackend = async (subscription, userId) => {
+        try {
+            const res = await fetch(Subcripcioness, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    subscription: subscription
+                }),
+            });
+
+            if (res.ok) {
+                console.log('Suscripción enviada y registrada en el servidor.');
+            } else {
+                console.log('Error al registrar la suscripción en el servidor.');
+            }
+        } catch (error) {
+            console.error('Error al enviar la suscripción al backend:', error);
+        }
+    };
+
+    // Función para convertir la clave VAPID
+    function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+        const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+    }
 
     return (
         <div className="container">
