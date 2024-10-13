@@ -41,7 +41,7 @@ function registerValidSW(swUrl, config) {
       askPermission().then((permissionResult) => {
         if (permissionResult === 'granted') {
           console.log('Permiso concedido para notificaciones');
-          // subscribeUserToPush(registration); // Suscribir al usuario
+          subscribeUserToPush(registration); // Suscribir al usuario
         } else {
           console.log('Permiso denegado para notificaciones');
         }
@@ -137,7 +137,7 @@ export function subscribeUserToPush(registration) {
     console.log('Usuario encontrado en localStorage:', user);
 
     if (user.id) {
-      console.log(`El ID del usuario es: ${user._id}`);
+      console.log(`El ID del usuario es: ${user.id}`);
       
       const vapidPublicKey = 'BG60RQWPyG2ENxTZGNN0A4gu4iBltktL8X5keD1Qp6d-laxrtViyba3WppAKI-nj1RJZOvvw3s71sNngCxjCSVo'; // Reemplazar con la clave pública VAPID real
       const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
@@ -185,7 +185,7 @@ function sendSubscriptionToBackend(subscription, userId) {
     userId  // Envía el ID del usuario junto con la suscripción
   };
 
-  return fetch('/api/subscribe', {
+  return fetch('https://back-end-enfermera.vercel.app/api/suscripciones/logeo', {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: {

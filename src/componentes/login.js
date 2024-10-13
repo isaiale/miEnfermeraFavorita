@@ -18,17 +18,17 @@ function Login() {
     const { login } = useContext(AuthContext);
     const [showError, setShowError] = useState(false);
 
-    useEffect(() => {
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then(function (registration) {
-                    console.log('Service Worker registrado con éxito:', registration);
-                })
-                .catch(function (error) {
-                    console.log('Registro de Service Worker fallido:', error);
-                });
-        }
-    }, []);
+    // useEffect(() => {
+    //     if ('serviceWorker' in navigator) {
+    //         navigator.serviceWorker.register('/service-worker.js')
+    //             .then(function (registration) {
+    //                 console.log('Service Worker registrado con éxito:', registration);
+    //             })
+    //             .catch(function (error) {
+    //                 console.log('Registro de Service Worker fallido:', error);
+    //             });
+    //     }
+    // }, []);
 
     const handleShowPassword = () => {
         setShowPassword(!showPassword);
@@ -68,7 +68,7 @@ function Login() {
                 login(decodedToken); // Guardamos el usuario autenticado
 
                 // Después de iniciar sesión, intentamos suscribir a notificaciones push
-                registerPushSubscription(decodedToken._id); // Pasamos el userId
+                // registerPushSubscription(decodedToken._id); // Pasamos el userId
 
                 window.location.href = data.redirect;
             } else {
