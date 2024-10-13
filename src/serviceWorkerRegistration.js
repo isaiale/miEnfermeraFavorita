@@ -133,35 +133,49 @@ export function subscribeUserToPush(registration) {
   const storedUser = localStorage.getItem('user');
   
   if (storedUser) {
-    const user = JSON.parse(storedUser);
-    console.log('Usuario encontrado en localStorage:', user);
+      const user = JSON.parse(storedUser);
+      console.log('Usuario encontrado en localStorage:', user);
 
-    if (user._id) {
-      console.log(`El ID del usuario es: ${user._id}`);
-      
-      const vapidPublicKey = 'BG60RQWPyG2ENxTZGNN0A4gu4iBltktL8X5keD1Qp6d-laxrtViyba3WppAKI-nj1RJZOvvw3s71sNngCxjCSVo'; // Reemplazar con la clave pública VAPID real
-      const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
+      if (user._id) {
+          console.log(`El ID del usuario es: ${user._id}`);
+          
+          const vapidPublicKey = 'BG60RQWPyG2ENxTZGNN0A4gu4iBltktL8X5keD1Qp6d-laxrtViyba3WppAKI-nj1RJZOvvw3s71sNngCxjCSVo'; // Reemplazar con la clave pública VAPID real
+          const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
 
-      return registration.pushManager
-        .subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: convertedVapidKey
-        })
-        .then((subscription) => {
-          console.log('Usuario suscrito a notificaciones push:', subscription);
-          // Envía la suscripción junto con el userId al backend
-          return sendSubscriptionToBackend(subscription, user._id);
-        })
-        .catch((err) => {
-          console.error('Error al suscribir al usuario a notificaciones push:', err);
-        });
-    } else {
-      console.log('El ID del usuario no está disponible en localStorage.');
-      return;
-    }
+          return registration.pushManager.getSubscription()
+              .then((subscription) => {
+                  // Si ya hay una suscripción existente, cancélala
+                  if (subscription) {
+                      console.log('Cancelando la suscripción existente...');
+                      return subscription.unsubscribe().then(() => {
+                          console.log('Suscripción cancelada.');
+                          return registration.pushManager.subscribe({
+                              userVisibleOnly: true,
+                              applicationServerKey: convertedVapidKey
+                          });
+                      });
+                  } else {
+                      return registration.pushManager.subscribe({
+                          userVisibleOnly: true,
+                          applicationServerKey: convertedVapidKey
+                      });
+                  }
+              })
+              .then((newSubscription) => {
+                  console.log('Usuario suscrito a notificaciones push:', newSubscription);
+                  // Envía la suscripción junto con el userId al backend
+                  return sendSubscriptionToBackend(newSubscription, user._id);
+              })
+              .catch((err) => {
+                  console.error('Error al suscribir al usuario a notificaciones push:', err);
+              });
+      } else {
+          console.log('El ID del usuario no está disponible en localStorage.');
+          return;
+      }
   } else {
-    console.log('No se encontró ningún usuario en el localStorage.');
-    return;
+      console.log('No se encontró ningún usuario en el localStorage.');
+      return;
   }
 }
 
