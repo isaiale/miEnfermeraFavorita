@@ -5,7 +5,7 @@ const urlsToCache = [
   '/logo_transparent.png',
   '/manifest.json',
   '/styles.css', // Agregar tu CSS aquí
-  '/app.js', // Tu archivo JavaScript aquí
+  '/app.js'
 ];
 
 
