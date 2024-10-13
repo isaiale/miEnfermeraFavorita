@@ -9,7 +9,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import Swal from "sweetalert2";
 import Breadcrumb from '../utilidad/migapan';
 
-const vapidPublicKey = 'BFYtOg9-LQWHmObZKXm4VIV2BImn5nBrhz4h37GQpbdj0hSBcghJG7h-wldz-fx9aTt7oaqKSS3KXhA4nXf32pY';
+const vapidPublicKey = 'BG60RQWPyG2ENxTZGNN0A4gu4iBltktL8X5keD1Qp6d-laxrtViyba3WppAKI-nj1RJZOvvw3s71sNngCxjCSVo';
 
 function Login() {
     const [email, setEmail] = useState('');
