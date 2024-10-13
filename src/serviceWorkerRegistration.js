@@ -131,7 +131,7 @@ export function askPermission() {
 export function subscribeUserToPush(registration) {
   // Verifica si el usuario está en el localStorage
   const storedUser = localStorage.getItem('user');
-  
+
   if (storedUser) {
       const user = JSON.parse(storedUser);
       console.log('Usuario encontrado en localStorage:', user);
@@ -144,27 +144,21 @@ export function subscribeUserToPush(registration) {
 
           return registration.pushManager.getSubscription()
               .then((subscription) => {
-                  // Si ya hay una suscripción existente, cancélala
                   if (subscription) {
-                      console.log('Cancelando la suscripción existente...');
-                      return subscription.unsubscribe().then(() => {
-                          console.log('Suscripción cancelada.');
-                          return registration.pushManager.subscribe({
-                              userVisibleOnly: true,
-                              applicationServerKey: convertedVapidKey
-                          });
-                      });
+                      // Si ya existe una suscripción, la enviamos al backend
+                      console.log('Suscripción existente encontrada:', subscription);
+                      return sendSubscriptionToBackend(subscription, user._id);
                   } else {
+                      // Si no hay suscripción, crear una nueva
                       return registration.pushManager.subscribe({
                           userVisibleOnly: true,
                           applicationServerKey: convertedVapidKey
+                      }).then((newSubscription) => {
+                          console.log('Usuario suscrito a notificaciones push:', newSubscription);
+                          // Envía la nueva suscripción al backend
+                          return sendSubscriptionToBackend(newSubscription, user._id);
                       });
                   }
-              })
-              .then((newSubscription) => {
-                  console.log('Usuario suscrito a notificaciones push:', newSubscription);
-                  // Envía la suscripción junto con el userId al backend
-                  return sendSubscriptionToBackend(newSubscription, user._id);
               })
               .catch((err) => {
                   console.error('Error al suscribir al usuario a notificaciones push:', err);
@@ -178,6 +172,7 @@ export function subscribeUserToPush(registration) {
       return;
   }
 }
+
 
 // Convierte base64 a Uint8Array
 function urlBase64ToUint8Array(base64String) {
