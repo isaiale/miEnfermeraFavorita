@@ -49,7 +49,7 @@ export default function App() {
         <AlertaConexionInternet />
         <ScrollTop />
         <Routes>
-          <Route path='/' element={<InicioUsuario />} />
+          <Route path="/" element={<InicioUsuario />} />
           <Route path="productos/:categoriaId" element={<Producto />} />
           <Route path="login" element={<LoginUser />} />
           <Route path="registroUsuario" element={<RegistroUser />} />
