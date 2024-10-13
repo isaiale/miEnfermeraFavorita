@@ -136,8 +136,8 @@ export function subscribeUserToPush(registration) {
     const user = JSON.parse(storedUser);
     console.log('Usuario encontrado en localStorage:', user);
 
-    if (user.id) {
-      console.log(`El ID del usuario es: ${user.id}`);
+    if (user._id) {
+      console.log(`El ID del usuario es: ${user._id}`);
       
       const vapidPublicKey = 'BG60RQWPyG2ENxTZGNN0A4gu4iBltktL8X5keD1Qp6d-laxrtViyba3WppAKI-nj1RJZOvvw3s71sNngCxjCSVo'; // Reemplazar con la clave pública VAPID real
       const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
@@ -150,7 +150,7 @@ export function subscribeUserToPush(registration) {
         .then((subscription) => {
           console.log('Usuario suscrito a notificaciones push:', subscription);
           // Envía la suscripción junto con el userId al backend
-          return sendSubscriptionToBackend(subscription, user.id);
+          return sendSubscriptionToBackend(subscription, user._id);
         })
         .catch((err) => {
           console.error('Error al suscribir al usuario a notificaciones push:', err);
