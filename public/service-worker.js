@@ -1,6 +1,7 @@
 const CACHE_NAME = 'mi-enfermera-favorita-cache-v1';
 const urlsToCache = [
   '/',
+  '/login',
   '/index.html',
   '/logo_transparent.png',
   '/manifest.json',
