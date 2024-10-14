@@ -24,6 +24,7 @@ const responsive = {
 const UniformesDestacados = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isOnline, setIsOnline] = useState(navigator.onLine); // Para gestionar la conexión
   const categoriaId = '661e80554fe28882b7029321'; // Reemplaza con el ID real
 
   useEffect(() => {
@@ -36,14 +37,39 @@ const UniformesDestacados = () => {
         const data = await response.json();
         setProducts(data);
         setIsLoading(false);
+        localStorage.setItem('products', JSON.stringify(data)); // Guardar en localStorage
       } catch (error) {
         console.error("Error al hacer la solicitud:", error);
         setIsLoading(false);
       }
     };
 
-    fetchProducts();
-  }, [categoriaId]);
+    if (isOnline) {
+      fetchProducts(); // Cargar productos si hay conexión
+    } else {
+      const storedProducts = localStorage.getItem('products');
+      if (storedProducts) {
+        setProducts(JSON.parse(storedProducts)); // Cargar desde localStorage si no hay conexión
+        setIsLoading(false);
+      }
+    }
+
+    // Escuchar cambios en la conexión
+    const handleConnectionChange = () => {
+      setIsOnline(navigator.onLine);
+      if (navigator.onLine) {
+        fetchProducts(); // Actualizar productos cuando vuelva la conexión
+      }
+    };
+
+    window.addEventListener('online', handleConnectionChange);
+    window.addEventListener('offline', handleConnectionChange);
+
+    return () => {
+      window.removeEventListener('online', handleConnectionChange);
+      window.removeEventListener('offline', handleConnectionChange);
+    };
+  }, [categoriaId, isOnline]);
 
   if (isLoading) {
     return <div className="text-center">Cargando...</div>;
@@ -80,11 +106,6 @@ const UniformesDestacados = () => {
                 </div>
                 <div className="price">${product.precio}</div>
               </div>
-              {/* <div className="me-1 ms-1">
-              <Link className="text-decoration-none btnvermas" to={`/detalle-producto/${product._id}`}>
-                Ver más
-              </Link>
-            </div> */}
             </Link>
           </div>
         ))}

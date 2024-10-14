@@ -33,6 +33,7 @@ export const AuthContextProvider = ({ children }) => {
     // Limpiar la información del usuario en localStorage al cerrar sesión
     localStorage.removeItem('user');
     localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('fotoPerfil');
   };
 
   const authContextData = {

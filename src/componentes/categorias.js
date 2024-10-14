@@ -23,6 +23,7 @@ const responsive = {
 
 const TuComponente = () => {
   const [categorias, setCategorias] = useState([]);
+  const [isOnline, setIsOnline] = useState(navigator.onLine); // Estado para la conexión
 
   useEffect(() => {
     const fetchCategorias = async () => {
@@ -33,13 +34,37 @@ const TuComponente = () => {
         }
         const data = await response.json();
         setCategorias(data);
+        localStorage.setItem('categorias', JSON.stringify(data)); // Guardar las categorías en localStorage
       } catch (error) {
         console.error('Error al obtener las categorías:', error);
       }
     };
 
-    fetchCategorias();
-  }, []);
+    if (isOnline) {
+      fetchCategorias(); // Solo hace la solicitud si está en línea
+    } else {
+      const storedCategorias = localStorage.getItem('categorias');
+      if (storedCategorias) {
+        setCategorias(JSON.parse(storedCategorias)); // Si está offline, cargar desde localStorage
+      }
+    }
+
+    // Escuchar cambios de conexión
+    const handleConnectionChange = () => {
+      setIsOnline(navigator.onLine);
+      if (navigator.onLine) {
+        fetchCategorias(); // Actualizar categorías cuando vuelva la conexión
+      }
+    };
+
+    window.addEventListener('online', handleConnectionChange);
+    window.addEventListener('offline', handleConnectionChange);
+
+    return () => {
+      window.removeEventListener('online', handleConnectionChange);
+      window.removeEventListener('offline', handleConnectionChange);
+    };
+  }, [isOnline]);
 
   return (
     <>
@@ -51,16 +76,15 @@ const TuComponente = () => {
           <Link key={index} to={`/productos/${categoria._id}`} className='link-no-underline'>
             <div className='content-categoria'>              
               <div className='description'>
-                <h6 className='lead text-description-categoria'><i class="fa fa-solid fa-tag"></i> {categoria.nombre}</h6>
+                <h6 className='lead text-description-categoria'><i className="fa fa-solid fa-tag"></i> {categoria.nombre}</h6>
               </div>
             </div>
           </Link>
         ))}
         <Link to={`/accesorioss`} className='link-no-underline'>
           <div className='content-categoria'>
-            
             <div className='description'>
-              <h6 className='lead text-description-categoria'><i class="fa fa-solid fa-tag"></i> Accesorios</h6>
+              <h6 className='lead text-description-categoria'><i className="fa fa-solid fa-tag"></i> Accesorios</h6>
             </div>
           </div>
         </Link>

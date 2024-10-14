@@ -16,9 +16,11 @@ const NavbarUsuario = () => {
     const [abrirDrop1, setAbrirDrop1] = useState(false);
     const [abrirDrop2, setAbrirDrop2] = useState(false);
     const [categorias, setCategorias] = useState([]);
+    const [isOnline, setIsOnline] = useState(navigator.onLine);
     const navigate = useNavigate();
 
     useEffect(() => {
+        // Función para obtener las categorías
         const fetchCategorias = async () => {
             try {
                 const response = await fetch(CategoriaProducto);
@@ -27,13 +29,52 @@ const NavbarUsuario = () => {
                 }
                 const data = await response.json();
                 setCategorias(data);
+                localStorage.setItem('categorias', JSON.stringify(data)); // Guardar las categorías en localStorage
             } catch (error) {
                 Swal.fire({ title: "Error al hacer la solicitud.", icon: "error" });
             }
         };
 
-        fetchCategorias();
-    }, []);
+        // Si estamos offline, intentamos cargar las categorías desde localStorage
+        if (!isOnline) {
+            const storedCategorias = localStorage.getItem('categorias');
+            if (storedCategorias) {
+                setCategorias(JSON.parse(storedCategorias));
+            } else {
+                Swal.fire({ title: "Estás sin conexión y no hay datos locales de categorías.", icon: "warning" });
+            }
+        } else {
+            fetchCategorias(); // Si estamos online, obtenemos las categorías desde la API
+        }
+
+        // Escuchar cambios de conexión
+        window.addEventListener('online', handleConnectionChange);
+        window.addEventListener('offline', handleConnectionChange);
+
+        return () => {
+            window.removeEventListener('online', handleConnectionChange);
+            window.removeEventListener('offline', handleConnectionChange);
+        };
+    }, [isOnline]);
+
+    const handleConnectionChange = () => {
+        setIsOnline(navigator.onLine);
+        if (navigator.onLine) {
+            const fetchCategorias = async () => {
+                try {
+                    const response = await fetch(CategoriaProducto);
+                    if (response.ok) {
+                        const data = await response.json();
+                        setCategorias(data);
+                        localStorage.setItem('categorias', JSON.stringify(data)); // Actualizar localStorage al volver online
+                    }
+                } catch (error) {
+                    console.error('Error al actualizar categorías al volver online:', error);
+                }
+            };
+            fetchCategorias();
+        }
+    };
 
     const cerrarSesion = () => {
         logout();
@@ -59,12 +100,7 @@ const NavbarUsuario = () => {
             path: "/accesorioss",
             name: "Accesorios",
             icon: <FontAwesomeIcon icon={faTag} className="me-2" />,
-        }/* ,
-        {
-            path: "/prueba",
-            name: "prueba",
-            icon: <FontAwesomeIcon icon={faTag} className="me-2" />,
-        } */
+        }
     ];
 
     return (
@@ -76,7 +112,6 @@ const NavbarUsuario = () => {
                 </button>
 
                 <nav className={`nav ${menuVisible ? 'visible' : ''}`}>
-
                     <button className="cerrar-menu" onClick={toggleMenu}>
                         <FontAwesomeIcon icon={faXmark} className="me-2" />
                     </button>
@@ -87,6 +122,7 @@ const NavbarUsuario = () => {
                             <h2 className=' lead '>{item.name}</h2>
                         </Link>
                     ))}
+
                     <>
                         <Dropdown className='Dropdown lead'
                             show={abrirDrop}
@@ -113,6 +149,7 @@ const NavbarUsuario = () => {
                                 ))}
                             </Dropdown.Menu>
                         </Dropdown>
+                        
                         <Dropdown className='Dropdown lead'
                             show={abrirDrop1}
                             onMouseOver={() => setAbrirDrop1(true)}
@@ -130,12 +167,11 @@ const NavbarUsuario = () => {
                                 )}
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-                                {/* <Dropdown.Item as={Link} to="/busquedasimple">Busqueda Simple</Dropdown.Item> */}
                                 <Dropdown.Item as={Link} to="/busquedaAvanzada">Busqueda Avanzada</Dropdown.Item>
-                                {/* <Dropdown.Item as={Link} to="/contacto">Contacto</Dropdown.Item>*/}
                                 <Dropdown.Item as={Link} to="/ayuda">Diabetes</Dropdown.Item> 
                             </Dropdown.Menu>
                         </Dropdown>
+
                         {isAuthenticated !== null && user?.rol === "User" ? (
                             <>
                                 <Link to='/carritoDeCompras' className={` ${menuVisible ? 'navLinkFalse lead ms-3' : 'navLinkFalse lead ms-3'}`}>
@@ -179,7 +215,6 @@ const NavbarUsuario = () => {
                                     </Link>
                                 </div>
                             )}
-
                         </Dropdown>
                     </>
                 </nav>

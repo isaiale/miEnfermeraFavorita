@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const UserProfile = () => {
   const { isAuthenticated, user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [profileImage, setProfileImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [fotoPerfil, setFotoPerfil] = useState(null);
@@ -18,17 +19,36 @@ const UserProfile = () => {
   const streamRef = useRef(null);
 
   useEffect(() => {
-    // Asegurarse que 'useEffect' se llama siempre y manejar las condiciones dentro de este.
+    // Si el usuario no está autenticado, lo redirige al inicio
     if (!isAuthenticated) {
-      navigate('/'); // Redirige al usuario si no está autenticado
-    } else if (user) {
-      getFotoPerfil(); // Llama a la función para obtener la foto de perfil si hay un usuario
+      navigate('/');
+    } else {
+      // Si estamos offline y hay imagen en localStorage, cargarla
+      if (!navigator.onLine && localStorage.getItem('fotoPerfil')) {
+        setFotoPerfil(localStorage.getItem('fotoPerfil'));
+      } else {
+        // Si estamos online, obtenemos la imagen del servidor
+        getFotoPerfil();
+      }
     }
+
+    // Listeners para manejar los cambios de conexión
+    window.addEventListener('online', handleConnectionChange);
+    window.addEventListener('offline', handleConnectionChange);
+
+    return () => {
+      window.removeEventListener('online', handleConnectionChange);
+      window.removeEventListener('offline', handleConnectionChange);
+    };
   }, [isAuthenticated, user, navigate]);
 
-  if (!user) {
-    return <div>Cargando...</div>; // O muestra un mensaje o un loader hasta que 'user' esté disponible
-  }
+  const handleConnectionChange = () => {
+    setIsOnline(navigator.onLine);
+    if (navigator.onLine) {
+      // Si volvemos a estar online, obtenemos la foto desde la API
+      getFotoPerfil();
+    }
+  };
 
   const getFotoPerfil = async () => {
     try {
@@ -45,7 +65,8 @@ const UserProfile = () => {
       }
 
       const data = await response.json();
-      setFotoPerfil(data.fotoPerfil[0].url); // Almacena la URL de la foto de perfil
+      setFotoPerfil(data.fotoPerfil[0].url);
+      localStorage.setItem('fotoPerfil', data.fotoPerfil[0].url); // Guardamos en localStorage
       console.log('Foto de perfil obtenida:', data.fotoPerfil[0].url);
     } catch (error) {
       console.error('Error al obtener la foto de perfil:', error.message);
@@ -61,7 +82,13 @@ const UserProfile = () => {
         setPreview(reader.result);
         const fileName = `${username}_${file.name}`;
         console.log(`Imagen guardada como: ${fileName}`);
-        uploadImage(e); // Llamar a la función para subir la imagen
+
+        if (isOnline) {
+          uploadImage(e); // Subir la imagen si estamos online
+        } else {
+          localStorage.setItem('fotoPerfil', reader.result); // Guardar la imagen en localStorage si estamos offline
+          alert('La imagen ha sido guardada localmente. Se subirá cuando haya conexión.');
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -164,7 +191,8 @@ const UserProfile = () => {
 
     if (response.ok) {
       console.log('Se agregó correctamente la foto de perfil.');
-      getFotoPerfil(); // Actualiza la foto de perfil después de actualizar
+      setFotoPerfil(url); // Actualizamos la foto de perfil
+      localStorage.setItem('fotoPerfil', url); // Guardamos la URL en localStorage
     } else {
       const data = await response.json();
       console.log('Error al actualizar la imagen del usuario', data.error, data.message);
@@ -212,7 +240,6 @@ const UserProfile = () => {
               />
               <div
                 className="profile-image-container"
-                // onClick={() => setShowOptions(true)}
                 style={{ width: '150px', height: '150px', margin: '0 auto' }}
               >
                 {fotoPerfil ? (
@@ -233,28 +260,10 @@ const UserProfile = () => {
               </div>
             </>
           )}
-          {/* {!showCamera && (
-            <div
-              className="position-absolute"
-              style={{
-                backgroundColor: 'green',
-                borderRadius: '50%',
-                width: '40px',
-                height: '40px',
-                top: '10px',
-                right: '10px',
-                cursor: 'pointer',
-              }}
-              onClick={() => setShowOptions(true)}
-            >
-              <span style={{ color: 'white', fontSize: '25px', textAlign: 'center' }}>+</span>
-            </div>
-          )} */}
         </div>
 
-
         <div className="card-body">
-            <h5 className="card-title">
+          <h5 className="card-title">
             {user.nombre}&nbsp;{user.apellido}
           </h5>
           <p className="card-text">{user.correo}</p>
@@ -265,30 +274,32 @@ const UserProfile = () => {
             <i
               className="icono fa fa-circle"
               style={{ color: user.estado === 'ACTIVO' ? 'green' : 'red' }}
-              ></i>{' '}
+            ></i>{' '}
             {user.estado}
           </p>
           <p className="card-text">
             <i className="icono fa fa-calendar"></i>&nbsp;{user.fechaCreado.split('T')[0]}
           </p>
-          {/* <a href="#" className="btn btn-primary">Edit Profile</a> */}
-              {showOptions && (
-                <div className="position-absolute bg-light p-2" style={{ borderRadius: '10px', top: '200px', right: '30px', left: '40px', zIndex: '1' }}>
-                  <button className="btn btn-secondary mb-2" onClick={openCamera}>
-                    Tomar Foto
-                  </button>
-                  <button className="btn btn-secondary mb-2" onClick={openFileInput}>
-                    Seleccionar de Archivos
-                  </button>
-                       <button className="btn btn-danger" onClick={() => setShowOptions(false)}>
-                    Cerrar
-                  </button>
-                </div>
-              )}
-          <button className="btn btn-primary mt-2" onClick={() => setShowOptions(true)}>
-                Agregar perfil
-              </button>
 
+          {showOptions && (
+            <div
+              className="position-absolute bg-light p-2"
+              style={{ borderRadius: '10px', top: '200px', right: '30px', left: '40px', zIndex: '1' }}
+            >
+              <button className="btn btn-secondary mb-2" onClick={openCamera}>
+                Tomar Foto
+              </button>
+              <button className="btn btn-secondary mb-2" onClick={openFileInput}>
+                Seleccionar de Archivos
+              </button>
+              <button className="btn btn-danger" onClick={() => setShowOptions(false)}>
+                Cerrar
+              </button>
+            </div>
+          )}
+          <button className="btn btn-primary mt-2" onClick={() => setShowOptions(true)}>
+            Agregar perfil
+          </button>
         </div>
       </div>
     </div>
@@ -296,6 +307,7 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
 
 
 

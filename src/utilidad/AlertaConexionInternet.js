@@ -13,7 +13,7 @@ function AlertaConexionInternet() {
 
     function manejarDesconexion() {
       setEstaConectado(false);
-      alert("Has perdido la conexión a internet. Algunas funciones pueden no estar disponibles.");
+      // alert("Has perdido la conexión a internet. Algunas funciones pueden no estar disponibles.");
     }
 
     window.addEventListener('online', manejarConexion);
