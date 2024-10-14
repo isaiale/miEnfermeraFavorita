@@ -1,12 +1,11 @@
 const CACHE_NAME = 'mi-enfermera-favorita-cache-v1';
 const urlsToCache = [
   '/',
-  '/login',
   '/index.html',
   '/logo_transparent.png',
   '/manifest.json',
-  '/styles.css', // Agregar tu CSS aquí
-  '/app.js'
+  // '/styles.css' // Agregar tu CSS aquí
+  // '/app.js'
 ];
 
 
