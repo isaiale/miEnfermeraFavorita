@@ -26,8 +26,9 @@ export const urlCloudinary = "https://api.cloudinary.com/v1_1/droihhnng/image/up
 export const CarritoCompras = "https://back-end-enfermera.vercel.app/api/carrito";//Para Carrito
 // export const CarritoCompras = "http://localhost:3000/api/carrito";//Para Carrito
 // para Realizar pagos con stripe
-export const Stripe = "https://back-end-enfermera.vercel.app/api/stripe/create-checkout-session";//Para Carrito
-// export const Stripe = "http://localhost:3000/api/stripe/create-checkout-session";//Para Carrito
+export const Stripe = "https://back-end-enfermera.vercel.app/api/stripe";//Para Carrito
+// export const Stripe = "http://localhost:3000/api/stripe";//Para Carrito
+// export const StripeVerificar = "https://back-end-enfermera.vercel.app/api/stripe/create-checkout-session";
 export const ComprasUsuariosUrl = "https://back-end-enfermera.vercel.app/api/detalle";//Para Detalle compra o venta
 
 export const Productos_Renta = "https://back-end-enfermera.vercel.app/api/productos-renta"

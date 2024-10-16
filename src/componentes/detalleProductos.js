@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Productos } from "../url/urlSitioWeb";
 import { useParams } from "react-router-dom";
 import { AuthContext } from '../autenticar/AuthProvider';
-import { CarritoCompras } from '../url/urlSitioWeb';
+import { CarritoCompras, Productos } from '../url/urlSitioWeb';
 import Breadcrumb from "../utilidad/migapan";
 import Swal from "sweetalert2";
 import '../css/spinner.css';
@@ -78,17 +77,14 @@ const DetalleProducto = () => {
     const addToCart = async () => {
         if (isAuthenticated) {
             try {
-                if (!selectedTalla && tallasDisponibles.length > 0) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Seleccione una talla',
-                        text: 'Por favor, seleccione una talla antes de agregar al carrito.',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                    return;
-                }
+                // Verificar si la talla está seleccionada o si no aplica
+                const tallaFinal = selectedTalla || "No aplica"; // Si no hay talla seleccionada, usar "No aplica"
+                
+                // Verificar si el producto tiene sexo, si no tiene, usar "No aplica"
+                const sexoFinal = producto.sexo || "No aplica";
 
+                console.log(tallaFinal, sexoFinal);
+    
                 // Verificar si la cantidad seleccionada excede el inventario
                 if (count > producto.inventario) {
                     Swal.fire({
@@ -100,8 +96,8 @@ const DetalleProducto = () => {
                     });
                     return; // Detener la ejecución si la cantidad excede el inventario
                 }
-
-                const response = await fetch(CarritoCompras, {
+    
+                const response = await fetch(`${CarritoCompras}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -110,7 +106,8 @@ const DetalleProducto = () => {
                         usuario: user._id,
                         producto: producto._id,
                         cantidad: count,
-                        talla: selectedTalla // Añadir la talla seleccionada al carrito
+                        talla: tallaFinal,  // Asignar la talla
+                        sexo: sexoFinal     // Asignar el sexo
                     }),
                 });
                 if (!response.ok) {
@@ -136,11 +133,12 @@ const DetalleProducto = () => {
             });
         }
     };
+    
 
     return (
         <div>
             <div className="flex container mx-auto justify-center">
-                <Breadcrumb path='Detalles'/>
+                <Breadcrumb path='Detalles' />
             </div>
             {producto ? (
                 <div className="product-container mb-5 mt-4">
@@ -163,7 +161,7 @@ const DetalleProducto = () => {
                     <div className="col-md-4 me-5 description-container">
                         <h3 className="display-4">{producto.nombre}</h3>
                         <p className="lead">{producto.descripcion}</p>
-                        <p className="lead"><i class="fa fa-thin fa-user"></i> {producto.sexo}</p> 
+                        <p className="lead"><i class="fa fa-thin fa-user"></i> {producto.sexo}</p>
                         {/* <p className=""> <i class="fa fa-thin fa-user"></i> {accesorio.sexo}</p> */}
                         <h4 className="precio mb-3">${producto.precio}</h4>
                         <p className={`lead ${producto.inventario === 0 ? 'text-danger' : ''}`}>

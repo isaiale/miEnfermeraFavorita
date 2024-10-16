@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Container, Row, Col, Button, Pagination } from "react-bootstrap";
 import Breadcrumb from "../utilidad/migapan";
-import Swal from "sweetalert2";
 import { categoria_productos } from "../url/urlSitioWeb";
 import { Link } from "react-router-dom";
 import "../css/colores.css";

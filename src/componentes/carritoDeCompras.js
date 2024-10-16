@@ -2,11 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../autenticar/AuthProvider';
 import { CarritoCompras, Stripe, Productos } from '../url/urlSitioWeb';
 import Swal from "sweetalert2";
+import { Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCreditCard, faTrash, faMoneyCheck, faMoneyBill1Wave } from '@fortawesome/free-solid-svg-icons';
+import { faCreditCard, faTrash, faMoneyBill1Wave, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import "../css/colores.css";
-import '../css/carritoCompras.css'
+import '../css/carritoCompras.css';
 import { BtnRosaIcono } from '../utilidad/botones';
 
 
@@ -18,6 +19,9 @@ const CarritoCompra = () => {
     const [total, setTotal] = useState(0);
     const [showPaymentOptions, setShowPaymentOptions] = useState(false);
     const [showPagar, setShowPagar] = useState(true);
+    // Estado para manejar el modal de detalles de producto
+    const [showModal, setShowModal] = useState(false);
+    const [productoSeleccionado, setProductoSeleccionado] = useState(null); // Producto seleccionado para ver los detalles
 
     const datosProducto = async () => {
         try {
@@ -130,30 +134,22 @@ const CarritoCompra = () => {
 
     const calculateTotal = () => {
         let totalPrice = 0;
+
         productosCarrito.forEach(product => {
-            totalPrice += product.precio * product.cantidad;
+            // Si el producto tiene descuento, aplicamos el descuento
+            const precioConDescuento = product.descuento > 0
+                ? product.precio * (1 - product.descuento / 100) // Aplica el descuento si es mayor a 0
+                : product.precio; // Si no hay descuento, se usa el precio original
+
+            // Sumamos al total el precio con descuento (o sin descuento) multiplicado por la cantidad
+            totalPrice += precioConDescuento * product.cantidad;
         });
+
         setTotal(totalPrice);
     };
 
     const manejoDePago = async () => {
-        try {
-            // Filtrar los productos del carrito para incluir solo aquellos que tienen una cantidad igual o menor a la cantidad disponible en el inventario
-            // const productosValidos = productosCarrito.filter(product => product.cantidad <= product.inventario);
-
-            // // Verificar si la lista de productos válidos está vacía
-            // if (productosValidos.length === 0) {
-            //     // Si no hay productos válidos en el carrito, mostrar un mensaje de error
-            //     Swal.fire({
-            //         icon: 'error',
-            //         title: 'No hay productos disponibles',
-            //         text: 'No hay productos en tu carrito que estén disponibles en el inventario. Por favor, revisa tu carrito antes de continuar.',
-            //         showConfirmButton: true
-            //     });
-            //     return;
-            // }
-
-            // Construir el objeto de datos del carrito usando solo los productos válidos
+        try {            
             const data = {
                 tipoEntrega: "delivery",
                 dateselect: new Date().toISOString().split('T')[0],
@@ -164,12 +160,12 @@ const CarritoCompra = () => {
                     email: user.correo,
                     idUser: user._id
                 },
-                instruction: "El producto se recoje en la tienda"
-                // totalneto: total // Agregar el totalneto al objeto de datos
+                instruction: "El producto se recoje en la tienda",
+                total: total
             };
 
             // Enviar la solicitud POST al servidor
-            const response = await fetch(Stripe, {
+            const response = await fetch(`${Stripe}/create-checkout-session`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -183,10 +179,10 @@ const CarritoCompra = () => {
 
             // Obtener la URL de la sesión de pago desde la respuesta
             const responseData = await response.json();
-            const sessionId = responseData.sessionId;
+            const sessionUrl = responseData.sessionUrl;
 
             // Redireccionar a la página de pago con la URL de la sesión de pago
-            window.location.href = sessionId;
+            window.location.href = sessionUrl;
         } catch (error) {
             console.error('Error al procesar el pago:', error);
             // Manejar errores
@@ -239,45 +235,62 @@ const CarritoCompra = () => {
         }
     };
 
+    // Función para mostrar el modal de detalles del producto
+    const handleShowModal = (product) => {
+        setProductoSeleccionado(product); // Guardamos el producto seleccionado
+        setShowModal(true); // Mostramos el modal
+    };
+
+    // Función para cerrar el modal
+    const handleCloseModal = () => {
+        setShowModal(false); // Cerramos el modal
+    };
+
+
     const renderProducts = () => {
         return productosCarrito.map(product => (
-          <div
-            className="d-flex justify-content-between align-items-center mb-2"
-            style={{ border: '0.5px solid #cac6c6', padding: '10px' }}
-            key={product.id} // Asegúrate de que cada producto tenga un identificador único
-          >
-            {product.imagenes.length > 0 && (
-              <img
-                alt="Shirt"
-                className="aspect-square rounded-lg object-cover"
-                height="50"
-                src={product.imagenes[0].url}
-                width="50"
-              />
-            )}
-            <div className="grid gap-1">
-              <h2 className="font-semibold text-lg">{product.cantidad} {product.nombre}</h2>
+            <div
+                className="d-flex justify-content-between align-items-center mb-2"
+                style={{ border: '0.5px solid #cac6c6', padding: '10px' }}
+                key={product.id} // Asegúrate de que cada producto tenga un identificador único
+            >
+                <FontAwesomeIcon
+                    icon={faInfoCircle}
+                    style={{ cursor: 'pointer', color: 'black' }}
+                    onClick={() => handleShowModal(product)}                    
+                />
+                {product.imagenes.length > 0 && (
+                    <img
+                        alt="Shirt"
+                        className="aspect-square rounded-lg object-cover"
+                        height="50"
+                        src={product.imagenes[0].url}
+                        width="50"
+                    />
+                )}
+                <div className="grid gap-1">
+                    <h2 className="font-semibold text-lg">{product.cantidad} {product.nombre}</h2>
+                </div>
+                <div className="d-flex align-items-center ms-auto">
+                    <div className="btn-group me-3">
+                        <button className="btn btn-secondary font-semibold" onClick={() => handleDecreaseQuantity(product)}>-</button>
+                        <span className="btn font-semibold">{product.cantidad}</span>
+                        <button className="btn btn-secondary font-semibold" onClick={() => handleIncreaseQuantity(product)}>+</button>
+                    </div>
+                    <div className="font-semibold me-4">${product.precio}</div>
+                    <div>
+                        <FontAwesomeIcon onClick={() => removeProduct(product)} icon={faTrash} style={{ cursor: 'pointer' }} />
+                    </div>
+                </div>
             </div>
-            <div className="d-flex align-items-center ms-auto">
-              <div className="btn-group me-3">
-                <button className="btn btn-secondary font-semibold" onClick={() => handleDecreaseQuantity(product)}>-</button>
-                <span className="btn font-semibold">{product.cantidad}</span>
-                <button className="btn btn-secondary font-semibold" onClick={() => handleIncreaseQuantity(product)}>+</button>
-              </div>
-              <div className="font-semibold me-4">${product.precio}</div>
-              <div>
-                <FontAwesomeIcon onClick={() => removeProduct(product)} icon={faTrash} style={{ cursor: 'pointer' }} />
-              </div>
-            </div>
-          </div>
         ));
-      };
-      
+    };
+
 
     return (
         <div className="container">
             <div className="row mb-3">
-                <div className="col-md-8">                    
+                <div className="col-md-8">
                     <h3 className='text-center display-6'>Productos en tu carrito</h3>
                     {renderProducts()}
                 </div>
@@ -288,14 +301,14 @@ const CarritoCompra = () => {
                         </div>
                     </div>
                     <div className="d-grid mx-auto">
-                        {showPagar && (                            
+                        {showPagar && (
                             <BtnRosaIcono onClick={handleOpenPaymentOptions} nombre='Pagar' icon={faMoneyBill1Wave} />
                         )}
                         {showPaymentOptions && (
                             <>
                                 <button className="btnCerrar font-semibold" onClick={handleClosePaymentOptions}>
                                     Cancelar
-                                </button>                                
+                                </button>
                             </>
                         )}
                         {showPaymentOptions && (
@@ -305,7 +318,7 @@ const CarritoCompra = () => {
                                 </button>
                                 <button className="btnPagar font-semibold">
                                     <i class="fa fa-paypal" aria-hidden="true"></i> Paypal
-                                </button>                                
+                                </button>
                             </>
                         )}
                     </div>
@@ -315,6 +328,52 @@ const CarritoCompra = () => {
 
                 </div>
             </div>
+
+            <Modal show={showModal} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Detalles del Producto</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {productoSeleccionado && (
+                        <div>
+                            <h5>{productoSeleccionado.nombre}</h5>
+                            <p>{productoSeleccionado.descripcion}</p>
+                            {productoSeleccionado.talla && productoSeleccionado.sexo && (
+                                <p>Talla {productoSeleccionado.talla} - Sexo {productoSeleccionado.sexo}</p>
+                            )}
+
+                            {/* Verificar si el producto tiene descuento */}
+                            {productoSeleccionado.descuento > 0 ? (
+                                <div>
+                                    <p><strong>Precio Original:</strong> <s>${productoSeleccionado.precio.toFixed(2)}</s></p>
+                                    {/* Mostrar el precio con descuento */}
+                                    <p><strong>Precio con {productoSeleccionado.descuento}% de Descuento:</strong> ${(
+                                        productoSeleccionado.precio * (1 - productoSeleccionado.descuento / 100)
+                                    ).toFixed(2)}</p>
+
+                                    {/* Mostrar el total por la cantidad de productos con descuento */}
+                                    <p><strong>Total por {productoSeleccionado.cantidad} unidades:</strong> ${(
+                                        productoSeleccionado.cantidad * productoSeleccionado.precio * (1 - productoSeleccionado.descuento / 100)
+                                    ).toFixed(2)}</p>
+                                </div>
+                            ) : (
+                                // Mostrar solo el precio normal si no hay descuento
+                                <div>
+                                    <p><strong>Precio:</strong> ${productoSeleccionado.precio.toFixed(2)}</p>
+
+                                    {/* Mostrar el total por la cantidad de productos sin descuento */}
+                                    <p><strong>Total por {productoSeleccionado.cantidad} unidades:</strong> ${(
+                                        productoSeleccionado.cantidad * productoSeleccionado.precio
+                                    ).toFixed(2)}</p>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <button className="btn btn-secondary" onClick={handleCloseModal}>Cerrar</button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };
