@@ -57,7 +57,7 @@ function BusquedaAvanzada() {
   const [itemsPerPage] = useState(8);
   const [categoriaNombre, setCategoriaNombre] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [tallas, setTallas] = useState(['Ch', 'M', 'G', 'XL']);
+  /* const [tallas, setTallas] = useState(['Ch', 'M', 'G', 'XL']); */
 
   const datosProducto = async () => {
     try {
@@ -80,7 +80,7 @@ function BusquedaAvanzada() {
 
       if (combinedData.length > 0 && combinedData[0].categoria?.[0]?.nombre) {
         setCategoriaNombre(combinedData[0].categoria[0].nombre);
-        setTallas(combinedData[0].categoria[0].nombre === 'Pantalones' ? ['28', '30', '32', '34', '36', '38'] : ['Ch', 'M', 'G', 'XL']);
+        /* setTallas(combinedData[0].categoria[0].nombre === 'Pantalones' ? ['28', '30', '32', '34', '36', '38'] : ['Ch', 'M', 'G', 'XL']); */
       }
     } catch (error) {
       Swal.fire({ title: "Error al hacer la solicitud.", icon: "error" });
