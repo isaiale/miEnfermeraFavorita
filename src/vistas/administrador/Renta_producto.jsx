@@ -2,7 +2,7 @@ import DashBoarAdmin from "../../componentesE/DashBoarAdmin";
 import Sidebar from "../../componentesE/sidebarE";
 import RentaProducto from "../../componentesE/RentaProducto";
 
-export const Renta_producto = () => {
+export const RentaProductoo = () => {
   return (
     <div>
       <div className="flexx">

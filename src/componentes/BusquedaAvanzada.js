@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Container, Row, Col, Button, Pagination } from "react-bootstrap";
 import Breadcrumb from "../utilidad/migapan";
 import Swal from "sweetalert2";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import '../css/colores.css';
 import '../css/spinner.css';
 import '../css/productos.css';
@@ -100,12 +100,12 @@ function BusquedaAvanzada() {
     }
   }
 
+ /*  useEffect(() => {
+  }, []); */
+  
   useEffect(() => {
     datosProducto();
-  }, []);
-
-  useEffect(() => {
-    applyFilters();
+    /* applyFilters(); */
   }, [priceRange, onlyDiscount, searchTerm, selectedTalla, selectedSexo]);
 
   const applyFilters = () => {
