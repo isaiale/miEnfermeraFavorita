@@ -1,4 +1,4 @@
-name: PWA CI/CD Workflow
+name: PWA CI/CD Workflow actualizado
 
 on:
   push:
