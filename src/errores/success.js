@@ -1,31 +1,35 @@
 import NavbarUsuario from '../componentes/navbarUsuario';
 import Footer from '../componentes/footer';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { Verificar_Pago, Stripe } from '../url/urlSitioWeb'; // Importa las dos URLs de las APIs
+import { Verificar_Pago, Stripe } from '../url/urlSitioWeb';
+import SatisfaccionUsuario from '../componentes/satisfaccionUsuario';
 
 const Success = () => {
   const location = useLocation();
+  const history = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const sessionId = queryParams.get('session_id');
+
   const [status, setStatus] = useState('Verificando...');
   const [backgroundColor, setBackgroundColor] = useState('lightgray');
+  const [showRating, setShowRating] = useState(false); // Estado para mostrar SatisfaccionUsuario
 
   useEffect(() => {
     const verifyPayment = async () => {
       try {
-        // Llamar a la primera API para verificar el pago
+        // Verificar el pago en ambas APIs
         const responsePago = await fetch(`${Verificar_Pago}${sessionId}`);
         const dataPago = await responsePago.json();
 
-        // Llamar a la segunda API para obtener información adicional
         const responseOtraAPI = await fetch(`${Stripe}/verify-payment/${sessionId}`);
         const dataOtraAPI = await responseOtraAPI.json();
 
-        // Procesar las respuestas de ambas APIs
+        // Procesar la respuesta
         if (dataPago.status === 'completado' && dataOtraAPI.status) {
           setStatus('¡El pago se realizó con éxito y fue verificado por ambas fuentes!');
           setBackgroundColor('lightgreen');
+          setShowRating(true); // Mostrar el componente de calificación
         } else if (dataPago.status === 'fallido' || dataOtraAPI.status === 'fallido') {
           setStatus('Pago Fallido');
           setBackgroundColor('lightcoral');
@@ -44,76 +48,33 @@ const Success = () => {
     }
   }, [sessionId]);
 
+  const handleCloseRating = () => {
+    setShowRating(false); // Oculta el componente de calificación
+    history('/'); // Redirige al inicio
+  };
+
   return (
     <div>
-      <NavbarUsuario />
-      <div className='mt-5 mb-5 m-5'>
-        <div className='mt-5 mb-5' style={{ backgroundColor, padding: '10px', borderRadius: '5px', textAlign: 'center' }}>
-          <div className='mt-5 mb-5'>
-            <h2>{status}</h2>
-            <Link className='fs-5 text-dark' to='/'>Ir a Inicio</Link>
+      <>
+        <NavbarUsuario />
+        {showRating ? (
+          // Mostrar solo el componente de calificación cuando el pago sea exitoso
+          <SatisfaccionUsuario onClose={handleCloseRating} />
+        ) : (
+          // Mostrar contenido principal si no se muestra la calificación
+          <div className='mt-5 mb-5 m-5'>
+            <div className='mt-5 mb-5' style={{ backgroundColor, padding: '10px', borderRadius: '5px', textAlign: 'center' }}>
+              <div className='mt-5 mb-5'>
+                <h2>{status}</h2>
+                <Link className='fs-5 text-dark' to='/'>Ir a Inicio</Link>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <Footer />
+        )}
+        <Footer />
+      </>
     </div>
   );
 };
 
 export default Success;
-
-
-
-// import NavbarUsuario from '../componentes/navbarUsuario';
-// import Footer from '../componentes/footer';
-// import { Link, useLocation } from 'react-router-dom';
-// import React, { useEffect, useState } from 'react';
-// import { Verificar_Pago } from '../url/urlSitioWeb';
-
-// const Success = () => {
-//   const location = useLocation();
-//   const queryParams = new URLSearchParams(location.search);
-//   const sessionId = queryParams.get('session_id');
-//   const [status, setStatus] = useState('Verificando...');
-//   const [backgroundColor, setBackgroundColor] = useState('lightgray');
-
-//   useEffect(() => {
-//     const verifyPayment = async () => {
-//       try {
-//         const response = await fetch(`${Verificar_Pago}${sessionId}`);
-//         const data = await response.json();
-//         if (data.status === 'completado') {
-//           setStatus('¡El pago se realizó con éxito!');
-//           setBackgroundColor('lightgreen');
-//         } else {
-//           setStatus('Pago Fallido');
-//           setBackgroundColor('lightcoral');
-//         }
-//       } catch (error) {
-//         setStatus('Error al verificar el pago');
-//         setBackgroundColor('lightcoral');
-//       }
-//     };
-
-//     if (sessionId) {
-//       verifyPayment();
-//     }
-//   }, [sessionId]);
-
-//   return (
-//     <div>
-//       <NavbarUsuario />
-//       <div className='mt-5 mb-5 m-5'>
-//         <div className='mt-5 mb-5' style={{ backgroundColor, padding: '10px', borderRadius: '5px', textAlign: 'center' }}>
-//           <div className='mt-5 mb-5'>
-//             <h2>{status}</h2>
-//             <Link className='fs-5 text-dark' to='/'>Ir a Inicio</Link>
-//           </div>
-//         </div>
-//       </div>
-//       <Footer />
-//     </div>
-//   );
-// };
-
-// export default Success;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { getVentasTotales } from "../url/UrlVistasAdmin";
+import CalificacionesGrafica from "./CalificacionesGrafica";
 
 const Home = () => {
   const [greeting, setGreeting] = useState("");
@@ -70,6 +71,7 @@ const Home = () => {
           </Card>
         </Col>
       </Row>
+      <CalificacionesGrafica />
       <div className="mt-4 d-flex justify-content-between align-items-start flex-wrap">
         <Col md={6}>
           <Card className="mb-4">
@@ -78,7 +80,7 @@ const Home = () => {
               <h2>{dailySales}</h2>
             </Card.Body>
           </Card>
-          {/* <Card className="mb-4">
+          <Card className="mb-4">
             <Card.Body>
               <Card.Title>Nuevas ofertas</Card.Title>
               <ul>
@@ -87,7 +89,7 @@ const Home = () => {
                 ))}
               </ul>
             </Card.Body>
-          </Card> */}
+          </Card>
         </Col>
         <Col md={6}>
           <Card className="mb-4">
@@ -106,7 +108,7 @@ const Home = () => {
               </ul>
             </Card.Body>
           </Card>
-          {/* <Card className="mb-4">
+          <Card className="mb-4">
             <Card.Body>
               <Card.Title>Todos los Productos</Card.Title>
               <ul>
@@ -115,8 +117,8 @@ const Home = () => {
                 ))}
               </ul>
             </Card.Body>
-          </Card> */}
-          {/* <Card className="mb-4">
+          </Card>
+          <Card className="mb-4">
             <Card.Body>
               <Card.Title>Productos con Descuento</Card.Title>
               <ul>
@@ -125,7 +127,7 @@ const Home = () => {
                 ))}
               </ul>
             </Card.Body>
-          </Card> */}
+          </Card>
         </Col>
       </div>
     </Container>

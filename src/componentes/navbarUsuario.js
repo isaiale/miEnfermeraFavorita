@@ -169,6 +169,7 @@ const NavbarUsuario = () => {
                             <Dropdown.Menu>
                                 <Dropdown.Item as={Link} to="/busquedaAvanzada">Busqueda Avanzada</Dropdown.Item>
                                 <Dropdown.Item as={Link} to="/ayuda">Diabetes</Dropdown.Item> 
+                                {/* <Dropdown.Item as={Link} to="/satisfaccion">satisfaccion</Dropdown.Item>  */}
                             </Dropdown.Menu>
                         </Dropdown>
 
