@@ -1,9 +1,9 @@
-.animated-icon {
+.animated-icon-person {
     display: inline-block;
     transition: transform 0.2s;
 }
 
-.selected {
+.selected-person {
     animation: bounce 0.6s infinite alternate;
 }
 

@@ -269,10 +269,10 @@ const CarritoCompra = () => {
                     />
                 )}
                 <div className="grid gap-1">
-                    <h2 className="font-semibold text-lg">{product.cantidad} {product.nombre}</h2>
+                    <p className="font-semibold text-lg mt-3">{product.cantidad} {product.nombre}</p>
                 </div>
                 <div className="d-flex align-items-center ms-auto">
-                    <div className="btn-group me-3">
+                    <div className="btn-group me-2">
                         <button className="btn btn-secondary font-semibold" onClick={() => handleDecreaseQuantity(product)}>-</button>
                         <span className="btn font-semibold">{product.cantidad}</span>
                         <button className="btn btn-secondary font-semibold" onClick={() => handleIncreaseQuantity(product)}>+</button>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../autenticar/AuthProvider';
 import { RentaDeUsuarios, Rentas } from '../url/urlSitioWeb';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle, faFilePdf, faDownload } from '@fortawesome/free-solid-svg-icons'; // Importa el ícono de PDF y el ícono de descarga
 import Pagination from 'react-bootstrap/Pagination';
@@ -11,6 +11,7 @@ import { jsPDF } from 'jspdf';
 import JspdfPreview from '../utilidad/JspdfPreview'; // Asegúrate de importar tu componente JspdfPreview correctamente
 import logo from '../img/Logo de mi enfermera favorita.jpg';
 import '../css/spinner.css';
+import '../css/productos.css';
 
 // Componente para la etiqueta de estado
 const EstadoEtiqueta = ({ estado }) => {
@@ -55,7 +56,7 @@ const RentasUsuarios = () => {
   const [showModal, setShowModal] = useState(false); // Estado para controlar la visibilidad del modal
   const [loading, setLoading] = useState(true); // Estado para indicar si los datos están cargando
   const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const fetchRentas = async () => {
     if (user && user._id) {
@@ -227,7 +228,7 @@ const RentasUsuarios = () => {
       <div className="row">
         {currentItems.map(renta => (
           <div  className="col-4 col-sm-2 col-md-3 mb-4" style={{  marginRight: '-1px' }} key={renta._id}>
-            <div className="card h-100 position-relative">
+            <div className="card ">{/* h-100 position-relative */}
               <div className='card-img'>
                 <EstadoEtiqueta estado={renta.estado} />
                 <img src={renta.productoRentaId.imagenes[0].url} className="imagen" alt={renta.productoRentaId.nombre} />

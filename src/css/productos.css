@@ -27,15 +27,29 @@
     font-weight: bold;
 }
 
+/* .card-img {
+    background: transparent;
+    margin-bottom: 15px;
+} */
 .card-img {
     background: transparent;
     margin-bottom: 15px;
+    overflow: hidden; /* Para ocultar cualquier parte de la imagen que se salga del contenedor */
+    border-radius: 8px; /* Opcional: bordes redondeados para el contenedor */
 }
 
-.card-img .imagen {
-    height: 350px;
-    object-fit: cover;
+/* .card-img .imagen {
+    height: 250px;
+    object-fit:cover;    
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+} */
+
+.card-img .imagen {
+    width: 100%; /* Asegura que la imagen ocupe todo el ancho del card */
+    height: 250px;
+    object-fit: cover; /* Recorta la imagen para que ocupe el espacio de forma uniforme */
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    border-radius: 8px; /* Opcional: coincide con el borde del contenedor */
 }
 
 .card-imgVistaInicio {
@@ -90,7 +104,7 @@
     }
 
     .card-img .imagen {
-        height: 350px;
+        height: 250px;
     }
 }
 

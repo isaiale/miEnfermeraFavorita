@@ -40,7 +40,7 @@ const SatisfaccionUsuario = ({ onClose }) => {
 
     return (
         <div className="text-center border rounded p-4 mb-3" style={{ maxWidth: '500px', margin: 'auto', borderColor: '#007bff', borderWidth: '2px' }}>
-            <h2>¡Gracias por tu compra!</h2>
+            <h2>¡Pago completado Gracias por tu compra!</h2>
             <p>Tu satisfacción es importante para nosotros. ¿Qué te pareció tu experiencia de compra?</p>
             <div className="d-flex justify-content-center align-items-center mt-3">
                 {faces.map((face, index) => (
@@ -51,7 +51,7 @@ const SatisfaccionUsuario = ({ onClose }) => {
                         style={{ fontSize: '2rem' }}
                         disabled={loading} // Deshabilitar los botones mientras se carga
                     >
-                        <span className={`animated-icon ${selectedRating === index + 1 ? 'selected' : ''}`}>
+                        <span className={`animated-icon-person ${selectedRating === index + 1 ? 'selected-person' : ''}`}>
                             {face}
                         </span>
                     </button>
