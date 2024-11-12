@@ -32,12 +32,13 @@ export default defineConfig({
         ]
       },
       includeAssets: [
-        '/',
         '/index.html',
-        '/manifest.js',
-        '/*.css',
-        '/*.js',
-      ],
+        '/manifest.json',
+        '/favicon.ico',
+        '/icon-192x192.png',
+        '/icon-512x512.png',
+        '/logo.jpg',
+      ],      
       workbox: {
         globPatterns: ['**/*.{js,css,html,png,svg,webmanifest}'], // Archivos a incluir en la caché
         runtimeCaching: [
