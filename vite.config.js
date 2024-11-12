@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      injectRegister: null, // Evita el registro automático de otro SW
+      injectRegister: 'auto', // Activa el registro automático del SW
       strategies: 'injectManifest', // Usa tu service worker personalizado
       srcDir: 'public', // Ubicación de tu SW
       filename: 'service-worker.js', // Nombre de tu service worker
