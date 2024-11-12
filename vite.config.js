@@ -16,7 +16,7 @@ export default defineConfig({
         display: "standalone",
         theme_color: "#000000",
         background_color: "#ffffff",
-        start_url: "./", // Usa una ruta relativa si estás usando `base: './'`
+        start_url: "./",
         scope: "./",
         icons: [
           {
@@ -31,6 +31,12 @@ export default defineConfig({
           }
         ]
       },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,png,svg,webmanifest}'], 
+      }
     }),
   ],
+  build: {
+    sourcemap: true
+  }
 });
