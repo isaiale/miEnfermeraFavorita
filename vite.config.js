@@ -6,32 +6,11 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
-      manifest: {
-        name: 'Mi PWA',
-        short_name: 'PWA',
-        description: 'Este es un PWA mi enfermera favorita',
-        theme_color: '#ffffff',
-        icons: [
-          {
-            src: 'icon-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: 'icon-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
-          {
-            src: 'icon-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable',
-          },
-        ],
-      },
-    }),
-  ],
+      injectRegister: null, // No registra automáticamente un nuevo SW
+      strategies: 'injectManifest', // Usa `injectManifest` para respetar tu SW y manifest existentes
+      srcDir: 'public', // Ubicación de tu SW y manifest
+      filename: 'service-worker.js', // Nombre de tu SW existente
+      manifest: false, // Desactiva la generación automática del manifest
+    })
+  ]
 });

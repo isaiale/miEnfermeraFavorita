@@ -6,7 +6,7 @@ import App from './App';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import { AuthContextProvider } from './autenticar/AuthProvider';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration'; // Importar el service worker
+// import * as serviceWorkerRegistration from './serviceWorkerRegistration'; // Importar el service worker
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,7 +18,7 @@ root.render(
 );
 
 // Registrar el service worker para que la aplicación funcione sin conexión y se cargue más rápido
-serviceWorkerRegistration.register();
+// serviceWorkerRegistration.register();
 
 // reportWebVitals();
 // reportWebVitals(console.log);
