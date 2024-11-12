@@ -31,6 +31,13 @@ export default defineConfig({
           }
         ]
       },
+      includeAssets: [
+        '/',
+        '/index.html',
+        '/manifest.js',
+        '/*.css',
+        '/*.js',
+      ],
       workbox: {
         globPatterns: ['**/*.{js,css,html,png,svg,webmanifest}'], // Archivos a incluir en la caché
         runtimeCaching: [
@@ -68,13 +75,14 @@ export default defineConfig({
             }
           }
         ],
-        // offlineFallback: {
-        //   pageFallback: '/index.html' // Crea esta página en `public` para mostrarla cuando no hay conexión
-        // }
+        // Configura `index.html` como la página de fallback offline
+        offlineFallback: {
+          pageFallback: '/index.html'
+        }
       }
     }),
   ],
-  // build: {
-  //   sourcemap: true // Habilita el mapa de fuentes para depuración
-  // }
+  build: {
+    sourcemap: true // Habilita el mapa de fuentes para facilitar la depuración
+  }
 });
