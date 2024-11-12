@@ -12,7 +12,12 @@ export default defineConfig({
         name: 'Mi Aplicación',
         short_name: 'App',
         description: 'Descripción de mi aplicación PWA',
-        theme_color: '#ffffff',
+        lang: "es",
+        display: "standalone",
+        theme_color: "#000000",
+        background_color: "#ffffff",
+        start_url: "/",
+        scope: "/",
         icons: [
           {
             src: '/icon-192x192.png',
