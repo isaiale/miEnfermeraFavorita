@@ -2,21 +2,17 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+
 export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      injectRegister: 'auto', // Activa el registro automático del SW
-      strategies: 'injectManifest', // Usa tu service worker personalizado
-      srcDir: 'public', // Ubicación de tu SW
-      filename: 'service-worker.js', // Nombre de tu service worker
-      manifest: { // Configura los detalles del manifest para que se genere automáticamente
-        name: 'Mi App',
+      registerType: 'autoUpdate',
+      manifest: {
+        name: 'Mi Aplicación',
         short_name: 'App',
-        description: 'Aplicación isai para productos de enfermeria de mi enfermera favorita',
+        description: 'Descripción de mi aplicación PWA',
         theme_color: '#ffffff',
-        background_color: '#ffffff',
-        display: 'standalone',
         icons: [
           {
             src: '/icon-192x192.png',
@@ -29,7 +25,7 @@ export default defineConfig({
             type: 'image/png'
           }
         ]
-      }
-    })
-  ]
+      },
+    }),
+  ],
 });

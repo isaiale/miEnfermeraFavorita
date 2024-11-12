@@ -17,7 +17,19 @@ root.render(
   </React.StrictMode>
 );
 
-// Registrar el service worker para que la aplicación funcione sin conexión y se cargue más rápido
+// Registrar el service worker manualmente
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then((registration) => {
+        console.log('Service Worker registrado con éxito:', registration);
+      })
+      .catch((error) => {
+        console.log('Error al registrar el Service Worker:', error);
+      });
+  });
+}
+
 // serviceWorkerRegistration.register();
 
 // reportWebVitals();
