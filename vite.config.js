@@ -11,9 +11,9 @@ export default defineConfig({
       srcDir: 'public', // Ubicación de tu SW
       filename: 'service-worker.js', // Nombre de tu service worker
       manifest: { // Configura los detalles del manifest para que se genere automáticamente
-        name: 'Mi Aplicación',
+        name: 'Mi App',
         short_name: 'App',
-        description: 'Aplicación web para productos de enfermeria de mi enfermera favorita',
+        description: 'Aplicación isai para productos de enfermeria de mi enfermera favorita',
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
