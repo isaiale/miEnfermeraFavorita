@@ -2,8 +2,8 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
-
 export default defineConfig({
+  base: './', // Configura la base de las rutas como relativa
   plugins: [
     react(),
     VitePWA({
@@ -16,8 +16,8 @@ export default defineConfig({
         display: "standalone",
         theme_color: "#000000",
         background_color: "#ffffff",
-        start_url: "/",
-        scope: "/",
+        start_url: "./", // Usa una ruta relativa si estás usando `base: './'`
+        scope: "./",
         icons: [
           {
             src: '/icon-192x192.png',
