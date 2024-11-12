@@ -17,27 +17,27 @@ root.render(
 );
 
 // Registrar el service worker manualmente y configurar notificaciones push
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then((registration) => {
-        console.log('Service Worker registrado con éxito:', registration);
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', () => {
+//     navigator.serviceWorker.register('/service-worker.js')
+//       .then((registration) => {
+//         console.log('Service Worker registrado con éxito:', registration);
 
-        // Pedir permiso para las notificaciones push
-        askPermission().then((permission) => {
-          if (permission === 'granted') {
-            // Suscribir al usuario a las notificaciones push
-            subscribeUserToPush(registration);
-          } else {
-            console.log('Permiso de notificación no concedido');
-          }
-        });
-      })
-      .catch((error) => {
-        console.log('Error al registrar el Service Worker:', error);
-      });
-  });
-}
+//         // Pedir permiso para las notificaciones push
+//         askPermission().then((permission) => {
+//           if (permission === 'granted') {
+//             // Suscribir al usuario a las notificaciones push
+//             subscribeUserToPush(registration);
+//           } else {
+//             console.log('Permiso de notificación no concedido');
+//           }
+//         });
+//       })
+//       .catch((error) => {
+//         console.log('Error al registrar el Service Worker:', error);
+//       });
+//   });
+// }
 
 
 // import React from 'react';
