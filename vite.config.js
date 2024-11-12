@@ -20,23 +20,61 @@ export default defineConfig({
         scope: "./",
         icons: [
           {
-            src: '/icon-192x192.png',
+            src: './icon-192x192.png', // Ruta relativa para iconos
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: '/icon-512x512.png',
+            src: './icon-512x512.png', // Ruta relativa para iconos
             sizes: '512x512',
             type: 'image/png'
           }
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,png,svg,webmanifest}'], 
+        globPatterns: ['**/*.{js,css,html,png,svg,webmanifest}'], // Archivos a incluir en la caché
+        runtimeCaching: [
+          {
+            urlPattern:  /\/api\//, // Ajusta con la URL de tu API si necesitas caché offline para solicitudes de red
+            handler: 'NetworkFirst', // Estrategia para la API: intenta primero la red y usa caché si no hay conexión
+            options: {
+              cacheName: 'api-cache',
+              expiration: {
+                maxEntries: 50, // Limita el número de entradas
+                maxAgeSeconds: 60 * 60 * 24 * 7, // Cachea por 7 días
+              }
+            }
+          },
+          {
+            urlPattern: /.*\.(?:png|jpg|jpeg|svg|gif)$/, // Archivos de imagen
+            handler: 'CacheFirst', // Para imágenes: usa caché primero, para disponibilidad offline
+            options: {
+              cacheName: 'image-cache',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 30 * 24 * 60 * 60 // Cachea por 30 días
+              }
+            }
+          },
+          {
+            urlPattern: /.*\.(?:js|css|html)$/, // Archivos estáticos de JavaScript, CSS y HTML
+            handler: 'StaleWhileRevalidate', // Usa la caché pero actualiza en segundo plano
+            options: {
+              cacheName: 'static-resources',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 7 * 24 * 60 * 60 // Cachea por 7 días
+              }
+            }
+          }
+        ],
+        offlineFallback: {
+          pageFallback: '/index.html' // Crea esta página en `public` para mostrarla cuando no hay conexión
+        }
       }
     }),
   ],
-  build: {
-    sourcemap: true
-  }
+  // build: {
+  //   sourcemap: true // Habilita el mapa de fuentes para depuración
+  // }
 });
