@@ -35,7 +35,7 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,png,svg,webmanifest}'], // Archivos a incluir en la caché
         runtimeCaching: [
           {
-            urlPattern:  /\/api\//, // Ajusta con la URL de tu API si necesitas caché offline para solicitudes de red
+            urlPattern: /^https:\/\/back-end-enfermera\.vercel\.app\/api\//, // Ajusta con la URL de tu API si necesitas caché offline para solicitudes de red
             handler: 'NetworkFirst', // Estrategia para la API: intenta primero la red y usa caché si no hay conexión
             options: {
               cacheName: 'api-cache',
@@ -68,9 +68,9 @@ export default defineConfig({
             }
           }
         ],
-        offlineFallback: {
-          pageFallback: '/index.html' // Crea esta página en `public` para mostrarla cuando no hay conexión
-        }
+        // offlineFallback: {
+        //   pageFallback: '/index.html' // Crea esta página en `public` para mostrarla cuando no hay conexión
+        // }
       }
     }),
   ],
