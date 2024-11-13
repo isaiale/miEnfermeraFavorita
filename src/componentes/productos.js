@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Card, Container, Row, Col, Button, Pagination } from "react-bootstrap";
 import Breadcrumb from "../utilidad/migapan";
 import "../css/colores.css";
-// import Swal from "sweetalert2";
 import { categoria_productos } from "../url/urlSitioWeb";
 import { useParams, Link } from "react-router-dom";
 import '../css/spinner.css';
@@ -40,22 +39,19 @@ function AccesorioEnfermeriaCard({ accesorio, categoriaNombre }) {
 function Productoss() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 1000]); // Rango de precios
-  const [onlyDiscount, setOnlyDiscount] = useState(false); // Estado para filtrar solo productos con descuento
-  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
-  const [selectedTalla, setSelectedTalla] = useState(""); // Estado para la talla seleccionada
-  const [selectedSexo, setSelectedSexo] = useState(""); // Estado para el sexo seleccionado
-  const [currentPage, setCurrentPage] = useState(1); // Estado para la página actual
-  const [itemsPerPage] = useState(8); // Estado para la cantidad de ítems por página
-  const { categoriaId } = useParams(); // Obtener el categoriaId de la URL
-  const [categoriaNombre, setCategoriaNombre] = useState(""); // Estado para el nombre de la categoría
-  const [isLoading, setIsLoading] = useState(true); // Estado para controlar la carga
-  const [tallas, setTallas] = useState(['Ch', 'M', 'G', 'XL']); // Estado para las tallas disponibles
+  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [onlyDiscount, setOnlyDiscount] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedTalla, setSelectedTalla] = useState("");
+  const [selectedSexo, setSelectedSexo] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(8);
+  const { categoriaId } = useParams();
+  const [categoriaNombre, setCategoriaNombre] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [tallas, setTallas] = useState(['Ch', 'M', 'G', 'XL']);
 
-  // const minPrice = 0;
-  // const maxPrice = 1000;
-
-  const datosProducto = async () => {
+  const datosProducto = useCallback(async () => {
     try {
       const response = await fetch(`${categoria_productos}${categoriaId}`);
       if (!response.ok) {
@@ -64,36 +60,23 @@ function Productoss() {
       const jsonData = await response.json();
       setData(jsonData);
       setFilteredData(jsonData);
-      console.log(jsonData);
-      setIsLoading(false); // Detener la carga después de obtener los datos
+      setIsLoading(false);
 
-      // Obtener el nombre de la categoría
       if (jsonData.length > 0 && jsonData[0].categoria && jsonData[0].categoria.nombre) {
         setCategoriaNombre(jsonData[0].categoria.nombre);
 
-        // Ajustar las tallas según la categoría
         if (jsonData[0].categoria.nombre === 'Pantalones') {
           setTallas(['28', '30', '32', '34', '36', '38']);
         } else {
           setTallas(['Ch', 'M', 'G', 'XL']);
         }
       }
-
     } catch (error) {
-      // Swal.fire({ title: "Error al hacer la solicitud.", icon: "error" });
-      setIsLoading(false); // Detener la carga en caso de error
+      setIsLoading(false);
     }
-  }
-
-  useEffect(() => {
-    datosProducto();
   }, [categoriaId]);
 
-  useEffect(() => {
-    applyFilters();
-  }, [priceRange, onlyDiscount, searchTerm, selectedTalla, selectedSexo]);
-
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = data;
 
     filtered = filtered.filter(item => item.precio >= priceRange[0] && item.precio <= priceRange[1]);
@@ -119,8 +102,16 @@ function Productoss() {
     }
 
     setFilteredData(filtered);
-    setCurrentPage(1); // Reset page number when filters change
-  };
+    setCurrentPage(1);
+  }, [data, priceRange, onlyDiscount, searchTerm, selectedTalla, selectedSexo]);
+
+  useEffect(() => {
+    datosProducto();
+  }, [datosProducto]);
+
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
 
   const handlePriceRangeChange = (e) => {
     const { name, value } = e.target;
@@ -133,10 +124,6 @@ function Productoss() {
     });
   };
 
-  const handleTallaChange = (e) => {
-    setSelectedTalla(e.target.value);
-  };
-
   const resetFilters = () => {
     setPriceRange([0, 1000]);
     setOnlyDiscount(false);
@@ -146,12 +133,10 @@ function Productoss() {
     setFilteredData(data);
   };
 
-  // Logic for displaying current items
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Logic for displaying page numbers
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(filteredData.length / itemsPerPage); i++) {
     pageNumbers.push(i);
@@ -199,7 +184,7 @@ function Productoss() {
           </div>
           <div className="mb-4">
             <h5>Filtrar por Talla</h5>
-            <select className="form-control" value={selectedTalla} onChange={handleTallaChange}>
+            <select className="form-control" value={selectedTalla} onChange={(e) => setSelectedTalla(e.target.value)}>
               <option value="">Todas</option>
               {tallas.map(talla => (
                 <option key={talla} value={talla}>{talla}</option>
@@ -266,7 +251,6 @@ function Productoss() {
             </Pagination>
           )}
         </Col>
-
       </Row>
     </Container>
   );

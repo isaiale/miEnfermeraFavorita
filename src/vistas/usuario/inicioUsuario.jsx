@@ -4,7 +4,6 @@ import NavbarUsuario from '../../componentes/navbarUsuario';
 import Slider from '../../componentes/slider';
 import CategoriasAtuendos from '../../componentes/categorias';
 import UniformesDestacados from '../../componentes/vistaDeUniformesInicio';
-// import Mapa1Map from '../../componentes/Mapa';
 import ComentariosClientes from '../../componentes/ComentariosClientes';
 import ProductosCalzado from '../../componentes/productosCalzado';
 import Footer from "../../componentes/footer";
@@ -13,23 +12,14 @@ import { AuthContext } from '../../autenticar/AuthProvider';
 function InicioUsuario() {
   const { login } = useContext(AuthContext); // Obtenemos la función `login` del AuthContext
 
-  useEffect(() => {
-    // Extraer el token de los parámetros de la URL
+  useEffect(() => {    
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
 
     if (token) {
-      try {
-        // Decodificar el token JWT
+      try {        
         const decodedToken = decodeToken(token);
-        // console.log('Token decodificado:', decodedToken);
-        
-        // Guardar los datos del usuario en el AuthContext
         login(decodedToken);
-
-        // console.log(decodedToken);
-
-        // Opcional: Eliminar el token de la URL para mayor seguridad y limpieza
         window.history.replaceState({}, document.title, window.location.pathname);
       } catch (error) {
         console.error('Error al decodificar el token:', error);
@@ -37,7 +27,7 @@ function InicioUsuario() {
     } else {
       console.log('No se encontró un token en la URL');
     }
-  }, []); // El array vacío hace que useEffect se ejecute solo una vez al montar el componente
+  }, [login]); // El array vacío hace que useEffect se ejecute solo una vez al montar el componente
 
   return (
     <div>

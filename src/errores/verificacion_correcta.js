@@ -1,4 +1,4 @@
-import imgLogo from '../img/Logo de mi enfermera favorita.jpg';
+// import imgLogo from '../img/Logo de mi enfermera favorita.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -23,7 +23,7 @@ export default function Verificacion_correcta() {
                             </button>
                         </div>
                     </div>
-                </div>
+                </div> 
             </div>
         </div>
     )

@@ -14,8 +14,8 @@ import CarritoCompra from './vistas/usuario/carritoDeCompras';
 import PoliticaDeCookies from './vistas/usuario/politicaDeCookies';
 import TerminosYCondiciones from './vistas/usuario/terminosYCondiciones';
 import Error404 from './errores/error404';
-import { Error_verificacion } from './errores/error_verificacion';
-import Verificacion_correcta from './errores/verificacion_correcta';
+import { ErrorVerificacion } from './errores/error_verificacion';
+/* import VerificacionCorrecta from './errores/VerificacionCorrecta'; */
 import Cancelado from "./errores/canceled";
 import Success from "./errores/success";
 import { Accesorioss } from './vistas/usuario/accesorios';
@@ -36,7 +36,7 @@ import { VentasEmpleado } from './vistas/administrador/VentasE';
 import { ClientesEmpleado } from './vistas/administrador/ClientesE';
 import { ProductosEmpleado } from './vistas/administrador/ProductosE';
 import { ConfiguracionEmpleado } from './vistas/administrador/ConfiguracionE';
-import { Renta_producto } from "./vistas/administrador/Renta_producto";
+import { RentaProductoo  } from "./vistas/administrador/Renta_producto";
 
 import InicioGerente from './vistas/gerente/InicioGerente';
 
@@ -66,10 +66,10 @@ export default function App() {
           <Route path="busquedaAvanzada" element={<VistaBusquedaAvanzada />} />
           <Route path="prueba" element={<Prueba />} />
           <Route path="*" element={<Error404 />} />
-          <Route path="error-verificacion" element={<Error_verificacion />} />
+          <Route path="error-verificacion" element={<ErrorVerificacion />} />
           <Route path="success" element={<Success />} />
           <Route path="cancelado" element={<Cancelado />} />
-          <Route path="verificacion-correcta" element={<Verificacion_correcta />} />
+          {/* <Route path="verificacion-correcta" element={<VerificacionCorrecta />} /> */}
           <Route path="perfil" element={<Perfil />} />
           <Route path="Compras" element={<Compras />} />
           <Route path="detalle-producto/:idProductos" element={<ProductoDetalle />} />
@@ -84,7 +84,7 @@ export default function App() {
               <Route path='clientesEmpleado' element={<ClientesEmpleado />} />
               <Route path='productosEmpleado' element={<ProductosEmpleado />} />
               <Route path='configuracionEmpleado' element={<ConfiguracionEmpleado />} />
-              <Route path='Renta_productos' element={<Renta_producto />} />
+              <Route path='Renta_productos' element={<RentaProductoo  />} />
             </>
           )}
           {/* Routes for Gerente */}

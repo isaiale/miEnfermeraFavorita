@@ -19,7 +19,7 @@ const Clientes = () => {
   const [rol, setRol] = useState('');
   const [operacionModal, setOperacionModal] = useState(1);
   const [tituloModal, setTituloModal] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
   const [buscar, setBuscar] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
@@ -135,7 +135,7 @@ const Clientes = () => {
   };
 
   const editarUsuario = async (parametrosEditarUsuario, idUsuarios) => {
-    const response = await fetch('${UrlUsuarios}/${idUsuarios}', {
+    const response = await fetch(`${UrlUsuarios}/${idUsuarios}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -162,7 +162,7 @@ const Clientes = () => {
     });
     if (result.isConfirmed) {
       try {
-        const response = await fetch('${BloquearUsuario}/${user._id}', {
+        const response = await fetch(`${BloquearUsuario}/${user._id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
@@ -199,7 +199,7 @@ const Clientes = () => {
 
     if (result.isConfirmed) {
       try {
-        const response = await fetch('${UrlUsuarios}/${user._id}', {
+        const response = await fetch(`${UrlUsuarios}/${user._id}`, {
           method: 'DELETE',
         });
 

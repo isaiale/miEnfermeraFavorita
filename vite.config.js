@@ -44,7 +44,7 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/back-end-enfermera\.vercel\.app\/api\//, // Ajusta con la URL de tu API si necesitas caché offline para solicitudes de red
-            handler: 'NetworkFirst', // Estrategia para la API: intenta primero la red y usa caché si no hay conexión
+            handler: 'NetworkFirst', 
             options: {
               cacheName: 'api-cache',
               expiration: {

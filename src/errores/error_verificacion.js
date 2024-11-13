@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom'; // Importa useNavigate para manejar la redirección
 
-export const Error_verificacion = () => {
+export const ErrorVerificacion = () => {
     const navigate = useNavigate(); // Instancia de useNavigate
 
     // Función para redirigir al inicio

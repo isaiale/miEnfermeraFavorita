@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { AuthContext } from '../autenticar/AuthProvider';
 import { RentaDeUsuarios, Rentas } from '../url/urlSitioWeb';
 // import { useNavigate } from 'react-router-dom';
@@ -57,28 +57,8 @@ const RentasUsuarios = () => {
   const [loading, setLoading] = useState(true); // Estado para indicar si los datos están cargando
   const { user } = useContext(AuthContext);
   // const navigate = useNavigate();
-
-  const fetchRentas = async () => {
-    if (user && user._id) {
-      try {
-        const response = await fetch(`${RentaDeUsuarios}${user._id}`);
-        if (!response.ok) {
-          throw new Error('Error al obtener las rentas');
-        }
-        const data = await response.json();
-        // Ordenar rentas de más reciente a más antiguo
-        const sortedData = data.sort((a, b) => new Date(b.fechaInicio) - new Date(a.fechaInicio));
-        setRentas(sortedData);
-        fetchTiempos(sortedData);
-        setLoading(false); // Indicar que los datos se han cargado
-      } catch (error) {
-        console.error('Error al obtener las rentas:', error);
-        setLoading(false); // Indicar que los datos se han cargado incluso en caso de error
-      }
-    }
-  };
-
-  const fetchTiempos = async (rentas) => {
+  
+  const fetchTiempos = useCallback(async (rentas) => {
     try {
       const tiemposData = {};
       for (let renta of rentas) {
@@ -93,25 +73,45 @@ const RentasUsuarios = () => {
     } catch (error) {
       console.error('Error al obtener los tiempos de renta:', error.message);
     }
-  };
+  }, []); 
+  
+  const fetchRentas = useCallback(async () => {
+    if (user && user._id) {
+      try {
+        const response = await fetch(`${RentaDeUsuarios}${user._id}`);
+        if (!response.ok) {
+          throw new Error('Error al obtener las rentas');
+        }
+        const data = await response.json();
+        const sortedData = data.sort((a, b) => new Date(b.fechaInicio) - new Date(a.fechaInicio));
+        setRentas(sortedData);
+        fetchTiempos(sortedData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error al obtener las rentas:', error);
+        setLoading(false);
+      }
+    }
+  }, [user, fetchTiempos]);
+
 
   useEffect(() => {
-    fetchRentas(); // Llama a la función para cargar los datos inicialmente
-  }, [user]);
+    fetchRentas();
+  }, [fetchRentas]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      fetchRentas(); // Vuelve a cargar los datos cada cierto tiempo
+      fetchRentas();
     }, 40000); // Intervalo de 40 segundos
 
-    return () => clearInterval(interval); // Limpiar el intervalo cuando el componente se desmonte
-  }, [user]);
+    return () => clearInterval(interval);
+  }, [fetchRentas]);
 
   if (loading) {
     return (
       <div className='mt-5 mb-5'>
         <p className='name-spinner mt-5'>Cargando...</p>
-        <div className="spinner mb-5"></div>
+        <div className="spinner mb-5"></div> 
       </div>
     );
   }

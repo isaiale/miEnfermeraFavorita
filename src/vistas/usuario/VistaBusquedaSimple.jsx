@@ -1,11 +1,10 @@
-import NavbarUsuario from "../../componentes/navbarUsuario"
-import BusquedaSimple from "../../componentes/BusquedaSimple"
-import Footer from "../../componentes/footer"
+import NavbarUsuario from "../../componentes/navbarUsuario";
+import BusquedaSimple from "../../componentes/BusquedaSimple";
 
 const VistaBusquedaSimple = () => {
   return (
     <div>
-        <NavbarUsuario/>
+        <NavbarUsuario/> 
         <BusquedaSimple/>   
     </div>
   )

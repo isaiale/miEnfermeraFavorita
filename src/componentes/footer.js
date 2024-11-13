@@ -6,7 +6,6 @@ import logo from '../img/logo.jpg';
 import '../css/footer.css';
 import { Link } from 'react-router-dom';
 
-
 const Footer = () => {
   return (
     <footer className="bg-dark text-white">
@@ -24,10 +23,9 @@ const Footer = () => {
           <Col xs={12} md={6} lg={3}>
             <h6 style={{
               color: '#FF4081',
-              /* textShadow:'-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff' */}}>
+            }}>
               Categorías de Uniformes
             </h6>
-
             <ul>
               <li>Zapatos</li>
               <li>Atuendos</li>
@@ -50,14 +48,17 @@ const Footer = () => {
             <h6 style={{ color: '#FF4081' }}>Redes de la Empresa</h6>
             <div className='wrapper'>
               <ul>
-                <li className='facebook'><a href='#'><i className='fa fa-facebook fa-2x' aria-hidden='true'></i></a></li>
-                <li className='whatsapp'><a href='#'><i className='fa fa-whatsapp fa-2x' aria-hidden='true'></i></a></li>
-                <li className='twitter'><a href='#'><i className='fa fa-twitter fa-2x' aria-hidden='true'></i></a></li>
-                <li className='telegram'><a href='#'><i className='fa fa-telegram fa-2x' aria-hidden='true'></i></a></li>
-                <li className='instagram'><a href='#'><i className='fa fa-instagram fa-2x' aria-hidden='true'></i></a></li>
-                <li className='snapchat'><a href='#'><i className='fa fa-snapchat fa-2x' aria-hidden='true'></i></a></li>
-                <li className='linkedin'><a href='#'><i className='fa fa-linkedin fa-2x' aria-hidden='true'></i></a></li>
-                <li className='google'><a href='#'><i className='fa fa-google fa-2x' aria-hidden='true'></i></a></li>
+                <li className='facebook'><a href="https://facebook.com" aria-label="Facebook">
+                  <i className='fa fa-facebook fa-2x' aria-hidden='true'></i>
+                </a>
+                </li>
+                {/* <li className='whatsapp'><a href="" aria-label="WhatsApp"><i className='fa fa-whatsapp fa-2x' aria-hidden='true'></i></a></li>
+                <li className='twitter'><a href="" aria-label="Twitter"><i className='fa fa-twitter fa-2x' aria-hidden='true'></i></a></li>
+                <li className='telegram'><a href="" aria-label="Telegram"><i className='fa fa-telegram fa-2x' aria-hidden='true'></i></a></li>
+                <li className='instagram'><a href="" aria-label="Instagram"><i className='fa fa-instagram fa-2x' aria-hidden='true'></i></a></li>
+                <li className='snapchat'><a href="" aria-label="Snapchat"><i className='fa fa-snapchat fa-2x' aria-hidden='true'></i></a></li>
+                <li className='linkedin'><a href="" aria-label="LinkedIn"><i className='fa fa-linkedin fa-2x' aria-hidden='true'></i></a></li>
+                <li className='google'><a href="" aria-label="Google"><i className='fa fa-google fa-2x' aria-hidden='true'></i></a></li> */}
               </ul>
             </div>
           </Col>
@@ -66,14 +67,13 @@ const Footer = () => {
 
       {/* Derechos reservados */}
       <div className="bg-secondary d-flex justify-content-between align-items-center py-2 text-white">
-        <p className="ms-4 m-0">© 2023 Empresa. Todos los derechos reservados.</p>
+        <p className="ms-4 m-0">© 2023 Mi enfermera Favorita. Todos los derechos reservados.</p>
         <div className="d-flex me-4">
           <Link className='text-white ms-3' to="/politicaDeCookies">Políticas de cookies</Link>
-          {/* <Link className='text-white ms-3' to="/terminosYcondiciones">Términos y condiciones</Link> */}
           <Link className='text-white ms-3' to="/avisoPrivacidad">Política de Privacidad</Link>
         </div>
       </div>
-    </footer >
+    </footer>
   );
 };
 

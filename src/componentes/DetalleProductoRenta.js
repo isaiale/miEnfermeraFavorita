@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import "../css/ProductosE.css";
 import { Productos_Renta, Rentas, Pagar_renta } from "../url/urlSitioWeb";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from '../autenticar/AuthProvider';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import '../css/spinner.css'
 
 const DetalleProductoRenta = () => {
@@ -24,14 +24,14 @@ const DetalleProductoRenta = () => {
   const [diferenciaDias, setDiferenciaDias] = useState(0);
   const [deposito, setDeposito] = useState(0);
 
-  const history = useNavigate();
+  // const history = useNavigate();
   const [errors, setErrors] = useState({
     fechaInicio: '',
     fechaFin: '',
     horaRecogida: ''
   });
 
-  const fetchProducto = async () => {
+  const fetchProducto = useCallback(async () => {
     try {
       const response = await fetch(`${Productos_Renta}/${idRentas}`);
       if (!response.ok) {
@@ -45,11 +45,11 @@ const DetalleProductoRenta = () => {
     } catch (error) {
       console.error("Error al cargar los detalles del producto de renta:", error);
     }
-  };
-
+  },[idRentas]);
+  
   useEffect(() => {
     fetchProducto();
-  }, [idRentas]);
+  }, );
 
   const handleThumbnailClick = (image) => {
     setSelectedImage(image);
@@ -89,7 +89,7 @@ const DetalleProductoRenta = () => {
     }
 
     const [hora, minutos] = horaRecogida.split(':');
-    if (hora < 8 || hora > 17 || (hora == 17 && minutos > 0)) {
+    if (hora < 8 || hora > 17 || (hora === 17 && minutos > 0)) {
       newErrors.horaRecogida = 'La hora de recogida debe estar entre las 8:00 AM y las 5:00 PM.';
       isValid = false;
     }
@@ -136,7 +136,7 @@ const DetalleProductoRenta = () => {
   const handleHoraRecogidaChange = (e) => {
     const value = e.target.value;
     const [hora, minutos] = value.split(':');
-    if (hora < 8 || hora > 17 || (hora == 17 && minutos > 0)) {
+    if (hora < 8 || hora > 17 || (hora === 17 && minutos > 0)) {
       setErrors(prevErrors => ({
         ...prevErrors,
         horaRecogida: `La hora de recogida debe estar entre las 8:00 AM y las 5:00 PM.`

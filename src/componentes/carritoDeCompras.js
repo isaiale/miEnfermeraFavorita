@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { AuthContext } from '../autenticar/AuthProvider';
-import { CarritoCompras, Stripe, Productos } from '../url/urlSitioWeb';
+import { CarritoCompras, Stripe /* Productos */ } from '../url/urlSitioWeb';
 import Swal from "sweetalert2";
 import { Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -15,26 +15,25 @@ const CarritoCompra = () => {
     const { isAuthenticated, user } = useContext(AuthContext);
     const history = useNavigate();
     const [productosCarrito, setProductosCarrito] = useState([]);
-    const [dataProductos, setDataProductos] = useState([]);
+    // const [dataProductos, setDataProductos] = useState([]);
     const [total, setTotal] = useState(0);
     const [showPaymentOptions, setShowPaymentOptions] = useState(false);
     const [showPagar, setShowPagar] = useState(true);
-    // Estado para manejar el modal de detalles de producto
     const [showModal, setShowModal] = useState(false);
-    const [productoSeleccionado, setProductoSeleccionado] = useState(null); // Producto seleccionado para ver los detalles
+    const [productoSeleccionado, setProductoSeleccionado] = useState(null);
 
-    const datosProducto = async () => {
-        try {
-            const response = await fetch(Productos);
-            if (!response.ok) {
-                throw new Error('La respuesta de la red no fue exitosa.')
-            }
-            const jsonDataUsuario = await response.json();
-            setDataProductos(jsonDataUsuario);
-        } catch (error) {
-            Swal.fire({ title: "Error al hacer la solicitud.", icon: "error" });
-        }
-    }
+    // const datosProducto = useCallback(async () => {
+    //     try {
+    //         const response = await fetch(Productos);
+    //         if (!response.ok) {
+    //             throw new Error('La respuesta de la red no fue exitosa.');
+    //         }
+    //         const jsonDataUsuario = await response.json();
+    //         setDataProductos(jsonDataUsuario);
+    //     } catch (error) {
+    //         Swal.fire({ title: "Error al hacer la solicitud.", icon: "error" });
+    //     }
+    // }, []);
 
     const handleOpenPaymentOptions = () => {
         setShowPaymentOptions(true);
@@ -46,19 +45,18 @@ const CarritoCompra = () => {
         setShowPagar(true);
     };
 
-    const datosCarrito = async () => {
+    const datosCarrito = useCallback(async () => {
         try {
             const response = await fetch(`${CarritoCompras}/${user._id}`);
             if (!response.ok) {
-                throw new Error('La respuesta de la red no fue exitosa.')
+                throw new Error('La respuesta de la red no fue exitosa.');
             }
             const jsonData = await response.json();
             setProductosCarrito(jsonData);
-            // console.log(jsonData);
         } catch (error) {
-            console.log(error);
+            console.error('Error al obtener los datos del carrito:', error);
         }
-    }
+    }, [user._id]);
 
     const removeProduct = async (product) => {
         // Mostrar confirmación antes de eliminar
@@ -104,49 +102,43 @@ const CarritoCompra = () => {
             }
         }
     };
+    
+    const calculateTotal = useCallback(() => {
+        let totalPrice = 0;
+        productosCarrito.forEach(product => {
+            const precioConDescuento = product.descuento > 0
+                ? product.precio * (1 - product.descuento / 100)
+                : product.precio;
+            totalPrice += precioConDescuento * product.cantidad;
+        });
+        setTotal(totalPrice);
+    }, [productosCarrito]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 if (!isAuthenticated) {
-                    history('/'); // Utiliza navigate para redirigir
+                    history('/');
                 }
                 await datosCarrito();
-                datosProducto();
-                // Calcula el total solo si hay productos en el carrito
+                // await datosProducto();
                 if (productosCarrito.length > 0) {
                     calculateTotal();
-                    setShowPagar(true); // Cambia el estado a true si hay productos en el carrito
+                    setShowPagar(true);
                 } else {
-                    setShowPagar(false); // Cambia el estado a false si el carrito está vacío
+                    setShowPagar(false);
                 }
             } catch (error) {
                 console.error('Error al obtener los datos del carrito:', error);
             }
         };
-
         fetchData();
-    }, [isAuthenticated, history, productosCarrito]);
+    }, [isAuthenticated, history, datosCarrito, /* datosProducto */ calculateTotal, productosCarrito.length]);
 
     if (!isAuthenticated) {
         return null; // Retorna null o un componente de carga mientras se redirige
     }
 
-    const calculateTotal = () => {
-        let totalPrice = 0;
-
-        productosCarrito.forEach(product => {
-            // Si el producto tiene descuento, aplicamos el descuento
-            const precioConDescuento = product.descuento > 0
-                ? product.precio * (1 - product.descuento / 100) // Aplica el descuento si es mayor a 0
-                : product.precio; // Si no hay descuento, se usa el precio original
-
-            // Sumamos al total el precio con descuento (o sin descuento) multiplicado por la cantidad
-            totalPrice += precioConDescuento * product.cantidad;
-        });
-
-        setTotal(totalPrice);
-    };
 
     const manejoDePago = async () => {
         try {            

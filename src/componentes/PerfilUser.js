@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
+import React, { useState, useRef, useContext, useEffect, useCallback } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { img, UrlUsuarios } from '../url/urlSitioWeb';
 import { AuthContext } from '../autenticar/AuthProvider';
@@ -18,68 +18,63 @@ const UserProfile = () => {
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
 
-  useEffect(() => {
-    // Si el usuario no está autenticado, lo redirige al inicio
-    if (!isAuthenticated) {
-      navigate('/');
-    } else {
-      // Si estamos offline y hay imagen en localStorage, cargarla
-      if (!navigator.onLine && localStorage.getItem('fotoPerfil')) {
-        setFotoPerfil(localStorage.getItem('fotoPerfil'));
-      } else {
-        // Si estamos online, obtenemos la imagen del servidor
-        getFotoPerfil();
-      }
-    }
-
-    // Listeners para manejar los cambios de conexión
-    window.addEventListener('online', handleConnectionChange);
-    window.addEventListener('offline', handleConnectionChange);
-
-    return () => {
-      window.removeEventListener('online', handleConnectionChange);
-      window.removeEventListener('offline', handleConnectionChange);
-    };
-  }, [isAuthenticated, user, navigate]);
-
-  const handleConnectionChange = () => {
-    setIsOnline(navigator.onLine);
-    if (navigator.onLine) {
-      // Si volvemos a estar online, obtenemos la foto desde la API
-      getFotoPerfil();
-    }
-  };
-
-  const getFotoPerfil = async () => {
+  
+  const getFotoPerfil = useCallback(async () => {
     try {
       const response = await fetch(`${UrlUsuarios}/${user._id}/foto`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
       });
-
+      
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message);
       }
-
+  
       const data = await response.json();
       setFotoPerfil(data.fotoPerfil[0].url);
-      localStorage.setItem('fotoPerfil', data.fotoPerfil[0].url); // Guardamos en localStorage
-      console.log('Foto de perfil obtenida:', data.fotoPerfil[0].url);
+      localStorage.setItem('fotoPerfil', data.fotoPerfil[0].url);
     } catch (error) {
       console.error('Error al obtener la foto de perfil:', error.message);
     }
+  }, [user._id]);
+
+  const handleConnectionChange = useCallback(() => {
+    setIsOnline(navigator.onLine);
+    if (navigator.onLine) {
+      getFotoPerfil();
+    }
+  }, [getFotoPerfil]);
+  
+  useEffect(() => {
+  if (!isAuthenticated) {
+    navigate('/');
+  } else {
+    if (!navigator.onLine && localStorage.getItem('fotoPerfil')) {
+      setFotoPerfil(localStorage.getItem('fotoPerfil'));
+    } else {
+      getFotoPerfil(); // Obtiene la imagen del servidor
+    }
+  }
+
+  window.addEventListener('online', handleConnectionChange);
+  window.addEventListener('offline', handleConnectionChange);
+
+  return () => {
+    window.removeEventListener('online', handleConnectionChange);
+    window.removeEventListener('offline', handleConnectionChange);
   };
+}, [isAuthenticated, user, navigate, getFotoPerfil, handleConnectionChange]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setProfileImage(file);
+      console.log(profileImage);
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result);
+        console.log(preview);
         const fileName = `${username}_${file.name}`;
         console.log(`Imagen guardada como: ${fileName}`);
 

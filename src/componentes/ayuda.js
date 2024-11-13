@@ -3,13 +3,13 @@ import React from 'react';
 function Ayuda() {
   return (
     <div>      
-      <iframe
+      {/* <iframe
         src="https://proyectmodel.onrender.com/"
         // title="Predecir diabetes"
         width="100%"
         height="800px"
         style={{ border: 'none' }}
-      ></iframe>
+      ></iframe> */} 
     </div>
   );
 }

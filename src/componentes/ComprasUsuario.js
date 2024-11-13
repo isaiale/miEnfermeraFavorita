@@ -32,12 +32,10 @@ const ComprasUsuario = () => {
             }
         };
 
-        fetchData();
-    }, [isAuthenticated, history]);
-
-    if (!isAuthenticated) {
-        return null; // Retorna null o un componente de carga mientras se redirige
-    }
+        if (user?._id) { // Verifica que user._id esté disponible antes de hacer la solicitud
+            fetchData();
+        }
+    }, [isAuthenticated, history, user._id]);   
 
     return (
         <div className="container">

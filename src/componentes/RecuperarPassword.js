@@ -12,7 +12,7 @@ const PasswordResetFlow = () => {
   const [verificationCode, setVerificationCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [step, setStep] = useState(1);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const history = useNavigate();
   const [showToast, setShowToast] = useState(false);
@@ -130,7 +130,8 @@ const PasswordResetFlow = () => {
           showToastMessage('Contraseña restablecida correctamente!', 'success');
         } else {
           const data = await response.json();
-          setError(data.message);
+          console.log(data); 
+          // setError(data.message);
         }
       }
     } catch (error) {

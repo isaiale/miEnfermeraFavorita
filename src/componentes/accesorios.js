@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Card, Container, Row, Col, Button, Pagination } from "react-bootstrap";
 import Breadcrumb from "../utilidad/migapan";
 import { categoria_productos } from "../url/urlSitioWeb";
@@ -42,15 +42,12 @@ function AccesorioEnfermeriaCard({ accesorio }) {
 function Accesorios() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 1000]); // Rango de precios
-  const [onlyDiscount, setOnlyDiscount] = useState(false); // Estado para filtrar solo productos con descuento
-  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
-  const [currentPage, setCurrentPage] = useState(1); // Estado para la página actual
-  const [itemsPerPage] = useState(8); // Estado para la cantidad de ítems por página
-  const [isLoading, setIsLoading] = useState(true); // Estado para controlar la carga
-
-  const minPrice = 0;
-  const maxPrice = 1000;
+  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [onlyDiscount, setOnlyDiscount] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(8);
+  const [isLoading, setIsLoading] = useState(true);
 
   const datosProducto = async () => {
     try {
@@ -61,23 +58,18 @@ function Accesorios() {
       const jsonData = await response.json();
       setData(jsonData);
       setFilteredData(jsonData);
-      setIsLoading(false); // Detener la carga después de obtener los datos
+      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false); // Detener la carga en caso de error
+      setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     datosProducto();
-  }, [])
+  }, []);
 
-  useEffect(() => {
-    applyFilters();
-  }, [priceRange, onlyDiscount, searchTerm]);
-
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = data;
-
     filtered = filtered.filter(item => item.precio >= priceRange[0] && item.precio <= priceRange[1]);
 
     if (onlyDiscount) {
@@ -93,8 +85,12 @@ function Accesorios() {
     }
 
     setFilteredData(filtered);
-    setCurrentPage(1); // Reset page number when filters change
-  };
+    setCurrentPage(1);
+  }, [data, priceRange, onlyDiscount, searchTerm]);
+
+  useEffect(() => {
+    applyFilters();
+  }, [priceRange, onlyDiscount, searchTerm, applyFilters]);
 
   const handlePriceRangeChange = (e) => {
     const { name, value } = e.target;
@@ -114,12 +110,10 @@ function Accesorios() {
     setFilteredData(data);
   };
 
-  // Logic for displaying current items
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Logic for displaying page numbers
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(filteredData.length / itemsPerPage); i++) {
     pageNumbers.push(i);
@@ -215,7 +209,6 @@ function Accesorios() {
             </Pagination>
           )}
         </Col>
-
       </Row>
     </Container>
   );

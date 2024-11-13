@@ -1,14 +1,12 @@
-import DashBoarAdmin from "../../componentesE/DashBoarAdmin";
 import Sidebar from "../../componentesE/sidebarE";
 import RentaProducto from "../../componentesE/RentaProducto";
 
-export const Renta_producto = () => {
+export const RentaProductoo = () => {
   return (
     <div>
       <div className="flexx">
         <Sidebar />
-        <div className="content w-100">
-          {/* <DashBoarAdmin /> */}
+        <div className="content w-100">          
           <RentaProducto />
         </div>
       </div>

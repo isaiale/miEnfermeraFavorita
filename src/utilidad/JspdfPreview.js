@@ -5,11 +5,15 @@ const JspdfPreview = ({ pdf }) => {
     return null;
   }
 
-  // Crear un Blob URL del PDF
   const pdfUrl = URL.createObjectURL(pdf.output('blob'));
 
   return (
-    <iframe src={pdfUrl} width="100%" height="500px" />
+    <iframe 
+      src={pdfUrl} 
+      width="100%" 
+      height="500px" 
+      title="Vista previa del PDF" // Agregar título descriptivo
+    /> 
   );
 };
 

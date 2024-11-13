@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { AuthContext } from '../autenticar/AuthProvider';
 import { CarritoCompras, Productos } from '../url/urlSitioWeb';
@@ -16,7 +16,7 @@ const DetalleProducto = () => {
     const [selectedTalla, setSelectedTalla] = useState(''); // Estado para la talla seleccionada
     const [tallasDisponibles, setTallasDisponibles] = useState([]); // Estado para las tallas disponibles
 
-    const fetchProducto = async () => {
+    const fetchProducto = useCallback(async () => {
         try {
             const response = await fetch(`${Productos}/${idProductos}`);
             if (!response.ok) {
@@ -27,7 +27,6 @@ const DetalleProducto = () => {
             if (data.imagenes.length > 0) {
                 setSelectedImage(data.imagenes[0].url);
             }
-            // Configura las tallas disponibles según la categoría del producto
             if (data.categoria) {
                 if (data.categoria.nombre === 'Pantalones') {
                     setTallasDisponibles(['28', '30', '32', '34', '36', '38']);
@@ -42,11 +41,11 @@ const DetalleProducto = () => {
         } catch (error) {
             console.error("Error al cargar los detalles del producto:", error);
         }
-    };
+    }, [idProductos]);
 
     useEffect(() => {
         fetchProducto();
-    }, [idProductos]);
+    }, [fetchProducto]);
 
     const handleThumbnailClick = (image) => {
         setSelectedImage(image);

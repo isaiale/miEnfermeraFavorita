@@ -1,4 +1,3 @@
-import DashBoarAdmin from "../../componentesE/DashBoarAdmin";
 import Sidebar from "../../componentesE/sidebarE";
 import ConfiguracionE from "../../componentesE/Configuracion";
 
@@ -7,8 +6,7 @@ export const ConfiguracionEmpleado = () => {
     <div>
       <div className="flexx">
         <Sidebar />
-        <div className="content w-100">
-          {/* <DashBoarAdmin /> */}
+        <div className="content w-100">          
           <ConfiguracionE />
         </div>
       </div>

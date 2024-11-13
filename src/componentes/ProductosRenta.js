@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Card, Container, Row, Col, Button, Pagination } from "react-bootstrap";
 import Breadcrumb from "../utilidad/migapan";
 import Swal from "sweetalert2";
@@ -44,12 +44,12 @@ function ProductoRentaCard({ producto }) {
 function ProductosRenta() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 1000]); // Rango de precios
-  const [onlyDiscount, setOnlyDiscount] = useState(false); // Estado para filtrar solo productos con descuento
-  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
-  const [currentPage, setCurrentPage] = useState(1); // Estado para la página actual
-  const [itemsPerPage] = useState(8); // Estado para la cantidad de ítems por página
-  const [isLoading, setIsLoading] = useState(true); // Estado para controlar la carga
+  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [onlyDiscount, setOnlyDiscount] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(8);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchProductosRenta = async () => {
     try {
@@ -60,23 +60,18 @@ function ProductosRenta() {
       const jsonData = await response.json();
       setData(jsonData);
       setFilteredData(jsonData);
-      setIsLoading(false); // Detener la carga después de obtener los datos
-      console.log(jsonData);
+      setIsLoading(false);
     } catch (error) {
       Swal.fire({ title: "Error al hacer la solicitud.", icon: "error" });
-      setIsLoading(false); // Detener la carga en caso de error
+      setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     fetchProductosRenta();
   }, []);
 
-  useEffect(() => {
-    applyFilters();
-  }, [priceRange, onlyDiscount, searchTerm]);
-
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = data;
 
     filtered = filtered.filter(item => item.precio >= priceRange[0] && item.precio <= priceRange[1]);
@@ -94,8 +89,12 @@ function ProductosRenta() {
     }
 
     setFilteredData(filtered);
-    setCurrentPage(1); // Reset page number when filters change
-  };
+    setCurrentPage(1); 
+  }, [data, priceRange, onlyDiscount, searchTerm]);
+
+  useEffect(() => {
+    applyFilters();
+  }, [priceRange, onlyDiscount, searchTerm, applyFilters]);
 
   const handlePriceRangeChange = (e) => {
     const { name, value } = e.target;
@@ -115,12 +114,10 @@ function ProductosRenta() {
     setFilteredData(data);
   };
 
-  // Logic for displaying current items
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Logic for displaying page numbers
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(filteredData.length / itemsPerPage); i++) {
     pageNumbers.push(i);
