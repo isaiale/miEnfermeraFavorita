@@ -22,7 +22,7 @@ const SplashScreen = () => {
               <img src={LogoM} alt="EduControl Logo" className="splash-logo" />
             </div>
           </div>
-          <h1 className="splash-title">Bienvenido...</h1>
+          <h1 className="splash-title">Bienvenido</h1>
         </div>
       ) : null}
     </>

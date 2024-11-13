@@ -84,6 +84,15 @@ export default defineConfig({
     }),
   ],
   build: {
-    sourcemap: true // Habilita el mapa de fuentes para facilitar la depuración
-  }
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Divide librerías grandes como React o html2canvas en chunks separados
+          vendor: ['react', 'react-dom'],
+          html2canvas: ['html2canvas'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000, // Ajusta el límite de chunk size para evitar el warning (en KB)
+  },
 });
