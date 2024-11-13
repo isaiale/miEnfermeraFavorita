@@ -83,7 +83,7 @@ export default defineConfig({
       }
     }),
   ],
-  // build: {
-  //   sourcemap: true // Habilita el mapa de fuentes para facilitar la depuración
-  // }
+  build: {
+    sourcemap: true // Habilita el mapa de fuentes para facilitar la depuración
+  }
 });
