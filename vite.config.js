@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  base: './', // Configura la base de las rutas como relativa
+  // base: './', // Configura la base de las rutas como relativa
   plugins: [
     react(),
     VitePWA({
@@ -77,13 +77,13 @@ export default defineConfig({
           }
         ],
         // Configura `index.html` como la página de fallback offline
-        offlineFallback: {
-          pageFallback: '/index.html'
-        }
+        // offlineFallback: {
+        //   pageFallback: '/index.html'
+        // }
       }
     }),
   ],
-  build: {
-    sourcemap: true // Habilita el mapa de fuentes para facilitar la depuración
-  }
+  // build: {
+  //   sourcemap: true // Habilita el mapa de fuentes para facilitar la depuración
+  // }
 });
