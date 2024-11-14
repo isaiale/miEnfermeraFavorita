@@ -105,7 +105,7 @@ const ProductosE = () => {
 
     // Encuentra la categoría seleccionada
     const categoriaSeleccionada = categoria.find(cat => cat._id === selectedCategoria);
-    actualizarTallasDisponibles(categoriaSeleccionada?.nombre, sexo);
+    actualizarTallasDisponibles(categoriaSeleccionada?.nombre);
 
     // Limpiar las tallas seleccionadas
     setTallasSeleccionadas([]);
@@ -114,20 +114,20 @@ const ProductosE = () => {
   const handleSexoChange = (e) => {
     const selectedSexo = e.target.value;
     setSexo(selectedSexo);
-
+  
     // Encuentra la categoría seleccionada
     const categoriaSeleccionada = categoria.find(cat => cat._id === categoriaP);
-    actualizarTallasDisponibles(categoriaSeleccionada?.nombre, selectedSexo);
-
+    actualizarTallasDisponibles(categoriaSeleccionada?.nombre);
+  
     // Limpiar las tallas seleccionadas
     setTallasSeleccionadas([]);
   };
 
-  const actualizarTallasDisponibles = (categoriaNombre, sexo) => {
+  const actualizarTallasDisponibles = (categoriaNombre) => {
     if (categoriaNombre === 'Pantalones') {
       setTallasDisponibles(['28', '30', '32', '34', '36', '38', '40', '42', '44']);
     } else if (categoriaNombre === 'Zapatos') {
-      setTallasDisponibles(sexo === 'Mujer' ? ['5', '6', '7', '8', '9', '10'] : ['23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33']);
+      setTallasDisponibles(['23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33']);
     } else {
       setTallasDisponibles(['Ch', 'M', 'G', 'XL']);
     }
@@ -157,8 +157,9 @@ const ProductosE = () => {
       setPrecio(productos.precio);
       setImagenes(productos.imagenes);
       setDescuento(productos.descuento);
-      const catP = categoria.find(categ => categ._id === productos.categoria[0]._id);
+      const catP = categoria.find(categ => categ._id === productos.categoria[0]._id);      
       setCategoriaP(catP ? catP._id : '');
+      actualizarTallasDisponibles(catP.nombre);
       setSexo(productos.sexo);
       setTallasSeleccionadas(Array.isArray(productos.talla) ? productos.talla : [productos.talla]);
     }
@@ -309,7 +310,7 @@ const ProductosE = () => {
       const data = await response.json();
       console.log(data.error, data.message);
       Swal.fire({
-        title: "Error al actualizar usuario.", text: "Por favor, intenta nuevamente.", icon: "error", showConfirmButton: false
+        title: "Error al actualizar.", text: "Por favor, intenta nuevamente.", icon: "error", showConfirmButton: false
       });
     }
   }
@@ -448,6 +449,18 @@ const ProductosE = () => {
     }
   };
 
+  // Funcion para limpiar los campos
+  const limpiarCampos = () => {
+    setCategoriaP('');
+    setSexo('');
+    setNombre('');
+    setDescripcion('');
+    setPrecio('');
+    setDescuento('');
+    setInventario('');
+    setTallasSeleccionadas([]);
+    setImagenes([]);
+  };
 
   useEffect(() => {
     const filtrarProductos = () => {
@@ -708,7 +721,7 @@ const ProductosE = () => {
               </div>
             </div>
             <div className='modal-footer'>
-              <button type='button' className='btn btn-danger' data-bs-dismiss='modal' id='btncerrar'>Cerrar</button>
+              <button type='button' className='btn btn-danger' data-bs-dismiss='modal' id='btncerrar' onClick={limpiarCampos}>Cerrar</button>
               <button type='button' className='btn btn-primary' onClick={validar}>{tituloModal}</button>
             </div>
           </div>
@@ -838,7 +851,7 @@ const ProductosE = () => {
               </div>
             </div>
             <div className='modal-footer'>
-              <button type='button' className='btn btn-danger' data-bs-dismiss='modal' id='btncerrarA'>Cerrar</button>
+              <button type='button' className='btn btn-danger' data-bs-dismiss='modal' id='btncerrarA' onClick={limpiarCampos}>Cerrar</button>
               <button type='button' className='btn btn-primary' onClick={validarAccesorio}>{tituloModal}</button>
             </div>
           </div>
