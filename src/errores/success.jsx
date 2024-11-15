@@ -12,7 +12,7 @@ const Success = () => {
 
   const [status, setStatus] = useState('Verificando...');
   const [backgroundColor, setBackgroundColor] = useState('lightgray');
-  const [showRating, setShowRating] = useState(true); // Estado para mostrar SatisfaccionUsuario
+  const [showRating, setShowRating] = useState(false); // Estado para mostrar SatisfaccionUsuario
 
   useEffect(() => {
     const verifyPayment = async () => {
