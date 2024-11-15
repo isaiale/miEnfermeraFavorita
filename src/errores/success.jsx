@@ -1,5 +1,4 @@
 import NavbarUsuario from '../componentes/navbarUsuario';
-import Footer from '../componentes/footer';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { Verificar_Pago, Stripe } from '../url/urlSitioWeb';
@@ -13,7 +12,7 @@ const Success = () => {
 
   const [status, setStatus] = useState('Verificando...');
   const [backgroundColor, setBackgroundColor] = useState('lightgray');
-  const [showRating, setShowRating] = useState(false); // Estado para mostrar SatisfaccionUsuario
+  const [showRating, setShowRating] = useState(true); // Estado para mostrar SatisfaccionUsuario
 
   useEffect(() => {
     const verifyPayment = async () => {
@@ -70,8 +69,7 @@ const Success = () => {
               </div>
             </div>
           </div>
-        )}
-        <Footer />
+        )}        
       </>
     </div>
   );

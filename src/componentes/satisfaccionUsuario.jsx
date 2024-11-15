@@ -39,7 +39,7 @@ const SatisfaccionUsuario = ({ onClose }) => {
     };
 
     return (
-        <div className="text-center border rounded p-4 mb-3" style={{ maxWidth: '500px', margin: 'auto', borderColor: '#007bff', borderWidth: '2px' }}>
+        <div className="text-center border rounded p-4" style={{ maxWidth: '500px', margin: 'auto', borderColor: '#007bff', borderWidth: '2px', marginTop: '80px'}}>
             <h2>¡Pago completado Gracias por tu compra!</h2>
             <p>Tu satisfacción es importante para nosotros. ¿Qué te pareció tu experiencia de compra?</p>
             <div className="d-flex justify-content-center align-items-center mt-3">
