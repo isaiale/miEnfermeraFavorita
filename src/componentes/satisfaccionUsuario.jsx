@@ -1,9 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';/* useContext */
 import '../css/satisfaccionUsuario.css';
-import { AuthContext } from '../autenticar/AuthProvider';
+// import { AuthContext } from '../autenticar/AuthProvider';
 
 const SatisfaccionUsuario = ({ onClose }) => {
-    const { user } = useContext(AuthContext); // Obtiene el ID del usuario autenticado
+    // const { user } = useContext(AuthContext); // Obtiene el ID del usuario autenticado
     const [selectedRating, setSelectedRating] = useState(null);
     const [loading, setLoading] = useState(false);
     const faces = ['😠', '😞', '😐', '😊', '😄'];
@@ -21,7 +21,7 @@ const SatisfaccionUsuario = ({ onClose }) => {
                 },
                 body: JSON.stringify({
                     rating,
-                    userId: user._id, // Incluye el ID del usuario autenticado
+                    // userId: user._id, // Incluye el ID del usuario autenticado
                 }),
             });
 
