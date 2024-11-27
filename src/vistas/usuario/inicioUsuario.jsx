@@ -36,7 +36,7 @@ function InicioUsuario() {
       }
     } else {
       console.log('No se encontró un token en la URL');
-    }
+    }// eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // El array vacío hace que useEffect se ejecute solo una vez al montar el componente
 
   return (
