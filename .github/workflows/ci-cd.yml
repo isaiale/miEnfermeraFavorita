@@ -29,7 +29,16 @@ jobs:
         with:
           node-version: 16 # Ajusta la versión según tu proyecto
 
-      # Paso 3: Instalación de dependenciaas
+      # Paso 3: Configuración del caché de dependencias
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # Paso 4: Instalación de dependenciaas
       - name: Install dependencies
         run: npm install
 
