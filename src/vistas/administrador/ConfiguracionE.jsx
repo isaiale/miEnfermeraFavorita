@@ -1,6 +1,6 @@
-import DashBoarAdmin from "../../componentesE/DashBoarAdmin";
 import Sidebar from "../../componentesE/sidebarE";
 import ConfiguracionE from "../../componentesE/Configuracion";
+//import DashBoarAdmin from "../../componentesE/DashBoarAdmin";
 
 export const ConfiguracionEmpleado = () => {
   return (
