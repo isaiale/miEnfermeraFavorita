@@ -7,7 +7,9 @@ import { useNavigate } from 'react-router-dom';
 const UserProfile = () => {
   const { isAuthenticated, user } = useContext(AuthContext);
   const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
   const [profileImage, setProfileImage] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [preview, setPreview] = useState(null);
   const [fotoPerfil, setFotoPerfil] = useState(null);
   const [showOptions, setShowOptions] = useState(false);
@@ -19,8 +21,8 @@ const UserProfile = () => {
 
   useEffect(() => {
     // Llamada a la API para obtener la foto de perfil del usuario cuando se monta el componente
-    getFotoPerfil();
-  }, []);
+    getFotoPerfil(); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); 
 
   useEffect(() => {
     // Utiliza un efecto para redirigir al usuario si no está autenticado
