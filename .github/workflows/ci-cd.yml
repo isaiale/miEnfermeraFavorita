@@ -32,3 +32,7 @@ jobs:
       # Paso 3: Instalación de dependencias
       - name: Install dependencies
         run: npm install
+
+    # Paso 4: Ejecutar linting
+      - name: Run ESLint
+        run: npm run lint
