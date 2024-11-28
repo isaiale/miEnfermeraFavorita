@@ -54,6 +54,7 @@
     ]
   },
   "devDependencies": {
+    "@sentry/vite-plugin": "^2.22.6",
     "@vitejs/plugin-react": "^4.3.3",
     "autoprefixer": "^10.4.19",
     "postcss-cli": "^11.0.0",
