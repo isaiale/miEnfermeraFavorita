@@ -52,7 +52,7 @@ jobs:
         run: npm run build
     
       - name: Run Unit Tests with Coverage
-        run: npx jest --coverage --passWithNoTest
+        run: npx jest --coverage --passWithNoTests
       
 
       # Iniciar el servidor de desarrollo
@@ -79,25 +79,10 @@ jobs:
       - name: Run E2E Tests with Cypress
         run: npx cypress run   
 
-      # Notificar en caso de éxito
-      - name: Notify Slack on Success
-        if: success() # Solo se ejecuta si los pasos anteriores fueron exitosos
+      - name: Notify Slack
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"🎉 ¡Construcción y pruebas completadas con éxito!"}' \
-          $SLACK_WEBHOOK_URL
-
-  notify-slack-on-failure:
-    # Este job solo se ejecutará si 'build-and-test' falla
-    if: failure()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Notify Slack of Failure
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"🚨 *Pipeline Fallido*: La construcción o pruebas han fallado. Por favor, revisa el flujo de trabajo en GitHub Actions."}' \
+          --data '{"text":"¡Construcción y pruebas completadas con éxito!"}' \
           $SLACK_WEBHOOK_URL
