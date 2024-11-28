@@ -8,6 +8,10 @@ import 'bootstrap/dist/js/bootstrap.bundle';
 import { AuthContextProvider } from './autenticar/AuthProvider';
 import { askPermission, subscribeUserToPush } from './utilidad/pushNotifications';
 import SplashScreen from './SplashScreen';
+import reportWebVitals from "./reportWebVitals";
+
+// Aquí, las métricas se capturan y se envían al servicio de análisis (o se imprimen en consola)
+reportWebVitals();
 
 Sentry.init({
   dsn: "https://6df713072cb39720ea91f0f8895dfbbc@o4508372929609728.ingest.us.sentry.io/4508372934983680",

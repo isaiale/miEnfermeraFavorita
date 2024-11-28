@@ -52,7 +52,8 @@ jobs:
         run: npm run build
     
       - name: Run Unit Tests with Coverage
-        run: npm test -- --coverage --passWithNoTests
+        run: npx jest --coverage --passWithNoTests
+      
 
       # Iniciar el servidor de desarrollo
       - name: Start Development Server
