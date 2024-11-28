@@ -78,3 +78,11 @@ jobs:
 
       - name: Run E2E Tests with Cypress
         run: npx cypress run   
+
+      - name: Notify Slack
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"Build and tests completed successfully!"}' \
+          $SLACK_WEBHOOK_URL
