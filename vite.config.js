@@ -7,6 +7,9 @@ export default defineConfig({
   // base: './', // Configura la base de las rutas como relativa
   plugins: [react(), VitePWA({
     registerType: 'autoUpdate',
+    server: {
+      port: 5173,
+    },
     manifest: {
       name: 'Mi Aplicación',
       short_name: 'App',
