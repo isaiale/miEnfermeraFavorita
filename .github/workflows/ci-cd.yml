@@ -52,7 +52,7 @@ jobs:
         run: npm run build
     
       - name: Run Unit Tests with Coverage
-        run: npx jest --coverage --passWithNoTests
+        run: npx jest --coverage --passWithNoTest
       
 
       # Iniciar el servidor de desarrollo
@@ -101,4 +101,3 @@ jobs:
           curl -X POST -H 'Content-type: application/json' \
           --data '{"text":"🚨 *Pipeline Fallido*: La construcción o pruebas han fallado. Por favor, revisa el flujo de trabajo en GitHub Actions."}' \
           $SLACK_WEBHOOK_URL
-          
