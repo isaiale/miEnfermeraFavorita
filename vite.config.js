@@ -1,3 +1,4 @@
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -79,8 +80,19 @@ export default defineConfig({
         // Configura `index.html` como la página de fallback offline
         // offlineFallback: {
         //   pageFallback: '/index.html'
+        //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
         // }
       }
+    }),
+    sentryVitePlugin({
+      org: "uthh-org",
+      project: "javascript-react",
+      authToken: process.env.SENTRY_AUTH_TOKEN, // Usar el token de Sentry desde las variables de entorno,
+      release: {
+        name: process.env.SENTRY_RELEASE || `MiEnfermeraFavorita-web-pwa@${new Date().toISOString()}`,
+        inject: true, // Asegura que Sentry inyecte la versión del release en el bundle para identificar errores correctamente
+        finalize: true, // Finaliza el release automáticamente
+      },
     }),
   ],
   build: {
