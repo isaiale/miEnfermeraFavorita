@@ -79,23 +79,3 @@ jobs:
 
       - name: Run E2E Tests with Cypress
         run: npx cypress run   
-
-       # Notificar éxito en Slack
-      - name: Notify Success on Slack
-        if: success() # Este paso solo se ejecuta si todos los pasos anteriores tuvieron éxito
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"¡Construcción y pruebas completadas con éxito!"}' \
-          $SLACK_WEBHOOK_URL
-
-      # Notificar fallo en Slack
-      - name: Notify Failure on Slack
-        if: failure() # Este paso solo se ejecuta si algún paso anterior falló
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"❌ Error en la construcción o pruebas del proyecto."}' \
-          $SLACK_WEBHOOK_URL
