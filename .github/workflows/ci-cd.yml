@@ -6,11 +6,11 @@ on:
     branches:
       - main
       - develop
-      - pruebas # Reemplaza con las ramas que deseas monitorear
+      - release/*
   pull_request:
     branches:
       - main
-      - develop
+      - release/*
 
 # Configuración de los trabajos
 jobs:
@@ -79,23 +79,24 @@ jobs:
 
       - name: Run E2E Tests with Cypress
         run: npx cypress run
-        
-        # Notificar éxito en Slack
-      - name: Notify Success on Slack
-        if: success() # Este paso solo se ejecuta si todos los pasos anteriores tuvieron éxito
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"¡Construcción y pruebas completadas con éxito!"}' \
-          $SLACK_WEBHOOK_URL
+            
+  deploy:
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/pruebas' || github.ref == 'refs/heads/test' || startsWith(github.ref, 'refs/heads/release/')
+    runs-on: ubuntu-latest
+    needs: build-and-test
 
-      # Notificar fallo en Slack
-      - name: Notify Failure on Slack
-        if: failure() # Este paso solo se ejecuta si algún paso anterior falló
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Deploy to Production
         run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"❌ Error en la construcción o pruebas del proyecto."}' \
-          $SLACK_WEBHOOK_URL
+          echo "Deploying application..."          
