@@ -28,7 +28,8 @@ const Success = () => {
         if (dataPago.status === 'completado' && dataOtraAPI.status) {
           setStatus('¡El pago se realizó con éxito y fue verificado por ambas fuentes!');
           setBackgroundColor('lightgreen');
-          setShowRating(true); // Mostrar el componente de calificación
+          // setShowRating(true); // Mostrar el componente de calificación          
+          setShowRating(!dataOtraAPI.ratingAnswered);
         } else if (dataPago.status === 'fallido' || dataOtraAPI.status === 'fallido') {
           setStatus('Pago Fallido');
           setBackgroundColor('lightcoral');
@@ -58,7 +59,8 @@ const Success = () => {
         <NavbarUsuario />
         {showRating ? (
           // Mostrar solo el componente de calificación cuando el pago sea exitoso
-          <SatisfaccionUsuario onClose={handleCloseRating} />
+          // <SatisfaccionUsuario onClose={handleCloseRating} />
+          <SatisfaccionUsuario onClose={handleCloseRating} userId={dataOtraAPI.userId} />
         ) : (
           // Mostrar contenido principal si no se muestra la calificación
           <div className='mt-5 mb-5 m-5'>

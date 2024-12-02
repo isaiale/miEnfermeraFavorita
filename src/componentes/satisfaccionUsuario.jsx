@@ -1,9 +1,7 @@
 import React, { useState } from 'react';/* useContext */
 import '../css/satisfaccionUsuario.css';
-// import { AuthContext } from '../autenticar/AuthProvider';
 
-const SatisfaccionUsuario = ({ onClose }) => {
-    // const { user } = useContext(AuthContext); // Obtiene el ID del usuario autenticado
+const SatisfaccionUsuario = ({ onClose, userId }) => {    
     const [selectedRating, setSelectedRating] = useState(null);
     const [loading, setLoading] = useState(false);
     const faces = ['😠', '😞', '😐', '😊', '😄'];
@@ -21,13 +19,13 @@ const SatisfaccionUsuario = ({ onClose }) => {
                 },
                 body: JSON.stringify({
                     rating,
-                    // userId: user._id, // Incluye el ID del usuario autenticado
+                    userId,
                 }),
             });
 
             if (response.ok) {
                 console.log("Calificación registrada con éxito");
-                setTimeout(onClose, 2000); // Cierra el componente después de un breve retraso
+                setTimeout(onClose, 2000); 
             } else {
                 console.error("Error al registrar la calificación:", response.statusText);
             }
