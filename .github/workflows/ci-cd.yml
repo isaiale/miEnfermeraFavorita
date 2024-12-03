@@ -99,7 +99,9 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
-
+    #token
       - name: Deploy to Vercel
-        run: npx vercel --token=${{ secrets.VERCEL_TOKEN }} --prod
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel --prod --yes --token $VERCEL_TOKEN 
   
