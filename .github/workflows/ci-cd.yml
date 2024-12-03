@@ -100,34 +100,6 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Deploy to Production
-        run: |
-          echo "Deploying application..."
+      - name: Deploy to Vercel
+        run: npx vercel --token=${{ secrets.VERCEL_TOKEN }} --prod
   
-  notifications:
-    name: Notify Results
-    runs-on: ubuntu-latest
-    needs: 
-      - build-and-test
-      - deploy
-
-    steps:
-      # Notificar éxito en Slack si todo fue exitoso
-      - name: Notify Success on Slack
-        if: success()
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"✅ Todo el pipeline se completó con éxito para la rama '${{ github.ref_name }}'."}' \
-          $SLACK_WEBHOOK_URL
-
-      # Notificar fallo en Slack si hubo algún error
-      - name: Notify Failure on Slack
-        if: failure()
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"❌ Ocurrió un error en el pipeline para la rama '${{ github.ref_name }}'."}' \
-          $SLACK_WEBHOOK_URL
