@@ -5,6 +5,7 @@ import 'chart.js/auto';
 const GraficaSatisfaccion = () => {
     const [data, setData] = useState([0, 0, 0, 0, 0]);
     const [loading, setLoading] = useState(true);
+    const [totalResponded, setTotalResponded] = useState(0); // Estado para el total de respuestas
 
     useEffect(() => {
         const fetchSatisfaccion = async () => {
@@ -15,17 +16,21 @@ const GraficaSatisfaccion = () => {
                     throw new Error(`Error en la respuesta: ${response.statusText}`);
                 }
 
-                const result = await response.json();                
+                const result = await response.json();                 
 
                 // Procesar los datos para adaptarlos a la gráfica
                 const processedData = [0, 0, 0, 0, 0];
+                let totalCount = 0; // Para contar el total de respuestas
+
                 result.forEach((entry) => {
                     if (entry._id >= 1 && entry._id <= 5) {
                         processedData[entry._id - 1] = entry.count; // Ajusta los índices según el ID
+                        totalCount += entry.count; // Sumar al total de respuestas
                     }
                 });
 
                 setData(processedData);
+                setTotalResponded(totalCount); // Establecer el total de respuestas
             } catch (error) {
                 console.error('Error al obtener los datos de satisfacción:', error);
             } finally {
@@ -52,7 +57,7 @@ const GraficaSatisfaccion = () => {
                 borderColor: '#333',
                 borderWidth: 2,
             },
-        ],        
+        ],
     };
 
     const chartOptions = {
@@ -78,8 +83,12 @@ const GraficaSatisfaccion = () => {
 
     return (
         <div className="text-center" style={{ maxWidth: '900px', margin: 'auto' }}>
-            <h5 style={{marginTop:'6px', marginBottom:'2px'}}>¿Qué tan satisfecho te sentiste con tu experiencia de compra?</h5>
-            <p style={{ marginBottom:'2px'}}>Basado en las calificaciones de los usuarios</p>
+            <h5 style={{ marginTop:'6px', marginBottom:'2px' }}>¿Qué tan satisfecho te sentiste con tu experiencia de compra?</h5>
+            {/* <p style={{ marginBottom:'2px' }}>Basado en las calificaciones de los usuarios</p> */}
+
+            {/* Mostrar la cantidad total de respuestas */}
+            {/* <p className="text-bold">Total de usuarios que respondieron: {totalResponded}</p> */}
+            <p class="text-bold">Total de usuarios que respondieron: <span class="badge bg-primary">{totalResponded}</span></p>
             <Bar data={chartData} options={chartOptions} />
         </div>
     );
