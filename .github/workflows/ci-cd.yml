@@ -6,13 +6,14 @@ on:
     branches:
       - main
       - develop
-      - pruebas
+      - pruebas/*
       - test
-      - release/*
+      - release
   pull_request:
     branches:
       - main
-      - release/*
+      - pruebas/*
+      - release
 
 # Configuración de los trabajos
 jobs:
