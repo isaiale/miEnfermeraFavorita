@@ -85,7 +85,7 @@ jobs:
             
   deploy:
     name: Deploy PWA MEF
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/pruebas/'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/pruebas'
     runs-on: ubuntu-latest
     needs: build-and-test
 
