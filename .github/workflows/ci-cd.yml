@@ -107,7 +107,7 @@ jobs:
         run: npx vercel --prod --yes --token $VERCEL_TOKEN --name mi-enfermera-favorita
   
   notifications:
-    name: Notify Results
+    name: Slack Notify Results
     runs-on: ubuntu-latest
     needs: 
       - build-and-test
