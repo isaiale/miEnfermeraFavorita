@@ -23,7 +23,7 @@
     "react-jwt": "^1.2.2",
     "react-multi-carousel": "^2.8.5",
     "react-router-dom": "^6.25.1",
-    "socket.io-client": "^4.7.5",
+    "socket.io-client": "^4.8.1",
     "sweetalert2": "^11.12.3",
     "vite-plugin-pwa": "^0.20.5",
     "web-push": "^3.6.7",
