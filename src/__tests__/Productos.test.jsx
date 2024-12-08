@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import Productos from '../componentes/Productos';
+import Productos from '../componentes/productos';
 
 // Mock de fetch
 global.fetch = jest.fn();
