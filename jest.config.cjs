@@ -3,7 +3,11 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/src/jest.setup.js'],
   transform: {
     '^.+\\.jsx?$': 'babel-jest',
+    
   },
   moduleFileExtensions: ['js', 'jsx', 'json', 'node'],
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
+  moduleNameMapper: {
+    '\\.(css|less|scss|sass)$': '<rootDir>/src/__mocks__/fileMock.jsx',
+  },
 };
