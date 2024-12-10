@@ -9,7 +9,7 @@ import Modal from 'react-bootstrap/Modal'; // Importa el componente Modal de Boo
 import Button from 'react-bootstrap/Button';
 import { jsPDF } from 'jspdf';
 import JspdfPreview from '../utilidad/JspdfPreview'; // Asegúrate de importar tu componente JspdfPreview correctamente
-import logo from '../img/Logo de mi enfermera favorita.jpg';
+import logo from '../img/logodemienfermerafavorita.jpg';
 import '../css/spinner.css';
 import '../css/productos.css';
 
