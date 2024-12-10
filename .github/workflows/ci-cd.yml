@@ -74,8 +74,6 @@ jobs:
       # Paso 11: Ejecutar pruebas con TestCafe
       - name: Run TestCafe Tests
         run: npx testcafe chrome testCafe/integration/test.js
-        env:
-          CI: true
 
       # Paso 12: Instalar Cypress
       - name: Install Cypress

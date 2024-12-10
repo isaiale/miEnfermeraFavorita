@@ -6,7 +6,7 @@ module.exports = {
     
   },
   moduleFileExtensions: ['js', 'jsx', 'json', 'node'],
-  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/', 'testCafe/'],
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': '<rootDir>/src/__mocks__/fileMock.jsx',
   },
