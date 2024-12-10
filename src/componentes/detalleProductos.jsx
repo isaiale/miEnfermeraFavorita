@@ -160,7 +160,7 @@ const DetalleProducto = () => {
                     <div className="col-md-4 me-5 description-container">
                         <h3 className="display-4">{producto.nombre}</h3>
                         <p className="lead">{producto.descripcion}</p>
-                        <p className="lead"><i class="fa fa-thin fa-user"></i> {producto.sexo}</p>
+                        <p className="lead"><i className="fa fa-thin fa-user"></i> {producto.sexo}</p>
                         {/* <p className=""> <i class="fa fa-thin fa-user"></i> {accesorio.sexo}</p> */}
                         <h4 className="precio mb-3">${producto.precio}</h4>
                         <p className={`lead ${producto.inventario === 0 ? 'text-danger' : ''}`}>
@@ -181,6 +181,7 @@ const DetalleProducto = () => {
                                 min="1"
                                 type="number"
                                 name="quantity"
+                                onChange={() => {}} // Solución rápida jb
                             />
                             <button
                                 type="button"

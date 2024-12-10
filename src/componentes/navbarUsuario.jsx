@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import logoU from '../img/Logo de mi enfermera favorita.jpg';
+import logoU from '../img/logodemienfermerafavorita.jpg';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useNavigate } from "react-router-dom";
 import { faHouse, faShirt, faRightFromBracket, faShoppingBasket, faTag, faBars, faXmark, faSearch, faCartShopping } from "@fortawesome/free-solid-svg-icons";
