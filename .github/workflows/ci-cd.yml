@@ -44,14 +44,30 @@ jobs:
       # Paso 4: Instalación de dependenciaas
       - name: Install dependencies
         run: npm install
+       
+      #Etapa de Pruebas Instalar Cypress
+      - name: Install Cypress
+        run: npm install cypress --save-dev
 
-      - name: Build Project
-        run: npm run build
-    
+      - name: List Cypress Spec Files 
+        run: ls cypress/e2e/
+
+      - name: Run E2E Tests with Cypress
+        run: npx cypress run
+
+      # Paso : Instalar Playwright
+      - name: Install Playwright
+        run: npx playwright install
+
+      # Paso : Ejecutar pruebas de integración con Playwright
+      - name: Run Playwright Integration Tests
+        run: npx playwright test     
+         
       - name: Run Unit Tests with Coverage
         run: npx jest --coverage --passWithNoTests
       
 
+      
       # Iniciar el servidor de desarrollooooo
       - name: Start Development Server
         run: npm start &
@@ -65,16 +81,9 @@ jobs:
         # Esperar a que el servidor esté disponible antes de ejecutar Cypress
       - name: Wait for Server to be Ready
         run: npx wait-on http://localhost:5173 --timeout 30000
-
-        #Etapa de Pruebas 
-      - name: Install Cypress
-        run: npm install cypress --save-dev
-
-      - name: List Cypress Spec Files 
-        run: ls cypress/e2e/
-
-      - name: Run E2E Tests with Cypress
-        run: npx cypress run
+      
+      - name: Build Project
+        run: npm run build
       
       #proceso de monirero
       - name: Set environment variables
@@ -83,28 +92,28 @@ jobs:
           echo "STAGING_TOKEN=${{ secrets.STAGING_TOKEN }}" >> $GITHUB_ENV
           echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> $GITHUB_ENV
             
-  deploy:
-    name: Deploy PWA MEF
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/pruebas' || github.ref == 'refs/heads/test' || startsWith(github.ref, 'refs/heads/release/')
-    runs-on: ubuntu-latest
-    needs: build-and-test
+  # deploy:
+  #   name: Deploy PWA MEF
+  #   if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/pruebas' || github.ref == 'refs/heads/test' || startsWith(github.ref, 'refs/heads/release/')
+  #   runs-on: ubuntu-latest
+  #   needs: build-and-test
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
+  #     - name: Setup Node.js environment
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '16'
 
-      - name: Install Dependencies
-        run: npm install
+  #     - name: Install Dependencies
+  #       run: npm install
 
-      - name: Deploy to Vercel
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: npx vercel --prod --yes --token $VERCEL_TOKEN --name mi-enfermera-favorita
+  #     - name: Deploy to Vercel
+  #       env:
+  #         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  #       run: npx vercel --prod --yes --token $VERCEL_TOKEN --name mi-enfermera-favorita
   
   # notifications:
   #   name: Slack Notify Results
