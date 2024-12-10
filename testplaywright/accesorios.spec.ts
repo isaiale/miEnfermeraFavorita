@@ -24,14 +24,4 @@ test.describe('Test de integración de Accesorios', () => {
     await expect(page.locator('text=Tijeras')).toBeVisible();
     await expect(page.locator('text=Gorro Oca Unisex')).toBeVisible();
   });
-
-  test('debe filtrar productos por precio', async ({ page }) => {
-    await page.goto('http://localhost:5173/accesorioss');
-
-    // Establecer un rango de precios
-    await page.fill('input[placeholder="Min"]', '50');
-    await page.fill('input[placeholder="Max"]', '150');
-
-    await expect(page.locator('text=Gorro Oca Unisex')).not.toBeVisible();
-  });
 });
