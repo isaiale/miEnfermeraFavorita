@@ -44,6 +44,20 @@ jobs:
       # Paso 4: Instalación de dependenciaas
       - name: Install dependencies
         run: npm install
+    
+      # Iniciar el servidor de desarrollooooo
+      - name: Start Development Server
+        run: npm start &
+        env:
+          PORT: 5173
+
+      # Asegurarse de que hay tiempo suficiente para iniciar el servidor
+      - name: Wait for Server Initialization
+        run: sleep 10
+       
+      # Esperar a que el servidor esté disponible antes de ejecutar Cypress
+      - name: Wait for Server to be Ready
+        run: npx wait-on http://localhost:5173 --timeout 30000
        
       #Etapa de Pruebas Instalar Cypress
       - name: Install Cypress
@@ -65,22 +79,6 @@ jobs:
          
       - name: Run Unit Tests with Coverage
         run: npx jest --coverage --passWithNoTests
-      
-
-      
-      # Iniciar el servidor de desarrollooooo
-      - name: Start Development Server
-        run: npm start &
-        env:
-          PORT: 5173
-
-        # Asegurarse de que hay tiempo suficiente para iniciar el servidor
-      - name: Wait for Server Initialization
-        run: sleep 10
-       
-        # Esperar a que el servidor esté disponible antes de ejecutar Cypress
-      - name: Wait for Server to be Ready
-        run: npx wait-on http://localhost:5173 --timeout 30000
       
       - name: Build Project
         run: npm run build
