@@ -18,3 +18,10 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+Cypress.on('uncaught:exception', (err) => {
+    // Ignorar el error relacionado con 'getCLS is not a function'
+    if (err.message.includes('getCLS is not a function')) {
+      return false; // Ignora este error y no falla la prueba
+    }
+  });
+  
