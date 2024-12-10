@@ -30,7 +30,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16 # Ajusta la versión según tu proyecto
+          node-version: 16 
 
       # Paso 3: Configuración del caché de dependencias
       - name: Cache dependencies
@@ -45,41 +45,49 @@ jobs:
       - name: Install dependencies
         run: npm install
     
-      # Iniciar el servidor de desarrollooooo
+      # Paso 5: Iniciar el servidor de desarrollo
       - name: Start Development Server
         run: npm start &
         env:
           PORT: 5173
 
-      # Asegurarse de que hay tiempo suficiente para iniciar el servidor
+      # Paso 6: Asegurarse de que hay tiempo suficiente para iniciar el servidor
       - name: Wait for Server Initialization
-        run: sleep 10
+        run: sleep 10 
        
-      # Esperar a que el servidor esté disponible antes de ejecutar Cypress
+      # Paso 7: Esperar a que el servidor esté disponible antes de ejecutar Cypress
       - name: Wait for Server to be Ready
         run: npx wait-on http://localhost:5173 --timeout 30000
-       
-      #Etapa de Pruebas Instalar Cypress
+
+      # Paso 8: Ejecutar pruebas unitarias con cobertura con Jest
+      - name: Run Unit Tests with Coverage
+        run: npx jest --coverage --passWithNoTests
+
+      # Paso 6: Ejecutar pruebas unitarias con Jasmine
+      - name: Run Unit Tests with Jasmine
+        run: npm run test
+
+      # Paso 10: Etapa de Pruebas Instalar Cypress
       - name: Install Cypress
         run: npm install cypress --save-dev
-
+      
+      # Paso 11: Listar los archivos de especificaciones de Cypress
       - name: List Cypress Spec Files 
         run: ls cypress/e2e/
 
+      # Paso 12: Ejecutar las pruebas E2E con Cypress
       - name: Run E2E Tests with Cypress
         run: npx cypress run
 
-      # Paso : Instalar Playwright
+      # Paso 13: Instalar Playwright
       - name: Install Playwright
         run: npx playwright install
 
-      # Paso : Ejecutar pruebas de integración con Playwright
+      # Paso 14: Ejecutar pruebas de integración con Playwright
       - name: Run Playwright Integration Tests
         run: npx playwright test     
          
-      - name: Run Unit Tests with Coverage
-        run: npx jest --coverage --passWithNoTests
-      
+      # Paso 15: Construir el proyecto
       - name: Build Project
         run: npm run build
       
