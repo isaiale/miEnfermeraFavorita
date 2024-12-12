@@ -2,7 +2,9 @@ import React from 'react';
 
 function Ayuda() {
   return (
-    <div>      
+    <div> 
+
+      <h1>estoy en la ayuda</h1>     
       {/* <iframe
         src="https://proyectmodel.onrender.com/"
         // title="Predecir diabetes"

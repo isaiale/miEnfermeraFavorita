@@ -124,7 +124,7 @@ jobs:
         run: npx vercel --prod --yes --token $VERCEL_TOKEN --name mi-enfermera-favorita
 
       #proceso de monirero
-      - name: Set environment variables
+      - name: Monitoring process with Sentry
         run: |
           echo "API_KEY=${{ secrets.API_KEY }}" >> $GITHUB_ENV
           echo "STAGING_TOKEN=${{ secrets.STAGING_TOKEN }}" >> $GITHUB_ENV
