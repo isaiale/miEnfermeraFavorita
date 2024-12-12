@@ -22,7 +22,7 @@ describe('Componente Productos', () => {
             ok: true,
             json: async () => Array.from({ length: 20 }, (_, i) => ({
                 _id: `${i + 1}`,
-                nombre: `Producto ${i + 1}`,
+                // nombre: `Producto ${i + 1}`,
                 precio: 100 + i,
                 descuento: i % 2 === 0 ? 10 : 0,
                 sexo: 'Unisex',
